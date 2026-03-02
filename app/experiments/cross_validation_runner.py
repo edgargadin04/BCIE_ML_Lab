@@ -123,7 +123,7 @@ def run_neuralprophet_cv(df_ts, country_data, n_splits):
 def run_statsforecast_cv(df_ts, country_data, n_splits):
     """Cross-validate StatsForecast for one country."""
     from statsforecast import StatsForecast
-    from statsforecast.models import AutoARIMA, DynamicOptimizedTheta
+    from statsforecast.models import AutoARIMA
 
     n = len(country_data)
     min_train = max(3, n // 3)
@@ -142,24 +142,29 @@ def run_statsforecast_cv(df_ts, country_data, n_splits):
         if len(test) == 0:
             continue
 
-        train_sf = train.rename(columns={"ds": "ds", "y": "y"})
-        train_sf["unique_id"] = "country"
+        # StatsForecast requires columns: unique_id, ds, y (in that order)
+        train_sf = pd.DataFrame({
+            "unique_id": "country",
+            "ds": pd.to_datetime(train["ds"]),
+            "y": train["y"].astype(float),
+        })
 
         try:
             sf = StatsForecast(
-                models=[AutoARIMA(season_length=1), DynamicOptimizedTheta(season_length=1)],
+                models=[AutoARIMA(season_length=1)],
                 freq="YS", n_jobs=1
             )
             sf.fit(train_sf)
             pred = sf.predict(h=len(test))
             y_pred = pred["AutoARIMA"].values
 
-            m = mape(test["y"].values, y_pred)
-            r = rmse(test["y"].values, y_pred)
+            m = mape(test["y"].values.astype(float), y_pred)
+            r = rmse(test["y"].values.astype(float), y_pred)
             if not np.isnan(m):
                 mapes.append(m)
             rmses.append(r)
-        except Exception:
+        except Exception as e:
+            logger.warning(f"    SF fold error: {type(e).__name__}: {e}")
             continue
 
     return np.mean(mapes) if mapes else np.nan, np.mean(rmses) if rmses else np.nan

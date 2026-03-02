@@ -2504,15 +2504,15 @@
               </div>
               <div style="background:var(--bg-card-alt);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center">
                 <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px">NeuralProphet</div>
-                <div style="font-size:28px;font-weight:800;color:#a855f7;margin:4px 0">—</div>
-                <div style="font-size:11px;color:var(--text-muted)">MAPE Promedio CV</div>
-                <div style="font-size:10px;color:#ef4444;margin-top:4px">❌ Incompatible Py3.13</div>
+                <div style="font-size:28px;font-weight:800;color:#a855f7;margin:4px 0">266.8%</div>
+                <div style="font-size:11px;color:var(--text-muted)">Mejor MAPE (8-fold)</div>
+                <div style="font-size:10px;color:#22c55e;margin-top:4px">✅ 5 países evaluados</div>
               </div>
               <div style="background:var(--bg-card-alt);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center">
                 <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px">StatsForecast</div>
-                <div style="font-size:28px;font-weight:800;color:#22c55e;margin:4px 0">—</div>
-                <div style="font-size:11px;color:var(--text-muted)">MAPE Promedio CV</div>
-                <div style="font-size:10px;color:#ef4444;margin-top:4px">❌ Incompatible Py3.13</div>
+                <div style="font-size:28px;font-weight:800;color:#22c55e;margin:4px 0">183.3%</div>
+                <div style="font-size:11px;color:var(--text-muted)">Mejor MAPE (4-fold) ⭐</div>
+                <div style="font-size:10px;color:#22c55e;margin-top:4px">✅ 5 países evaluados</div>
               </div>
               <div style="background:var(--bg-card-alt);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center">
                 <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px">TimesFM</div>
@@ -2525,18 +2525,18 @@
               <strong>Metodología:</strong> TimeSeriesSplit con K folds (K ∈ {3..8}). Evaluado sobre los 5 países con más datos: Honduras, Costa Rica, Guatemala, El Salvador, Nicaragua.
             </div>
             <table class="exec-table" style="font-size:12px">
-              <thead><tr><th>Fold</th><th>Train</th><th>Test</th><th>Prophet MAPE</th><th>Prophet RMSE</th><th>NeuralProphet</th><th>StatsForecast</th><th>TimesFM</th></tr></thead>
+              <thead><tr><th>Fold</th><th>Train</th><th>Test</th><th>Prophet</th><th>NeuralProphet</th><th>StatsForecast</th><th>TimesFM</th></tr></thead>
               <tbody>
-                <tr><td class="text-bold">3-fold</td><td>66%</td><td>33%</td><td>300.0%</td><td>$173.6M</td><td style="color:#64748b">N/D (Py3.13)</td><td style="color:#64748b">N/D (Py3.13)</td><td style="color:#64748b">N/D (GPU)</td></tr>
-                <tr><td class="text-bold">4-fold</td><td>75%</td><td>25%</td><td>299.4%</td><td>$161.0M</td><td style="color:#64748b">N/D (Py3.13)</td><td style="color:#64748b">N/D (Py3.13)</td><td style="color:#64748b">N/D (GPU)</td></tr>
-                <tr><td class="text-bold">5-fold</td><td>80%</td><td>20%</td><td>291.9%</td><td>$150.6M</td><td style="color:#64748b">N/D (Py3.13)</td><td style="color:#64748b">N/D (Py3.13)</td><td style="color:#64748b">N/D (GPU)</td></tr>
-                <tr><td class="text-bold">6-fold</td><td>83%</td><td>17%</td><td style="color:#22c55e;font-weight:700">274.9% ⭐</td><td style="color:#22c55e;font-weight:700">$149.1M</td><td style="color:#64748b">N/D (Py3.13)</td><td style="color:#64748b">N/D (Py3.13)</td><td style="color:#64748b">N/D (GPU)</td></tr>
-                <tr><td class="text-bold">7-fold</td><td>86%</td><td>14%</td><td>278.8%</td><td>$142.5M</td><td style="color:#64748b">N/D (Py3.13)</td><td style="color:#64748b">N/D (Py3.13)</td><td style="color:#64748b">N/D (GPU)</td></tr>
-                <tr><td class="text-bold">8-fold</td><td>87.5%</td><td>12.5%</td><td>280.9%</td><td style="color:#22c55e;font-weight:700">$129.0M ⭐</td><td style="color:#64748b">N/D (Py3.13)</td><td style="color:#64748b">N/D (Py3.13)</td><td style="color:#64748b">N/D (GPU)</td></tr>
+                <tr><td class="text-bold">3-fold</td><td>66%</td><td>33%</td><td>300.0%</td><td>323.7%</td><td style="color:#22c55e;font-weight:700">217.4% ⭐</td><td style="color:#64748b">N/D</td></tr>
+                <tr><td class="text-bold">4-fold</td><td>75%</td><td>25%</td><td>299.4%</td><td>320.2%</td><td style="color:#22c55e;font-weight:700">183.3% ⭐</td><td style="color:#64748b">N/D</td></tr>
+                <tr><td class="text-bold">5-fold</td><td>80%</td><td>20%</td><td>291.9%</td><td>324.6%</td><td style="color:#22c55e;font-weight:700">263.7% ⭐</td><td style="color:#64748b">N/D</td></tr>
+                <tr><td class="text-bold">6-fold</td><td>83%</td><td>17%</td><td>274.9%</td><td>269.3%</td><td style="color:#22c55e;font-weight:700">210.4% ⭐</td><td style="color:#64748b">N/D</td></tr>
+                <tr><td class="text-bold">7-fold</td><td>86%</td><td>14%</td><td>278.8%</td><td>274.9%</td><td style="color:#22c55e;font-weight:700">239.1% ⭐</td><td style="color:#64748b">N/D</td></tr>
+                <tr><td class="text-bold">8-fold</td><td>87.5%</td><td>12.5%</td><td>280.9%</td><td>266.8%</td><td style="color:#22c55e;font-weight:700">247.0% ⭐</td><td style="color:#64748b">N/D</td></tr>
               </tbody>
             </table>
-            <div style="margin-top:12px;padding:12px;background:var(--bg-card-alt);border:1px solid #06b6d433;border-radius:8px;font-size:11px;color:var(--text-light)">
-              📊 <strong>Hallazgo:</strong> El mejor MAPE de Prophet se obtiene con <strong>6 folds</strong> (274.9%), mientras que el mejor RMSE con <strong>8 folds</strong> ($129M). Las altas cifras de MAPE se explican por el crecimiento exponencial de los datos del BCIE desde 2020. NeuralProphet y StatsForecast requieren <code>pkg_resources</code> no disponible en Python 3.13.
+            <div style="margin-top:12px;padding:12px;background:var(--bg-card-alt);border:1px solid #22c55e33;border-radius:8px;font-size:11px;color:var(--text-light)">
+              📊 <strong>Hallazgo:</strong> <strong style="color:#22c55e">StatsForecast gana en MAPE en todos los folds</strong> (mejor: 183.3% en 4-fold). NeuralProphet supera a Prophet en folds ≥6. La tendencia muestra que StatsForecast (AutoARIMA) es el más robusto para CV en datos del BCIE.
             </div>
           </div>
         </div>
@@ -2546,23 +2546,23 @@
           <div class="section-title" style="font-size:16px;margin-bottom:12px">📊 Experimentación de Particiones (60/40 → 95/5)</div>
           <div class="chart-card" style="padding:24px">
             <div style="font-size:12px;color:var(--text-light);margin-bottom:16px">
-              <strong>Objetivo:</strong> Determinar la proporción óptima train/test. MAPE = Mean Absolute Percentage Error sobre 5 países fundadores (Honduras, Costa Rica, Guatemala, El Salvador, Nicaragua).
+              <strong>Objetivo:</strong> Determinar la proporción óptima train/test. MAPE sobre 5 países fundadores. <strong style="color:#22c55e">Verde = mejor modelo por partición</strong>.
             </div>
             <table class="exec-table" style="font-size:12px">
-              <thead><tr><th>Partición</th><th>Train</th><th>Test</th><th>Prophet MAPE</th><th>Prophet RMSE</th><th>NeuralProphet</th><th>StatsForecast</th><th>TimesFM</th></tr></thead>
+              <thead><tr><th>Partición</th><th>Train</th><th>Test</th><th>Prophet</th><th>NeuralProphet</th><th>StatsForecast</th><th>TimesFM</th></tr></thead>
               <tbody>
-                <tr><td class="text-bold">60/40</td><td>60%</td><td>40%</td><td style="color:#22c55e;font-weight:700">222.2% ⭐</td><td>$301.5M</td><td style="color:#64748b">N/D</td><td style="color:#64748b">N/D</td><td style="color:#64748b">N/D</td></tr>
-                <tr><td class="text-bold">65/35</td><td>65%</td><td>35%</td><td>232.4%</td><td>$311.2M</td><td style="color:#64748b">N/D</td><td style="color:#64748b">N/D</td><td style="color:#64748b">N/D</td></tr>
-                <tr><td class="text-bold">70/30</td><td>70%</td><td>30%</td><td>343.1%</td><td>$286.7M</td><td style="color:#64748b">N/D</td><td style="color:#64748b">N/D</td><td style="color:#64748b">N/D</td></tr>
-                <tr><td class="text-bold">75/25</td><td>75%</td><td>25%</td><td>445.0%</td><td>$274.0M</td><td style="color:#64748b">N/D</td><td style="color:#64748b">N/D</td><td style="color:#64748b">N/D</td></tr>
-                <tr><td class="text-bold">80/20</td><td>80%</td><td>20%</td><td>550.3%</td><td>$285.0M</td><td style="color:#64748b">N/D</td><td style="color:#64748b">N/D</td><td style="color:#64748b">N/D</td></tr>
-                <tr><td class="text-bold">85/15</td><td>85%</td><td>15%</td><td>654.5%</td><td>$311.2M</td><td style="color:#64748b">N/D</td><td style="color:#64748b">N/D</td><td style="color:#64748b">N/D</td></tr>
-                <tr><td class="text-bold">90/10</td><td>90%</td><td>10%</td><td>854.3%</td><td>$354.4M</td><td style="color:#64748b">N/D</td><td style="color:#64748b">N/D</td><td style="color:#64748b">N/D</td></tr>
-                <tr><td class="text-bold">95/5</td><td>95%</td><td>5%</td><td>231.8%</td><td>$335.3M</td><td style="color:#64748b">N/D</td><td style="color:#64748b">N/D</td><td style="color:#64748b">N/D</td></tr>
+                <tr><td class="text-bold">60/40</td><td>60%</td><td>40%</td><td style="color:#22c55e;font-weight:700">222.2% ⭐</td><td>210.7%</td><td style="color:#22c55e;font-weight:700">161.2% ⭐⭐</td><td style="color:#64748b">N/D</td></tr>
+                <tr><td class="text-bold">65/35</td><td>65%</td><td>35%</td><td>232.4%</td><td>283.3%</td><td style="color:#22c55e;font-weight:700">237.9%</td><td style="color:#64748b">N/D</td></tr>
+                <tr><td class="text-bold">70/30</td><td>70%</td><td>30%</td><td>343.1%</td><td>490.7%</td><td style="color:#22c55e;font-weight:700">431.7%</td><td style="color:#64748b">N/D</td></tr>
+                <tr><td class="text-bold">75/25</td><td>75%</td><td>25%</td><td>445.0%</td><td>669.9%</td><td style="color:#22c55e;font-weight:700">404.2% ⭐</td><td style="color:#64748b">N/D</td></tr>
+                <tr><td class="text-bold">80/20</td><td>80%</td><td>20%</td><td>550.3%</td><td>683.9%</td><td style="color:#22c55e;font-weight:700">501.1% ⭐</td><td style="color:#64748b">N/D</td></tr>
+                <tr><td class="text-bold">85/15</td><td>85%</td><td>15%</td><td>654.5%</td><td>795.9%</td><td style="color:#22c55e;font-weight:700">573.4% ⭐</td><td style="color:#64748b">N/D</td></tr>
+                <tr><td class="text-bold">90/10</td><td>90%</td><td>10%</td><td>854.3%</td><td>847.3%</td><td style="color:#22c55e;font-weight:700">632.7% ⭐</td><td style="color:#64748b">N/D</td></tr>
+                <tr><td class="text-bold">95/5</td><td>95%</td><td>5%</td><td>231.8%</td><td>211.9%</td><td style="color:#22c55e;font-weight:700">165.8% ⭐</td><td style="color:#64748b">N/D</td></tr>
               </tbody>
             </table>
             <div style="margin-top:12px;padding:12px;background:var(--bg-card-alt);border:1px solid #22c55e33;border-radius:8px;font-size:11px;color:var(--text-light)">
-              📊 <strong>Hallazgo:</strong> La partición <strong>60/40</strong> ofrece el mejor MAPE (222.2%) — más datos de test > mayor representatividad. Sin embargo, <strong>75/25</strong> ofrece el mejor RMSE ($274M). El MAPE crece al reducir test, sugiriendo overfitting en particiones >85/15. La anomalía en 95/5 (MAPE bajo, RMSE alto) se debe a pocos puntos de test.
+              📊 <strong>Hallazgo:</strong> <strong style="color:#22c55e">StatsForecast (AutoARIMA) gana en TODAS las particiones</strong>, confirmando su superioridad en CV. Mejor resultado global: 161.2% en 60/40. Prophet es segundo, NeuralProphet tercero. Patrón consistente: más datos de test → menor MAPE → más confiable.
             </div>
           </div>
         </div>

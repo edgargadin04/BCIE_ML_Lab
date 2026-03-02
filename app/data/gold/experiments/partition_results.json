@@ -6,14 +6,14 @@
       "countries_evaluated": 5
     },
     "NeuralProphet": {
-      "mape": null,
-      "rmse": null,
-      "countries_evaluated": 0
+      "mape": 466.75,
+      "rmse": 286186780.84,
+      "countries_evaluated": 5
     },
     "StatsForecast": {
-      "mape": null,
-      "rmse": null,
-      "countries_evaluated": 0
+      "mape": 248.76,
+      "rmse": 321240282.59,
+      "countries_evaluated": 5
     },
     "TimesFM": {
       "mape": null,
@@ -29,14 +29,14 @@
       "countries_evaluated": 5
     },
     "NeuralProphet": {
-      "mape": null,
-      "rmse": null,
-      "countries_evaluated": 0
+      "mape": 364.48,
+      "rmse": 292979926.28,
+      "countries_evaluated": 5
     },
     "StatsForecast": {
-      "mape": null,
-      "rmse": null,
-      "countries_evaluated": 0
+      "mape": 215.68,
+      "rmse": 283861942.12,
+      "countries_evaluated": 5
     },
     "TimesFM": {
       "mape": null,
@@ -52,14 +52,14 @@
       "countries_evaluated": 5
     },
     "NeuralProphet": {
-      "mape": null,
-      "rmse": null,
-      "countries_evaluated": 0
+      "mape": 490.74,
+      "rmse": 253694105.08,
+      "countries_evaluated": 5
     },
     "StatsForecast": {
-      "mape": null,
-      "rmse": null,
-      "countries_evaluated": 0
+      "mape": 431.74,
+      "rmse": 260117917.44,
+      "countries_evaluated": 5
     },
     "TimesFM": {
       "mape": null,
@@ -75,14 +75,14 @@
       "countries_evaluated": 5
     },
     "NeuralProphet": {
-      "mape": null,
-      "rmse": null,
-      "countries_evaluated": 0
+      "mape": 669.94,
+      "rmse": 236539162.69,
+      "countries_evaluated": 5
     },
     "StatsForecast": {
-      "mape": null,
-      "rmse": null,
-      "countries_evaluated": 0
+      "mape": 404.21,
+      "rmse": 253217458.3,
+      "countries_evaluated": 5
     },
     "TimesFM": {
       "mape": null,
@@ -98,14 +98,14 @@
       "countries_evaluated": 5
     },
     "NeuralProphet": {
-      "mape": null,
-      "rmse": null,
-      "countries_evaluated": 0
+      "mape": 683.85,
+      "rmse": 239522628.43,
+      "countries_evaluated": 5
     },
     "StatsForecast": {
-      "mape": null,
-      "rmse": null,
-      "countries_evaluated": 0
+      "mape": 501.06,
+      "rmse": 267462936.52,
+      "countries_evaluated": 5
     },
     "TimesFM": {
       "mape": null,
@@ -121,14 +121,14 @@
       "countries_evaluated": 5
     },
     "NeuralProphet": {
-      "mape": null,
-      "rmse": null,
-      "countries_evaluated": 0
+      "mape": 795.93,
+      "rmse": 276687941.87,
+      "countries_evaluated": 5
     },
     "StatsForecast": {
-      "mape": null,
-      "rmse": null,
-      "countries_evaluated": 0
+      "mape": 573.42,
+      "rmse": 319604696.78,
+      "countries_evaluated": 5
     },
     "TimesFM": {
       "mape": null,
@@ -144,14 +144,14 @@
       "countries_evaluated": 5
     },
     "NeuralProphet": {
-      "mape": null,
-      "rmse": null,
-      "countries_evaluated": 0
+      "mape": 847.25,
+      "rmse": 329128697.44,
+      "countries_evaluated": 5
     },
     "StatsForecast": {
-      "mape": null,
-      "rmse": null,
-      "countries_evaluated": 0
+      "mape": 632.7,
+      "rmse": 338023551.98,
+      "countries_evaluated": 5
     },
     "TimesFM": {
       "mape": null,
@@ -167,14 +167,14 @@
       "countries_evaluated": 5
     },
     "NeuralProphet": {
-      "mape": null,
-      "rmse": null,
-      "countries_evaluated": 0
+      "mape": 211.91,
+      "rmse": 332351946.59,
+      "countries_evaluated": 5
     },
     "StatsForecast": {
-      "mape": null,
-      "rmse": null,
-      "countries_evaluated": 0
+      "mape": 165.84,
+      "rmse": 331847436.09,
+      "countries_evaluated": 5
     },
     "TimesFM": {
       "mape": null,

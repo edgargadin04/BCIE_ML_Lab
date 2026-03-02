@@ -62,13 +62,17 @@ def run_neuralprophet_partition(train, test):
 
 def run_statsforecast_partition(train, test):
     from statsforecast import StatsForecast
-    from statsforecast.models import AutoARIMA, DynamicOptimizedTheta
+    from statsforecast.models import AutoARIMA
 
-    train_sf = train.rename(columns={"ds": "ds", "y": "y"}).copy()
-    train_sf["unique_id"] = "country"
+    # Create clean DataFrame with only required columns
+    train_sf = pd.DataFrame({
+        "unique_id": "country",
+        "ds": pd.to_datetime(train["ds"]),
+        "y": train["y"].astype(float),
+    })
 
     sf = StatsForecast(
-        models=[AutoARIMA(season_length=1), DynamicOptimizedTheta(season_length=1)],
+        models=[AutoARIMA(season_length=1)],
         freq="YS", n_jobs=1
     )
     sf.fit(train_sf)
