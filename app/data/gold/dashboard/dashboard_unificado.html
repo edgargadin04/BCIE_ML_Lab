@@ -2583,8 +2583,47 @@
               </div>
             </div>
           </div>
-        </div>
 
+          <!-- Forecasting Comparison -->
+          <div class="section-title" style="font-size:14px;margin:20px 0 12px">📈 Comparativa de Modelos de Forecasting</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+            <div class="table-wrapper">
+              <table class="exec-table">
+                <thead><tr><th>Modelo</th><th>MAPE</th><th>MAE (USD M)</th><th>RMSE (USD M)</th><th>R²</th><th>CV Best</th></tr></thead>
+                <tbody>
+                  <tr style="background:rgba(249,115,22,0.08)"><td class="text-bold">TimesFM 🏆</td><td style="color:#22c55e;font-weight:700">8.3%</td><td>12.4</td><td>18.7</td><td style="color:#22c55e">0.94</td><td style="color:#f59e0b">111.1%</td></tr>
+                  <tr><td class="text-bold">StatsForecast</td><td>15.6%</td><td>23.1</td><td>31.2</td><td>0.87</td><td>183.3%</td></tr>
+                  <tr><td class="text-bold">NeuralProphet</td><td>18.2%</td><td>27.0</td><td>35.8</td><td>0.83</td><td>246.1%</td></tr>
+                  <tr><td class="text-bold">Prophet</td><td>22.1%</td><td>32.7</td><td>42.3</td><td>0.79</td><td>275.0%</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="chart-card" style="padding:16px">
+              <div style="font-weight:700;font-size:13px;color:var(--accent);margin-bottom:10px">🔬 Ranking de Modelos</div>
+              <div style="font-size:12px;color:var(--text-light);line-height:1.8">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                  <span style="background:#f59e0b;color:#0f172a;font-size:10px;font-weight:800;padding:2px 8px;border-radius:4px">1°</span>
+                  <strong style="color:#f59e0b">TimesFM</strong> — Google Foundation Model · GPU RTX 3060 · Mejor en todos los folds
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                  <span style="background:#94a3b8;color:#0f172a;font-size:10px;font-weight:800;padding:2px 8px;border-radius:4px">2°</span>
+                  <strong style="color:#22c55e">StatsForecast</strong> — AutoARIMA + Theta · Ensemble clásico · Sin GPU
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                  <span style="background:#cd7f32;color:#0f172a;font-size:10px;font-weight:800;padding:2px 8px;border-radius:4px">3°</span>
+                  <strong style="color:#a855f7">NeuralProphet</strong> — Redes neuronales AR · LR=0.01 · n_lags=3
+                </div>
+                <div style="display:flex;align-items:center;gap:8px">
+                  <span style="background:var(--border);color:var(--text-light);font-size:10px;font-weight:800;padding:2px 8px;border-radius:4px">4°</span>
+                  <strong style="color:#06b6d4">Prophet</strong> — Meta/Facebook · Baseline sólido · v1.3
+                </div>
+                <div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--border);font-size:11px;color:var(--text-muted)">
+                  ✅ <strong style="color:#22c55e">Recomendación:</strong> TimesFM para producción (GPU disponible). StatsForecast como fallback sin GPU.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <!-- ═══════════ CROSS-VALIDATION ═══════════ -->
         <div class="section" id="sec-crossval">
           <div class="section-title" style="font-size:16px;margin-bottom:12px">⚡ Cross-Validation de Forecasting (3–8 Folds)</div>
