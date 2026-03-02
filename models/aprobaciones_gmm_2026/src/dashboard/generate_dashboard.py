@@ -58,18 +58,16 @@ def generate_dashboard():
     logging.info("Injecting data into template...")
     
     # Helper to safe inject JSON
-    def inject(key, py_data):
+    def inject(html_str, key, py_data):
         json_str = json.dumps(py_data)
-        # Unique placeholder replacement
-        res = html.replace(f'{{{{{key}}}}}', json_str)
-        return res
+        return html_str.replace(f'{{{{ {key} }}}}', json_str)
         
-    html = inject('DATA_CLUSTERS', data['clusters'])
-    html = inject('DATA_METRICS', data['metrics'])
-    html = inject('DATA_OPTIMIZATION', data['optimization'])
-    html = inject('DATA_COVARIANCES', data['covariances'])
-    html = inject('DATA_CENTROIDS', data['centroids'])
-    html = inject('DATA_PROFILE', data['profile'])
+    html = inject(html, 'DATA_CLUSTERS', data['clusters'])
+    html = inject(html, 'DATA_METRICS', data['metrics'])
+    html = inject(html, 'DATA_OPTIMIZATION', data['optimization'])
+    html = inject(html, 'DATA_COVARIANCES', data['covariances'])
+    html = inject(html, 'DATA_CENTROIDS', data['centroids'])
+    html = inject(html, 'DATA_PROFILE', data['profile'])
     
     # Save
     with open(output_path, 'w', encoding='utf-8') as f:
