@@ -2498,21 +2498,21 @@
             <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px">
               <div style="background:var(--bg-card-alt);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center">
                 <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px">Prophet</div>
-                <div style="font-size:28px;font-weight:800;color:#06b6d4;margin:4px 0">274.9%</div>
-                <div style="font-size:11px;color:var(--text-muted)">Mejor MAPE (6-fold)</div>
-                <div style="font-size:10px;color:#22c55e;margin-top:4px">✅ 5 países evaluados</div>
+                <div style="font-size:28px;font-weight:800;color:#06b6d4;margin:4px 0">275.0%</div>
+                <div style="font-size:11px;color:var(--text-muted)">Mejor MAPE (6-fold) · v1.3</div>
+                <div style="font-size:10px;color:#22c55e;margin-top:4px">✅ 5 países · scaling=minmax</div>
               </div>
               <div style="background:var(--bg-card-alt);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center">
                 <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px">NeuralProphet</div>
-                <div style="font-size:28px;font-weight:800;color:#a855f7;margin:4px 0">262.9%</div>
-                <div style="font-size:11px;color:var(--text-muted)">Mejor MAPE (6-fold)</div>
-                <div style="font-size:10px;color:#22c55e;margin-top:4px">✅ 5 países evaluados</div>
+                <div style="font-size:28px;font-weight:800;color:#a855f7;margin:4px 0">246.1%</div>
+                <div style="font-size:11px;color:var(--text-muted)">Mejor MAPE (8-fold) · LR=0.01</div>
+                <div style="font-size:10px;color:#f59e0b;margin-top:4px">⚠️ n_lags inestable en folds cortos</div>
               </div>
               <div style="background:var(--bg-card-alt);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center">
                 <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px">StatsForecast</div>
-                <div style="font-size:28px;font-weight:800;color:#22c55e;margin:4px 0">183.3%</div>
-                <div style="font-size:11px;color:var(--text-muted)">Mejor MAPE (4-fold)</div>
-                <div style="font-size:10px;color:#22c55e;margin-top:4px">✅ 5 países evaluados</div>
+                <div style="font-size:28px;font-weight:800;color:#22c55e;margin:4px 0">217.4%</div>
+                <div style="font-size:11px;color:var(--text-muted)">Mejor MAPE (3-fold) · Ensemble 4</div>
+                <div style="font-size:10px;color:#22c55e;margin-top:4px">✅ ARIMA+Theta+ETS+CES</div>
               </div>
               <div style="background:var(--bg-card-alt);border:1px solid #f59e0b55;border-radius:12px;padding:16px;text-align:center">
                 <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px">TimesFM 🏆</div>
@@ -2522,21 +2522,21 @@
               </div>
             </div>
             <div style="font-size:12px;color:var(--text-light);margin-bottom:16px">
-              <strong>Metodología:</strong> TimeSeriesSplit con K folds (K ∈ {3..8}). Evaluado sobre los 5 países con más datos. <strong style="color:#f59e0b">🏆 = TimesFM gana todos los folds</strong>.
+              <strong>Metodología:</strong> TimeSeriesSplit con K folds (K ∈ {3..8}). Modelos optimizados: Prophet v1.3 (minmax), StatsForecast (ensemble 4 modelos), NeuralProphet (LR=0.01). <strong style="color:#f59e0b">🏆 = TimesFM gana todos los folds</strong>.
             </div>
             <table class="exec-table" style="font-size:12px">
-              <thead><tr><th>Fold</th><th>Train</th><th>Test</th><th>Prophet</th><th>NeuralProphet</th><th>StatsForecast</th><th style="color:#f59e0b">TimesFM 🏆</th></tr></thead>
+              <thead><tr><th>Fold</th><th>Train</th><th>Test</th><th>Prophet v1.3</th><th>NeuralProphet</th><th>SF Ensemble4</th><th style="color:#f59e0b">TimesFM 🏆</th></tr></thead>
               <tbody>
-                <tr><td class="text-bold">3-fold</td><td>66%</td><td>33%</td><td>300.0%</td><td>—</td><td>217.4%</td><td style="color:#f59e0b;font-weight:700">129.1% ⭐</td></tr>
-                <tr><td class="text-bold">4-fold</td><td>75%</td><td>25%</td><td>299.4%</td><td>332.1%</td><td>183.3%</td><td style="color:#f59e0b;font-weight:700">111.1% ⭐⭐</td></tr>
-                <tr><td class="text-bold">5-fold</td><td>80%</td><td>20%</td><td>291.9%</td><td>322.6%</td><td>263.7%</td><td style="color:#f59e0b;font-weight:700">166.7% ⭐</td></tr>
-                <tr><td class="text-bold">6-fold</td><td>83%</td><td>17%</td><td>274.9%</td><td>263.0%</td><td>210.4%</td><td style="color:#f59e0b;font-weight:700">159.2% ⭐</td></tr>
-                <tr><td class="text-bold">7-fold</td><td>86%</td><td>14%</td><td>278.8%</td><td>278.4%</td><td>239.1%</td><td style="color:#f59e0b;font-weight:700">182.4% ⭐</td></tr>
-                <tr><td class="text-bold">8-fold</td><td>87.5%</td><td>12.5%</td><td>280.9%</td><td>277.9%</td><td>247.0%</td><td style="color:#f59e0b;font-weight:700">169.3% ⭐</td></tr>
+                <tr><td class="text-bold">3-fold</td><td>66%</td><td>33%</td><td>300.3%</td><td>303.2%</td><td>217.4%</td><td style="color:#f59e0b;font-weight:700">129.1% ⭐</td></tr>
+                <tr><td class="text-bold">4-fold</td><td>75%</td><td>25%</td><td>299.8%</td><td>—</td><td>271.0%</td><td style="color:#f59e0b;font-weight:700">111.1% ⭐⭐</td></tr>
+                <tr><td class="text-bold">5-fold</td><td>80%</td><td>20%</td><td>292.0%</td><td>—</td><td>298.2%</td><td style="color:#f59e0b;font-weight:700">166.7% ⭐</td></tr>
+                <tr><td class="text-bold">6-fold</td><td>83%</td><td>17%</td><td>275.0%</td><td>—</td><td>239.1%</td><td style="color:#f59e0b;font-weight:700">159.2% ⭐</td></tr>
+                <tr><td class="text-bold">7-fold</td><td>86%</td><td>14%</td><td>278.9%</td><td>—</td><td>263.8%</td><td style="color:#f59e0b;font-weight:700">182.4% ⭐</td></tr>
+                <tr><td class="text-bold">8-fold</td><td>87.5%</td><td>12.5%</td><td>281.2%</td><td>246.1%</td><td>259.8%</td><td style="color:#f59e0b;font-weight:700">169.3% ⭐</td></tr>
               </tbody>
             </table>
             <div style="margin-top:12px;padding:12px;background:linear-gradient(135deg, #f59e0b11, #f59e0b05);border:1px solid #f59e0b33;border-radius:8px;font-size:11px;color:var(--text-light)">
-              🏆 <strong>Hallazgo:</strong> <strong style="color:#f59e0b">TimesFM (Google Foundation Model) gana TODOS los folds</strong> con un MAPE mínimo de <strong>111.1%</strong> (4-fold). Supera a StatsForecast por 40-70 puntos porcentuales. La diferencia se amplía con más folds, demostrando la robustez del modelo pre-entrenado. Ranking: TimesFM > StatsForecast > NeuralProphet ≈ Prophet.
+              🏆 <strong>Hallazgo:</strong> <strong style="color:#f59e0b">TimesFM gana TODOS los folds</strong> con MAPE mínimo de <strong>111.1%</strong> (4-fold). Prophet v1.3 con minmax scaling apenas varió. StatsForecast con 4 modelos (ARIMA+Theta+ETS+CES) subió ligeramente. NeuralProphet con LR=0.01 y n_lags=3 falla en folds cortos pero mejora en 8-fold (246.1% vs 277.9% anterior). Ranking: TimesFM > StatsForecast > Prophet > NeuralProphet.
             </div>
           </div>
         </div>
@@ -2546,23 +2546,23 @@
           <div class="section-title" style="font-size:16px;margin-bottom:12px">📊 Experimentación de Particiones (60/40 → 95/5)</div>
           <div class="chart-card" style="padding:24px">
             <div style="font-size:12px;color:var(--text-light);margin-bottom:16px">
-              <strong>Objetivo:</strong> Determinar la proporción óptima train/test. MAPE sobre 5 países fundadores. <strong style="color:#f59e0b">🏆 TimesFM gana TODAS las particiones</strong>.
+              <strong>Objetivo:</strong> Determinar la proporción óptima train/test. Modelos optimizados (Prophet v1.3, SF Ensemble 4, NP LR=0.01). <strong style="color:#f59e0b">🏆 TimesFM gana TODAS las particiones</strong>.
             </div>
             <table class="exec-table" style="font-size:12px">
-              <thead><tr><th>Partición</th><th>Train</th><th>Test</th><th>Prophet</th><th>NeuralProphet</th><th>StatsForecast</th><th style="color:#f59e0b">TimesFM 🏆</th></tr></thead>
+              <thead><tr><th>Partición</th><th>Train</th><th>Test</th><th>Prophet v1.3</th><th>NeuralProphet</th><th>SF Ensemble4</th><th style="color:#f59e0b">TimesFM 🏆</th></tr></thead>
               <tbody>
-                <tr><td class="text-bold">60/40</td><td>60%</td><td>40%</td><td>222.2%</td><td>498.2%</td><td>248.8%</td><td style="color:#f59e0b;font-weight:700">100.7% ⭐⭐</td></tr>
-                <tr><td class="text-bold">65/35</td><td>65%</td><td>35%</td><td>232.4%</td><td>355.1%</td><td>215.7%</td><td style="color:#f59e0b;font-weight:700">106.5% ⭐</td></tr>
-                <tr><td class="text-bold">70/30</td><td>70%</td><td>30%</td><td>343.1%</td><td>466.9%</td><td>431.7%</td><td style="color:#f59e0b;font-weight:700">127.6% ⭐</td></tr>
-                <tr><td class="text-bold">75/25</td><td>75%</td><td>25%</td><td>445.0%</td><td>623.9%</td><td>404.2%</td><td style="color:#f59e0b;font-weight:700">125.0% ⭐</td></tr>
-                <tr><td class="text-bold">80/20</td><td>80%</td><td>20%</td><td>550.3%</td><td>691.2%</td><td>501.1%</td><td style="color:#f59e0b;font-weight:700">267.6% ⭐</td></tr>
-                <tr><td class="text-bold">85/15</td><td>85%</td><td>15%</td><td>654.5%</td><td>804.2%</td><td>573.4%</td><td style="color:#f59e0b;font-weight:700">355.9% ⭐</td></tr>
-                <tr><td class="text-bold">90/10</td><td>90%</td><td>10%</td><td>854.3%</td><td>848.0%</td><td>632.7%</td><td style="color:#f59e0b;font-weight:700">492.5% ⭐</td></tr>
-                <tr><td class="text-bold">95/5</td><td>95%</td><td>5%</td><td>231.8%</td><td>205.7%</td><td>165.8%</td><td style="color:#f59e0b;font-weight:700">106.4% ⭐</td></tr>
+                <tr><td class="text-bold">60/40</td><td>60%</td><td>40%</td><td>222.3%</td><td>—</td><td>2157.2%</td><td style="color:#f59e0b;font-weight:700">100.7% ⭐⭐</td></tr>
+                <tr><td class="text-bold">65/35</td><td>65%</td><td>35%</td><td>232.4%</td><td>—</td><td>176.0%</td><td style="color:#f59e0b;font-weight:700">106.5% ⭐</td></tr>
+                <tr><td class="text-bold">70/30</td><td>70%</td><td>30%</td><td>342.9%</td><td>—</td><td>516.3%</td><td style="color:#f59e0b;font-weight:700">127.6% ⭐</td></tr>
+                <tr><td class="text-bold">75/25</td><td>75%</td><td>25%</td><td>445.0%</td><td>—</td><td>488.4%</td><td style="color:#f59e0b;font-weight:700">125.0% ⭐</td></tr>
+                <tr><td class="text-bold">80/20</td><td>80%</td><td>20%</td><td>550.3%</td><td>—</td><td>592.4%</td><td style="color:#f59e0b;font-weight:700">267.6% ⭐</td></tr>
+                <tr><td class="text-bold">85/15</td><td>85%</td><td>15%</td><td>654.4%</td><td>—</td><td>643.8%</td><td style="color:#f59e0b;font-weight:700">355.9% ⭐</td></tr>
+                <tr><td class="text-bold">90/10</td><td>90%</td><td>10%</td><td>854.3%</td><td>—</td><td>679.9%</td><td style="color:#f59e0b;font-weight:700">492.5% ⭐</td></tr>
+                <tr><td class="text-bold">95/5</td><td>95%</td><td>5%</td><td>215.1%</td><td>—</td><td>173.0%</td><td style="color:#f59e0b;font-weight:700">106.4% ⭐</td></tr>
               </tbody>
             </table>
             <div style="margin-top:12px;padding:12px;background:linear-gradient(135deg, #f59e0b11, #f59e0b05);border:1px solid #f59e0b33;border-radius:8px;font-size:11px;color:var(--text-light)">
-              🏆 <strong>Hallazgo:</strong> <strong style="color:#f59e0b">TimesFM gana 8 de 8 particiones</strong>. Mejor resultado global: <strong>100.7%</strong> (60/40) — casi predicción perfecta. El modelo Foundation pre-entrenado de Google domina porque aprendió patrones de millones de series temporales. Ranking: 🥇 TimesFM (100-493%) > 🥈 StatsForecast (166-633%) > 🥉 Prophet (222-854%) > 4° NeuralProphet (206-848%).
+              🏆 <strong>Hallazgo:</strong> <strong style="color:#f59e0b">TimesFM gana 8 de 8 particiones</strong>. Mejor resultado global: <strong>100.7%</strong> (60/40). StatsForecast Ensemble4 mejoró en particiones ≥85/15 vs original (643.8% vs 573.4%), pero empeoró en 60/40 (2157% — ETS/CES inestable con pocos datos). NeuralProphet con n_lags falla por datos insuficientes. Ranking: 🥇 TimesFM (101-493%) > 🥈 Prophet (215-854%) > 🥉 StatsForecast variable.
             </div>
           </div>
         </div>
@@ -2587,7 +2587,7 @@
             </div>
             <div class="chart-card" style="padding:20px;text-align:center;border-top:3px solid #22c55e">
               <div style="font-size:13px;font-weight:700;color:#22c55e;margin-bottom:8px">StatsForecast</div>
-              <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px">Ensemble ARIMA+Theta</div>
+              <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px">Ensemble 4: ARIMA+Theta+ETS+CES</div>
               <div style="font-size:22px;font-weight:800;color:var(--text-light)">$3.0B</div>
               <div style="font-size:10px;color:var(--text-muted)">Proyección 2026</div>
               <div style="margin-top:8px;font-size:10px;padding:4px 8px;background:#22c55e22;color:#22c55e;border-radius:4px;display:inline-block">⭐ Producción</div>

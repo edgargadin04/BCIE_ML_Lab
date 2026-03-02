@@ -67,7 +67,12 @@ def run_prophet_cv(df_ts, country_data, n_splits):
         if len(test) == 0:
             continue
 
-        model = Prophet(yearly_seasonality=False, seasonality_mode="multiplicative")
+        model = Prophet(
+            yearly_seasonality=False,
+            seasonality_mode="multiplicative",
+            scaling="minmax",
+            changepoint_prior_scale=0.05,
+        )
         model.fit(train[["ds", "y"]])
 
         future = pd.DataFrame({"ds": test["ds"]})
@@ -104,8 +109,19 @@ def run_neuralprophet_cv(df_ts, country_data, n_splits):
         if len(test) == 0:
             continue
 
-        model = NeuralProphet(epochs=50, learning_rate=0.1, yearly_seasonality=False)
-        model.fit(train[["ds", "y"]], freq="YS")
+        try:
+            model = NeuralProphet(
+                epochs=60, learning_rate=0.01, n_lags=min(3, len(train) - 1),
+                yearly_seasonality=False, batch_size=32,
+            )
+            model.fit(train[["ds", "y"]], freq="YS")
+        except Exception:
+            # Fallback without n_lags if data too small
+            model = NeuralProphet(
+                epochs=60, learning_rate=0.01,
+                yearly_seasonality=False, batch_size=32,
+            )
+            model.fit(train[["ds", "y"]], freq="YS")
 
         future = model.make_future_dataframe(train[["ds", "y"]], periods=len(test))
         pred = model.predict(future)
@@ -121,9 +137,9 @@ def run_neuralprophet_cv(df_ts, country_data, n_splits):
 
 
 def run_statsforecast_cv(df_ts, country_data, n_splits):
-    """Cross-validate StatsForecast for one country."""
+    """Cross-validate StatsForecast (expanded ensemble) for one country."""
     from statsforecast import StatsForecast
-    from statsforecast.models import AutoARIMA
+    from statsforecast.models import AutoARIMA, DynamicOptimizedTheta, AutoETS, AutoCES
 
     n = len(country_data)
     min_train = max(3, n // 3)
@@ -142,7 +158,6 @@ def run_statsforecast_cv(df_ts, country_data, n_splits):
         if len(test) == 0:
             continue
 
-        # StatsForecast requires columns: unique_id, ds, y (in that order)
         train_sf = pd.DataFrame({
             "unique_id": "country",
             "ds": pd.to_datetime(train["ds"]),
@@ -150,13 +165,19 @@ def run_statsforecast_cv(df_ts, country_data, n_splits):
         })
 
         try:
-            sf = StatsForecast(
-                models=[AutoARIMA(season_length=1)],
-                freq="YS", n_jobs=1
-            )
+            models = [
+                AutoARIMA(season_length=1),
+                DynamicOptimizedTheta(season_length=1),
+                AutoETS(season_length=1),
+                AutoCES(season_length=1),
+            ]
+            sf = StatsForecast(models=models, freq="YS", n_jobs=1)
             sf.fit(train_sf)
             pred = sf.predict(h=len(test))
-            y_pred = pred["AutoARIMA"].values
+            # Ensemble: average all point forecast columns
+            pt_cols = [c for c in pred.columns
+                       if c not in ["unique_id", "ds"] and "lo" not in c and "hi" not in c]
+            y_pred = pred[pt_cols].mean(axis=1).values
 
             m = mape(test["y"].values.astype(float), y_pred)
             r = rmse(test["y"].values.astype(float), y_pred)
@@ -280,7 +301,10 @@ def run_cv_experiment(config):
                 "rmse": round(avg_rmse, 2) if avg_rmse else None,
                 "countries_evaluated": len(country_mapes),
             }
-            logger.info(f"    MAPE={avg_mape:.2f}%, RMSE={avg_rmse:.2f}" if avg_mape else f"    N/A")
+            if avg_mape is not None:
+                logger.info(f"    MAPE={avg_mape:.2f}%, RMSE={avg_rmse:.2f}" if avg_rmse else f"    MAPE={avg_mape:.2f}%")
+            else:
+                logger.info(f"    N/A")
 
         results[f"{n_folds}_folds"] = fold_results
 

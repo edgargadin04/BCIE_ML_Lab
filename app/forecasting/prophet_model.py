@@ -1,4 +1,4 @@
-"""Modelo Prophet (Facebook/Meta)."""
+"""Modelo Prophet (Meta) — v1.3.0 optimizado."""
 
 import pandas as pd
 from forecasting.base import ForecastingModel
@@ -18,10 +18,14 @@ class ProphetModel(ForecastingModel):
         logging.getLogger("cmdstanpy").setLevel(logging.WARNING)
 
         mode = self.model_config.get("seasonality_mode", "multiplicative")
+        scaling = self.model_config.get("scaling", "absmax")
+        cps = self.model_config.get("changepoint_prior_scale", 0.05)
 
         model = Prophet(
             seasonality_mode=mode,
             yearly_seasonality=self.model_config.get("yearly_seasonality", False),
+            scaling=scaling,
+            changepoint_prior_scale=cps,
         )
 
         model.fit(df_country[["ds", "y"]])

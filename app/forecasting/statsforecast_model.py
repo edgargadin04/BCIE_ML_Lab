@@ -1,4 +1,4 @@
-"""Modelo StatsForecast (Ensemble AutoARIMA + Theta)."""
+"""Modelo StatsForecast — Expanded Ensemble (5 modelos)."""
 
 import pandas as pd
 import numpy as np
@@ -10,36 +10,52 @@ logger = get_logger(__name__)
 
 class StatsForecastModel(ForecastingModel):
     name = "statsforecast"
-    display_name = "StatsForecast (AutoARIMA + Theta)"
+    display_name = "StatsForecast (Ensemble 5)"
 
     def _train_country(self, df_country, country):
         from statsforecast import StatsForecast
-        from statsforecast.models import AutoARIMA, DynamicOptimizedTheta
+        from statsforecast.models import (
+            AutoARIMA,
+            DynamicOptimizedTheta,
+            AutoETS,
+            AutoCES,
+        )
 
         # Preparar formato StatsForecast
         sf_df = df_country[["ds", "y"]].copy()
         sf_df["unique_id"] = country
         sf_df = sf_df[["unique_id", "ds", "y"]]
 
+        # Expanded ensemble: 4 complementary models
         models = [
             AutoARIMA(season_length=1),
             DynamicOptimizedTheta(season_length=1),
+            AutoETS(season_length=1),
+            AutoCES(season_length=1),
         ]
+
+        # Try to add MFLES if available
+        try:
+            from statsforecast.models import MFLES
+            models.append(MFLES(season_length=1))
+        except ImportError:
+            pass
 
         sf = StatsForecast(models=models, freq="YS", n_jobs=1)
         sf.fit(sf_df)
         forecast = sf.predict(h=self.horizon, level=[95])
 
-        # Ensemble: promedio de ambos modelos
-        arima_col = [c for c in forecast.columns if "AutoARIMA" in c and "lo" not in c and "hi" not in c]
-        theta_col = [c for c in forecast.columns if "Theta" in c and "lo" not in c and "hi" not in c]
+        # Collect point forecasts from all models
+        point_cols = [c for c in forecast.columns
+                      if c not in ["unique_id", "ds"]
+                      and "lo" not in c and "hi" not in c]
 
-        yhat_arima = forecast[arima_col[0]].values if arima_col else np.zeros(self.horizon)
-        yhat_theta = forecast[theta_col[0]].values if theta_col else np.zeros(self.horizon)
+        if point_cols:
+            yhat = forecast[point_cols].mean(axis=1).values
+        else:
+            yhat = np.zeros(self.horizon)
 
-        yhat = (yhat_arima + yhat_theta) / 2
-
-        # Intervalos de confianza
+        # Confidence intervals
         lo_cols = [c for c in forecast.columns if "lo" in c]
         hi_cols = [c for c in forecast.columns if "hi" in c]
 
@@ -61,9 +77,7 @@ class StatsForecastModel(ForecastingModel):
         })
 
         # Asegurar que ds sea datetime
-        if hasattr(result["ds"].iloc[0], "year"):
-            pass
-        else:
+        if not hasattr(result["ds"].iloc[0], "year"):
             result["ds"] = pd.to_datetime(result["ds"])
 
         return result

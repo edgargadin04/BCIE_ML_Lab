@@ -1,4 +1,4 @@
-"""Modelo NeuralProphet."""
+"""Modelo NeuralProphet — optimizado con autoregresión y LR bajo."""
 
 import pandas as pd
 import numpy as np
@@ -16,14 +16,18 @@ class NeuralProphetModel(ForecastingModel):
         from neuralprophet import NeuralProphet, set_log_level
         set_log_level("ERROR")
 
-        epochs = self.model_config.get("epochs", 100)
-        lr = self.model_config.get("learning_rate", 0.1)
+        epochs = self.model_config.get("epochs", 60)
+        lr = self.model_config.get("learning_rate", 0.01)
         quantiles = self.model_config.get("quantiles", [0.05, 0.95])
+        n_lags = self.model_config.get("n_lags", 3)
+        batch_size = self.model_config.get("batch_size", 32)
 
         model = NeuralProphet(
             n_forecasts=self.horizon,
+            n_lags=n_lags,
             epochs=epochs,
             learning_rate=lr,
+            batch_size=batch_size,
             quantiles=quantiles,
         )
 

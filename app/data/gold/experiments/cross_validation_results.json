@@ -1,18 +1,18 @@
 {
   "3_folds": {
     "Prophet": {
-      "mape": 299.95,
-      "rmse": 173556845.42,
+      "mape": 300.31,
+      "rmse": 173535415.29,
       "countries_evaluated": 5
     },
     "NeuralProphet": {
-      "mape": 339.17,
-      "rmse": 145190333.36,
-      "countries_evaluated": 5
+      "mape": null,
+      "rmse": null,
+      "countries_evaluated": 0
     },
     "StatsForecast": {
-      "mape": 217.36,
-      "rmse": 169521493.62,
+      "mape": 303.22,
+      "rmse": 185675796.23,
       "countries_evaluated": 5
     },
     "TimesFM": {
@@ -23,18 +23,18 @@
   },
   "4_folds": {
     "Prophet": {
-      "mape": 299.42,
-      "rmse": 160967354.9,
+      "mape": 299.75,
+      "rmse": 160958847.99,
       "countries_evaluated": 5
     },
     "NeuralProphet": {
-      "mape": 332.06,
-      "rmse": 146849045.44,
-      "countries_evaluated": 5
+      "mape": null,
+      "rmse": null,
+      "countries_evaluated": 0
     },
     "StatsForecast": {
-      "mape": 183.25,
-      "rmse": 155862712.39,
+      "mape": 270.95,
+      "rmse": 154034028.93,
       "countries_evaluated": 5
     },
     "TimesFM": {
@@ -45,18 +45,18 @@
   },
   "5_folds": {
     "Prophet": {
-      "mape": 291.87,
-      "rmse": 150608663.21,
+      "mape": 291.96,
+      "rmse": 150574030.11,
       "countries_evaluated": 5
     },
     "NeuralProphet": {
-      "mape": 322.56,
-      "rmse": 140748249.81,
-      "countries_evaluated": 5
+      "mape": null,
+      "rmse": null,
+      "countries_evaluated": 0
     },
     "StatsForecast": {
-      "mape": 263.69,
-      "rmse": 160181996.78,
+      "mape": 298.19,
+      "rmse": 154813104.21,
       "countries_evaluated": 5
     },
     "TimesFM": {
@@ -67,18 +67,18 @@
   },
   "6_folds": {
     "Prophet": {
-      "mape": 274.89,
-      "rmse": 149126839.0,
+      "mape": 275.02,
+      "rmse": 149138857.97,
       "countries_evaluated": 5
     },
     "NeuralProphet": {
-      "mape": 262.96,
-      "rmse": 142546806.2,
-      "countries_evaluated": 5
+      "mape": null,
+      "rmse": null,
+      "countries_evaluated": 0
     },
     "StatsForecast": {
-      "mape": 210.41,
-      "rmse": 150263111.8,
+      "mape": 239.14,
+      "rmse": 149869247.21,
       "countries_evaluated": 5
     },
     "TimesFM": {
@@ -89,18 +89,18 @@
   },
   "7_folds": {
     "Prophet": {
-      "mape": 278.8,
-      "rmse": 142539307.3,
+      "mape": 278.89,
+      "rmse": 142541308.02,
       "countries_evaluated": 5
     },
     "NeuralProphet": {
-      "mape": 278.39,
-      "rmse": 138084367.53,
-      "countries_evaluated": 5
+      "mape": null,
+      "rmse": null,
+      "countries_evaluated": 0
     },
     "StatsForecast": {
-      "mape": 239.12,
-      "rmse": 158404023.19,
+      "mape": 263.78,
+      "rmse": 154137497.51,
       "countries_evaluated": 5
     },
     "TimesFM": {
@@ -111,18 +111,18 @@
   },
   "8_folds": {
     "Prophet": {
-      "mape": 280.91,
-      "rmse": 129016932.27,
+      "mape": 281.22,
+      "rmse": 128974697.32,
       "countries_evaluated": 5
     },
     "NeuralProphet": {
-      "mape": 277.89,
-      "rmse": 132600886.99,
-      "countries_evaluated": 5
+      "mape": 246.11,
+      "rmse": null,
+      "countries_evaluated": 1
     },
     "StatsForecast": {
-      "mape": 246.97,
-      "rmse": 151722150.65,
+      "mape": 259.81,
+      "rmse": 145074045.88,
       "countries_evaluated": 5
     },
     "TimesFM": {

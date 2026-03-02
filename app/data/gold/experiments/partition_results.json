@@ -1,18 +1,18 @@
 {
   "60/40": {
     "Prophet": {
-      "mape": 222.24,
-      "rmse": 301509835.77,
+      "mape": 222.25,
+      "rmse": 301480645.36,
       "countries_evaluated": 5
     },
     "NeuralProphet": {
-      "mape": 498.16,
-      "rmse": 292080324.74,
-      "countries_evaluated": 5
+      "mape": null,
+      "rmse": null,
+      "countries_evaluated": 0
     },
     "StatsForecast": {
-      "mape": 248.76,
-      "rmse": 321240282.59,
+      "mape": 2157.19,
+      "rmse": 653392543.4,
       "countries_evaluated": 5
     },
     "TimesFM": {
@@ -24,17 +24,17 @@
   "65/35": {
     "Prophet": {
       "mape": 232.42,
-      "rmse": 311176300.96,
+      "rmse": 311168194.3,
       "countries_evaluated": 5
     },
     "NeuralProphet": {
-      "mape": 355.09,
-      "rmse": 293819256.73,
-      "countries_evaluated": 5
+      "mape": null,
+      "rmse": null,
+      "countries_evaluated": 0
     },
     "StatsForecast": {
-      "mape": 215.68,
-      "rmse": 283861942.12,
+      "mape": 176.04,
+      "rmse": 270570372.31,
       "countries_evaluated": 5
     },
     "TimesFM": {
@@ -45,18 +45,18 @@
   },
   "70/30": {
     "Prophet": {
-      "mape": 343.13,
-      "rmse": 286724636.25,
+      "mape": 342.86,
+      "rmse": 286835385.99,
       "countries_evaluated": 5
     },
     "NeuralProphet": {
-      "mape": 466.91,
-      "rmse": 245406394.72,
-      "countries_evaluated": 5
+      "mape": null,
+      "rmse": null,
+      "countries_evaluated": 0
     },
     "StatsForecast": {
-      "mape": 431.74,
-      "rmse": 260117917.44,
+      "mape": 516.29,
+      "rmse": 443191701.33,
       "countries_evaluated": 5
     },
     "TimesFM": {
@@ -67,18 +67,18 @@
   },
   "75/25": {
     "Prophet": {
-      "mape": 444.99,
-      "rmse": 274008673.92,
+      "mape": 444.98,
+      "rmse": 273943925.09,
       "countries_evaluated": 5
     },
     "NeuralProphet": {
-      "mape": 623.9,
-      "rmse": 234141218.46,
-      "countries_evaluated": 5
+      "mape": null,
+      "rmse": null,
+      "countries_evaluated": 0
     },
     "StatsForecast": {
-      "mape": 404.21,
-      "rmse": 253217458.3,
+      "mape": 488.41,
+      "rmse": 247403311.37,
       "countries_evaluated": 5
     },
     "TimesFM": {
@@ -89,18 +89,18 @@
   },
   "80/20": {
     "Prophet": {
-      "mape": 550.27,
-      "rmse": 285017790.7,
+      "mape": 550.28,
+      "rmse": 285011662.47,
       "countries_evaluated": 5
     },
     "NeuralProphet": {
-      "mape": 691.23,
-      "rmse": 239726318.02,
-      "countries_evaluated": 5
+      "mape": null,
+      "rmse": null,
+      "countries_evaluated": 0
     },
     "StatsForecast": {
-      "mape": 501.06,
-      "rmse": 267462936.52,
+      "mape": 592.37,
+      "rmse": 278640835.25,
       "countries_evaluated": 5
     },
     "TimesFM": {
@@ -111,18 +111,18 @@
   },
   "85/15": {
     "Prophet": {
-      "mape": 654.47,
-      "rmse": 311232279.74,
+      "mape": 654.43,
+      "rmse": 311190615.76,
       "countries_evaluated": 5
     },
     "NeuralProphet": {
-      "mape": 804.2,
-      "rmse": 275672014.77,
-      "countries_evaluated": 5
+      "mape": null,
+      "rmse": null,
+      "countries_evaluated": 0
     },
     "StatsForecast": {
-      "mape": 573.42,
-      "rmse": 319604696.78,
+      "mape": 643.76,
+      "rmse": 317605413.91,
       "countries_evaluated": 5
     },
     "TimesFM": {
@@ -133,18 +133,18 @@
   },
   "90/10": {
     "Prophet": {
-      "mape": 854.32,
-      "rmse": 354379364.45,
+      "mape": 854.29,
+      "rmse": 354237484.47,
       "countries_evaluated": 5
     },
     "NeuralProphet": {
-      "mape": 848.03,
-      "rmse": 326976156.99,
-      "countries_evaluated": 5
+      "mape": null,
+      "rmse": null,
+      "countries_evaluated": 0
     },
     "StatsForecast": {
-      "mape": 632.7,
-      "rmse": 338023551.98,
+      "mape": 679.9,
+      "rmse": 338429707.18,
       "countries_evaluated": 5
     },
     "TimesFM": {
@@ -155,18 +155,18 @@
   },
   "95/5": {
     "Prophet": {
-      "mape": 231.77,
-      "rmse": 335342512.09,
+      "mape": 215.1,
+      "rmse": 306496425.5,
       "countries_evaluated": 5
     },
     "NeuralProphet": {
-      "mape": 205.69,
-      "rmse": 328632728.9,
-      "countries_evaluated": 5
+      "mape": null,
+      "rmse": null,
+      "countries_evaluated": 0
     },
     "StatsForecast": {
-      "mape": 165.84,
-      "rmse": 331847436.09,
+      "mape": 173.02,
+      "rmse": 313244903.79,
       "countries_evaluated": 5
     },
     "TimesFM": {
