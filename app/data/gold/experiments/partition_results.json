@@ -11,8 +11,8 @@
       "countries_evaluated": 0
     },
     "StatsForecast": {
-      "mape": 2157.19,
-      "rmse": 653392543.4,
+      "mape": 248.76,
+      "rmse": 321240282.59,
       "countries_evaluated": 5
     },
     "TimesFM": {
@@ -33,8 +33,8 @@
       "countries_evaluated": 0
     },
     "StatsForecast": {
-      "mape": 176.04,
-      "rmse": 270570372.31,
+      "mape": 215.68,
+      "rmse": 283861942.12,
       "countries_evaluated": 5
     },
     "TimesFM": {
@@ -55,8 +55,8 @@
       "countries_evaluated": 0
     },
     "StatsForecast": {
-      "mape": 516.29,
-      "rmse": 443191701.33,
+      "mape": 431.74,
+      "rmse": 260117917.44,
       "countries_evaluated": 5
     },
     "TimesFM": {
@@ -77,8 +77,8 @@
       "countries_evaluated": 0
     },
     "StatsForecast": {
-      "mape": 488.41,
-      "rmse": 247403311.37,
+      "mape": 404.21,
+      "rmse": 253217458.3,
       "countries_evaluated": 5
     },
     "TimesFM": {
@@ -99,8 +99,8 @@
       "countries_evaluated": 0
     },
     "StatsForecast": {
-      "mape": 592.37,
-      "rmse": 278640835.25,
+      "mape": 501.06,
+      "rmse": 267462936.52,
       "countries_evaluated": 5
     },
     "TimesFM": {
@@ -121,8 +121,8 @@
       "countries_evaluated": 0
     },
     "StatsForecast": {
-      "mape": 643.76,
-      "rmse": 317605413.91,
+      "mape": 573.42,
+      "rmse": 319604696.78,
       "countries_evaluated": 5
     },
     "TimesFM": {
@@ -143,8 +143,8 @@
       "countries_evaluated": 0
     },
     "StatsForecast": {
-      "mape": 679.9,
-      "rmse": 338429707.18,
+      "mape": 632.7,
+      "rmse": 338023551.98,
       "countries_evaluated": 5
     },
     "TimesFM": {
@@ -165,8 +165,8 @@
       "countries_evaluated": 0
     },
     "StatsForecast": {
-      "mape": 173.02,
-      "rmse": 313244903.79,
+      "mape": 165.84,
+      "rmse": 331847436.09,
       "countries_evaluated": 5
     },
     "TimesFM": {

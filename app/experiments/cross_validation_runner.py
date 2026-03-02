@@ -137,9 +137,9 @@ def run_neuralprophet_cv(df_ts, country_data, n_splits):
 
 
 def run_statsforecast_cv(df_ts, country_data, n_splits):
-    """Cross-validate StatsForecast (expanded ensemble) for one country."""
+    """Cross-validate StatsForecast for one country."""
     from statsforecast import StatsForecast
-    from statsforecast.models import AutoARIMA, DynamicOptimizedTheta, AutoETS, AutoCES
+    from statsforecast.models import AutoARIMA
 
     n = len(country_data)
     min_train = max(3, n // 3)
@@ -165,19 +165,13 @@ def run_statsforecast_cv(df_ts, country_data, n_splits):
         })
 
         try:
-            models = [
-                AutoARIMA(season_length=1),
-                DynamicOptimizedTheta(season_length=1),
-                AutoETS(season_length=1),
-                AutoCES(season_length=1),
-            ]
-            sf = StatsForecast(models=models, freq="YS", n_jobs=1)
+            sf = StatsForecast(
+                models=[AutoARIMA(season_length=1)],
+                freq="YS", n_jobs=1
+            )
             sf.fit(train_sf)
             pred = sf.predict(h=len(test))
-            # Ensemble: average all point forecast columns
-            pt_cols = [c for c in pred.columns
-                       if c not in ["unique_id", "ds"] and "lo" not in c and "hi" not in c]
-            y_pred = pred[pt_cols].mean(axis=1).values
+            y_pred = pred["AutoARIMA"].values
 
             m = mape(test["y"].values.astype(float), y_pred)
             r = rmse(test["y"].values.astype(float), y_pred)

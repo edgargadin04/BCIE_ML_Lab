@@ -98,7 +98,7 @@ forecasting:
       quantiles: [0.05, 0.95]
     statsforecast:
       enabled: true
-      # Expanded ensemble: AutoARIMA + Theta + MFLES + ETS + CES
+      # Ensemble: AutoARIMA + DynamicOptimizedTheta
     timesfm:
       enabled: true # Google Foundation Model
       repo_id: "google/timesfm-2.5-200m-pytorch"

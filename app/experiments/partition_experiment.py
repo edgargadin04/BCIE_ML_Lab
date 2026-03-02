@@ -78,7 +78,7 @@ def run_neuralprophet_partition(train, test):
 
 def run_statsforecast_partition(train, test):
     from statsforecast import StatsForecast
-    from statsforecast.models import AutoARIMA, DynamicOptimizedTheta, AutoETS, AutoCES
+    from statsforecast.models import AutoARIMA
 
     train_sf = pd.DataFrame({
         "unique_id": "country",
@@ -86,18 +86,13 @@ def run_statsforecast_partition(train, test):
         "y": train["y"].astype(float),
     })
 
-    models = [
-        AutoARIMA(season_length=1),
-        DynamicOptimizedTheta(season_length=1),
-        AutoETS(season_length=1),
-        AutoCES(season_length=1),
-    ]
-    sf = StatsForecast(models=models, freq="YS", n_jobs=1)
+    sf = StatsForecast(
+        models=[AutoARIMA(season_length=1)],
+        freq="YS", n_jobs=1
+    )
     sf.fit(train_sf)
     pred = sf.predict(h=len(test))
-    pt_cols = [c for c in pred.columns
-               if c not in ["unique_id", "ds"] and "lo" not in c and "hi" not in c]
-    return pred[pt_cols].mean(axis=1).values
+    return pred["AutoARIMA"].values
 
 
 # ── TimesFM model (loaded once, shared across partitions) ──
