@@ -111,7 +111,7 @@ def clean_data(df: pd.DataFrame, config: Dict[str, Any]) -> pd.DataFrame:
     # 5. String Standardization
     group_col = config['data']['group_col']
     if group_col in df.columns:
-        df[group_col] = df[group_col].astype(str).str.title().str.strip()
+        df[group_col] = df[group_col].astype(str).str.upper().str.strip()
 
     # 6. Sector Cleaning
     if 'Sector_Economico' in df.columns:
@@ -159,7 +159,7 @@ def feature_engineering(df: pd.DataFrame, config: Dict[str, Any]) -> pd.DataFram
 
     # 3. Categorize Country Type
     def categorize_pais(pais: str) -> str:
-        founders = ['Guatemala', 'Honduras', 'El Salvador', 'Nicaragua', 'Costa Rica']
+        founders = ['GUATEMALA', 'HONDURAS', 'EL SALVADOR', 'NICARAGUA', 'COSTA RICA']
         if pais in founders: return 'Regional'
         if pais == 'REGIONAL': return 'Multi-country'
         return 'Extra-regional'

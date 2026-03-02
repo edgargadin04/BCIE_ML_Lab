@@ -1,0 +1,186 @@
+{
+  "60/40": {
+    "Prophet": {
+      "mape": 222.24,
+      "rmse": 301509835.77,
+      "countries_evaluated": 5
+    },
+    "NeuralProphet": {
+      "mape": null,
+      "rmse": null,
+      "countries_evaluated": 0
+    },
+    "StatsForecast": {
+      "mape": null,
+      "rmse": null,
+      "countries_evaluated": 0
+    },
+    "TimesFM": {
+      "mape": null,
+      "rmse": null,
+      "countries_evaluated": 0,
+      "note": "Requires GPU"
+    }
+  },
+  "65/35": {
+    "Prophet": {
+      "mape": 232.42,
+      "rmse": 311176300.96,
+      "countries_evaluated": 5
+    },
+    "NeuralProphet": {
+      "mape": null,
+      "rmse": null,
+      "countries_evaluated": 0
+    },
+    "StatsForecast": {
+      "mape": null,
+      "rmse": null,
+      "countries_evaluated": 0
+    },
+    "TimesFM": {
+      "mape": null,
+      "rmse": null,
+      "countries_evaluated": 0,
+      "note": "Requires GPU"
+    }
+  },
+  "70/30": {
+    "Prophet": {
+      "mape": 343.13,
+      "rmse": 286724636.25,
+      "countries_evaluated": 5
+    },
+    "NeuralProphet": {
+      "mape": null,
+      "rmse": null,
+      "countries_evaluated": 0
+    },
+    "StatsForecast": {
+      "mape": null,
+      "rmse": null,
+      "countries_evaluated": 0
+    },
+    "TimesFM": {
+      "mape": null,
+      "rmse": null,
+      "countries_evaluated": 0,
+      "note": "Requires GPU"
+    }
+  },
+  "75/25": {
+    "Prophet": {
+      "mape": 444.99,
+      "rmse": 274008673.92,
+      "countries_evaluated": 5
+    },
+    "NeuralProphet": {
+      "mape": null,
+      "rmse": null,
+      "countries_evaluated": 0
+    },
+    "StatsForecast": {
+      "mape": null,
+      "rmse": null,
+      "countries_evaluated": 0
+    },
+    "TimesFM": {
+      "mape": null,
+      "rmse": null,
+      "countries_evaluated": 0,
+      "note": "Requires GPU"
+    }
+  },
+  "80/20": {
+    "Prophet": {
+      "mape": 550.27,
+      "rmse": 285017790.7,
+      "countries_evaluated": 5
+    },
+    "NeuralProphet": {
+      "mape": null,
+      "rmse": null,
+      "countries_evaluated": 0
+    },
+    "StatsForecast": {
+      "mape": null,
+      "rmse": null,
+      "countries_evaluated": 0
+    },
+    "TimesFM": {
+      "mape": null,
+      "rmse": null,
+      "countries_evaluated": 0,
+      "note": "Requires GPU"
+    }
+  },
+  "85/15": {
+    "Prophet": {
+      "mape": 654.47,
+      "rmse": 311232279.74,
+      "countries_evaluated": 5
+    },
+    "NeuralProphet": {
+      "mape": null,
+      "rmse": null,
+      "countries_evaluated": 0
+    },
+    "StatsForecast": {
+      "mape": null,
+      "rmse": null,
+      "countries_evaluated": 0
+    },
+    "TimesFM": {
+      "mape": null,
+      "rmse": null,
+      "countries_evaluated": 0,
+      "note": "Requires GPU"
+    }
+  },
+  "90/10": {
+    "Prophet": {
+      "mape": 854.32,
+      "rmse": 354379364.45,
+      "countries_evaluated": 5
+    },
+    "NeuralProphet": {
+      "mape": null,
+      "rmse": null,
+      "countries_evaluated": 0
+    },
+    "StatsForecast": {
+      "mape": null,
+      "rmse": null,
+      "countries_evaluated": 0
+    },
+    "TimesFM": {
+      "mape": null,
+      "rmse": null,
+      "countries_evaluated": 0,
+      "note": "Requires GPU"
+    }
+  },
+  "95/5": {
+    "Prophet": {
+      "mape": 231.77,
+      "rmse": 335342512.09,
+      "countries_evaluated": 5
+    },
+    "NeuralProphet": {
+      "mape": null,
+      "rmse": null,
+      "countries_evaluated": 0
+    },
+    "StatsForecast": {
+      "mape": null,
+      "rmse": null,
+      "countries_evaluated": 0
+    },
+    "TimesFM": {
+      "mape": null,
+      "rmse": null,
+      "countries_evaluated": 0,
+      "note": "Requires GPU"
+    }
+  }
+}

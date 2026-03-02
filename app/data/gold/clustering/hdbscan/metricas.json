@@ -1,0 +1,22 @@
+{
+  "modelo": "hdbscan",
+  "k": 3,
+  "silhouette": 0.5654,
+  "davies_bouldin": 0.5856,
+  "calinski_harabasz": 432.94,
+  "neg_silhouette_pct": 0.27,
+  "size_cv": 0.0708,
+  "min_cluster_pct": 30.0,
+  "max_cluster_pct": 35.1,
+  "cluster_sizes": {
+    "0": 129,
+    "1": 111,
+    "2": 130
+  },
+  "stability_ari": 1.0,
+  "stability_std": 0.0,
+  "ari_min": 1.0,
+  "ari_max": 1.0,
+  "silhouette_mean": 0.4692,
+  "silhouette_std": 0.0536
+}

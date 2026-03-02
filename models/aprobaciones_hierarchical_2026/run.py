@@ -22,19 +22,7 @@ def main():
     # 1. ETL
     logging.info("--- PASO 1: ETL ---")
     try:
-        # Check if run_etl accepts args. My previous implementations usually take config_path
-        # But looking at old run.py it passed run_id.
-        # Let's assume run_etl handles config_path or no args. 
-        # Safest is to check etl_pipeline.py, but usually I write it to take config.
-        # However, to be safe, let's try calling it matching the file signature if I could see it.
-        # Assuming run_etl(config_path) based on my previous GMM run.py.
         run_etl(config_path)
-    except TypeError:
-        # Fallback if it requires run_id or something
-        try:
-             run_etl(config_path, run_id="manual_run")
-        except:
-             run_etl() # Try no args
     except Exception as e:
         logging.error(f"Fallo en ETL: {e}")
         return

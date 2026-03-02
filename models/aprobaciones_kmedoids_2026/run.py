@@ -1,9 +1,9 @@
 """
-Main Entry Point for the BCIE K-Means Clustering Model (2026).
+Main Entry Point for the BCIE K-Medoids Clustering Model (2026).
 
 This script orchestrates the end-to-end execution of the analytics pipeline:
 1. ETL: Data extraction from CKAN and preprocessing.
-2. Training: Feature engineering, K-Means clustering, and optimization.
+2. Training: Feature engineering, K-Medoids clustering, and optimization.
 3. Dashboard: Generation of the HTML reporting interface.
 
 Usage:
@@ -23,7 +23,7 @@ import os
 sys.path.append(os.path.join(os.getcwd(), 'src'))
 
 from pipelines.etl_pipeline import run_etl
-from pipelines.training_pipeline import train_kmeans
+from pipelines.training_pipeline import train_kmedoids
 
 # Configure Logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -32,7 +32,7 @@ def main():
     """Execute the full data pipeline."""
     config_path = "config/local.yaml"
     
-    logging.info(">>> INITIATING BCIE K-MEANS CLUSTERING PIPELINE <<<")
+    logging.info(">>> INITIATING BCIE K-MEDOIDS CLUSTERING PIPELINE <<<")
     
     # 1. ETL Phase
     logging.info("--- PHASE 1: ETL (EXTRACTION & TRANSFORMATION) ---")
@@ -45,7 +45,7 @@ def main():
     # 2. Training Phase
     logging.info("--- PHASE 2: MODEL TRAINING & OPTIMIZATION ---")
     try:
-        train_kmeans(config_path)
+        train_kmedoids(config_path)
     except Exception as e:
         logging.critical(f"Training Failure: {e}")
         return

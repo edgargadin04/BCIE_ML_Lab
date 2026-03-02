@@ -36,7 +36,9 @@ def load_residual_stats(config):
     if os.path.exists(stats_path):
         stats_df = pd.read_csv(stats_path)
         # Crear mapa de desviación estándar por país
-        residual_dict = dict(zip(stats_df['País'], stats_df['Residual_Std']))
+        # Support both 'País' and 'Pais' column names
+        country_col = 'País' if 'País' in stats_df.columns else 'Pais'
+        residual_dict = dict(zip(stats_df[country_col], stats_df['Residual_Std']))
         logger.info(f"Se han cargado estadísticas de variabilidad para {len(residual_dict)} países.")
         return residual_dict
     else:
@@ -212,7 +214,7 @@ def run_forecasting(config_path):
         forecast_df = pd.concat(all_forecasts, ignore_index=True)
         
         # 5. Exportación de Resultados
-        forecast_df = forecast_df.rename(columns={'unique_id': 'País'})
+        forecast_df = forecast_df.rename(columns={'unique_id': 'Pais'})
         
         output_dir = config.get('paths', {}).get('predictions_path', "data/04-predictions")
         output_path = os.path.join(output_dir, "predicciones_bcie.csv") 

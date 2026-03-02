@@ -1,0 +1,20 @@
+{
+  "modelo": "mixed",
+  "k": 7,
+  "silhouette": 0.8304,
+  "davies_bouldin": 0.2297,
+  "calinski_harabasz": 2872.89,
+  "neg_silhouette_pct": 0.54,
+  "size_cv": 1.4093,
+  "min_cluster_pct": 0.3,
+  "max_cluster_pct": 62.2,
+  "cluster_sizes": {
+    "0": 57,
+    "1": 10,
+    "2": 39,
+    "3": 23,
+    "4": 230,
+    "5": 1,
+    "6": 10
+  }
+}

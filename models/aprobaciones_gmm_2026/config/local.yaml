@@ -26,4 +26,3 @@ model:
   optimal_k: 0 # 0 = auto-select via BIC
   output_path: "data/04-predictions/aprobaciones_clusters.csv"
   plots_path: "data/05-plots"
-  plots_path: "data/05-plots"

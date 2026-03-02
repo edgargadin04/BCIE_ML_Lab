@@ -1,0 +1,23 @@
+{
+  "modelo": "hierarchical",
+  "k": 4,
+  "silhouette": 0.5323,
+  "davies_bouldin": 0.5242,
+  "calinski_harabasz": 491.38,
+  "neg_silhouette_pct": 8.11,
+  "size_cv": 0.58,
+  "min_cluster_pct": 12.2,
+  "max_cluster_pct": 49.2,
+  "cluster_sizes": {
+    "0": 182,
+    "1": 85,
+    "2": 58,
+    "3": 45
+  },
+  "stability_ari": 1.0,
+  "stability_std": 0.0,
+  "ari_min": 1.0,
+  "ari_max": 1.0,
+  "silhouette_mean": 0.5934,
+  "silhouette_std": 0.0203
+}

@@ -1,9 +1,9 @@
 """
-Main Entry Point for the BCIE K-Means Clustering Model (2026).
+Main Entry Point for the BCIE Mixed Clustering Model (2026).
 
 This script orchestrates the end-to-end execution of the analytics pipeline:
 1. ETL: Data extraction from CKAN and preprocessing.
-2. Training: Feature engineering, K-Means clustering, and optimization.
+2. Training: Feature engineering, Gower Distance + Hierarchical clustering, and Composite Score optimization.
 3. Dashboard: Generation of the HTML reporting interface.
 
 Usage:

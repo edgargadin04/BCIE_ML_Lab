@@ -1,0 +1,110 @@
+# =============================================================================
+# BCIE Datos Abiertos — Configuración Unificada de Producción
+# Versión: 2.0.0
+# Arquitectura: Medallón (Bronze → Silver → Gold)
+# =============================================================================
+
+project:
+  name: "BCIE Datos Abiertos — Laboratorio de Analítica Avanzada"
+  version: "2.0.0"
+  description: "Pipeline unificado de clustering, forecasting y dashboard"
+
+# --- Fuente de Datos ---
+api:
+  base_url: "https://datosabiertos.bcie.org/api/3/action/datastore_search"
+  resource_id: "ce88a753-57f5-4266-a57e-394600c8435d"
+  limit: 32000
+  timeout: 30
+
+# --- Arquitectura Medallón ---
+paths:
+  bronze: "data/bronze"
+  silver: "data/silver"
+  gold: "data/gold"
+  dashboard: "data/gold/dashboard"
+  format: "parquet"          # parquet | csv
+
+# --- Mapeo de Columnas (API → Interno) ---
+columns:
+  rename:
+    "ANIO_APROBACION": "Anio"
+    "MONTO_BRUTO_USD": "Monto_Aprobado"
+    "PAIS": "Pais"
+    "SECTOR_INSTITUCIONAL": "Sector"
+  value_col: "Monto_Aprobado"
+  group_col: "Pais"
+  date_col: "Fecha"
+
+# --- Clustering ---
+clustering:
+  features:
+    - "Monto_Aprobado"
+    - "Cantidad_Aprobaciones"
+  log_transform_col: "Monto_Aprobado"
+  scaler: "standard"
+  random_state: 42
+  max_k: 10
+  bootstrap_n: 20
+
+  models:
+    kmeans:
+      enabled: true
+      optimal_k: 3
+    kmedoids:
+      enabled: true
+      optimal_k: 3
+    hdbscan:
+      enabled: true
+      min_cluster_size: 15
+      min_samples: 5
+      metric: "euclidean"
+    dbscan:
+      enabled: true
+      eps: 0.25
+      min_samples: 10
+      metric: "euclidean"
+    hierarchical:
+      enabled: true
+      linkage: "ward"
+      n_clusters: 4
+    gmm:
+      enabled: true
+      optimal_k: 0              # 0 = auto-selección vía BIC
+      covariance_type: "full"
+    mixed:
+      enabled: true
+      categorical_features:
+        - "Sector"
+        - "Tipo_Pais"
+
+# --- Forecasting ---
+forecasting:
+  horizon_years: 5
+  freq: "YS"
+
+  models:
+    prophet:
+      enabled: true
+      seasonality_mode: "multiplicative"
+      yearly_seasonality: false
+    neuralprophet:
+      enabled: true
+      epochs: 100
+      learning_rate: 0.1
+      quantiles: [0.05, 0.95]
+    statsforecast:
+      enabled: true
+      # Ensemble: AutoARIMA + DynamicOptimizedTheta
+    timesfm:
+      enabled: true              # Google Foundation Model
+      repo_id: "google/timesfm-2.0-500m-pytorch"
+      context_len: 12
+      batch_size: 32
+
+# --- Países Fundadores BCIE ---
+paises_fundadores:
+  - "COSTA RICA"
+  - "EL SALVADOR"
+  - "GUATEMALA"
+  - "HONDURAS"
+  - "NICARAGUA"

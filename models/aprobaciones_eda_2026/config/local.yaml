@@ -1,19 +1,23 @@
 api:
-  base_url: "https://datos.bcie.org/api/3/action/datastore_search"
-  resource_id: "2c70a8d6-4448-4389-9b98-5c4943f7a18b"
+  base_url: "https://datosabiertos.bcie.org/api/3/action/datastore_search"
+  resource_id: "ce88a753-57f5-4266-a57e-394600c8435d"
   limit: 32000
 
 data:
-  raw_path: "data/01-raw/aprobaciones.csv"
+  raw_path: "data/01-raw/aprobaciones_bcie.csv"
   processed_path: "data/02-preprocessed/aprobaciones_limpias.csv"
   value_col: "Monto_Aprobado"
   group_col: "Pais"
+
+  # Mapeo exacto de las columnas (API actualizada)
   column_renames:
-    "Monto Aprobado": "Monto_Aprobado"
-    "Nombre": "Nombre_Operacion"
-    "Sector Economico": "Sector_Economico"
-    "CANTIDAD APROBACIONES": "CANTIDAD_APROBACIONES"
-    "Año Aprobación": "Anio_Origen"
+    "ANIO_APROBACION": "Anio_Origen"
+    "MONTO_BRUTO_USD": "Monto_Aprobado"
+    "PAIS": "Pais"
+    "SECTOR_INSTITUCIONAL": "Sector_Economico"
+
+  # Columnas internas
+  date_col: "Fecha_Aprobacion"
 
 model:
   monto_bins_usd: [-inf, 100000000.0, 500000000.0, 1000000000.0, inf]
