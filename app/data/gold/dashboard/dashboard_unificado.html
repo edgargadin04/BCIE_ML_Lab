@@ -2850,10 +2850,46 @@
             }
           }
 
+          // Heatmap coloring for forecast tables
+          function applyForecastHeatmap() {
+            document.querySelectorAll("#sec-forecasting .exec-table").forEach(table => {
+              const rows = table.querySelectorAll("tbody tr");
+              const vals = [];
+              rows.forEach(row => {
+                const cells = row.querySelectorAll("td");
+                cells.forEach((cell, i) => {
+                  if (i === 0) return; // skip country name
+                  const text = cell.textContent.trim();
+                  let num = 0;
+                  if (text.includes("B")) num = parseFloat(text.replace(/[$,B]/g, "")) * 1e9;
+                  else if (text.includes("M")) num = parseFloat(text.replace(/[$,M]/g, "")) * 1e6;
+                  else if (text.startsWith("$")) num = parseFloat(text.replace(/[$,]/g, ""));
+                  vals.push(num);
+                  cell._heatVal = num;
+                });
+              });
+              if (vals.length === 0) return;
+              const mx = Math.max(...vals.filter(v => !isNaN(v)));
+              rows.forEach(row => {
+                const isTotal = row.querySelector("td.text-bold")?.textContent.includes("Total");
+                const cells = row.querySelectorAll("td");
+                cells.forEach((cell, i) => {
+                  if (i === 0 || isTotal) return;
+                  const v = cell._heatVal || 0;
+                  if (mx > 0 && v > 0) {
+                    const intensity = Math.pow(v / mx, 0.6) * 0.25;
+                    cell.style.background = `rgba(34, 197, 94, ${intensity})`;
+                  }
+                });
+              });
+            });
+          }
+
           // Initial render
           window.addEventListener("load", () => {
             populateAnnualTable();
             renderAll();
+            applyForecastHeatmap();
           });
           window.addEventListener("resize", () => {
             renderAll();
