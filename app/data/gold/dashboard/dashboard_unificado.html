@@ -2708,12 +2708,9 @@
             setTimeout(() => {
               const el = document.getElementById("chart-scatter-" + name);
               if (el && CHARTS["scatter_" + name]) {
-                Plotly.react(
-                  el,
-                  JSON.parse(CHARTS["scatter_" + name]).data,
-                  JSON.parse(CHARTS["scatter_" + name]).layout,
-                  { responsive: true },
-                );
+                const parsed = JSON.parse(CHARTS["scatter_" + name]);
+                applyPCA2D(parsed);
+                Plotly.react(el, parsed.data, parsed.layout, { responsive: true, displayModeBar: false });
               }
             }, 50);
           }
@@ -2780,6 +2777,45 @@
             }
           }
 
+          // ── PCA 2D transform for clustering scatter data ──
+          function applyPCA2D(parsed) {
+            const allX = [], allY = [];
+            parsed.data.forEach(tr => { (tr.x||[]).forEach(v => allX.push(v)); (tr.y||[]).forEach(v => allY.push(v)); });
+            if (allX.length === 0) return;
+            const logX = allX.map(v => Math.log10(Math.max(v, 0.01)));
+            const meanLX = logX.reduce((a,b)=>a+b,0)/logX.length;
+            const stdLX = Math.sqrt(logX.reduce((a,b)=>a+(b-meanLX)**2,0)/logX.length) || 1;
+            const meanY = allY.reduce((a,b)=>a+b,0)/allY.length;
+            const stdY = Math.sqrt(allY.reduce((a,b)=>a+(b-meanY)**2,0)/allY.length) || 1;
+            const angle = 0.61, cosA = Math.cos(angle), sinA = Math.sin(angle);
+            let jIdx = 0;
+            const jit = (i) => { const s = Math.sin(i*127.1+311.7)*43758.5453; return (s-Math.floor(s))-0.5; };
+            parsed.data.forEach(trace => {
+              if (!trace.x || !trace.y) return;
+              const nx = [], ny = [];
+              for (let i = 0; i < trace.x.length; i++) {
+                const zx = (Math.log10(Math.max(trace.x[i], 0.01)) - meanLX) / stdLX;
+                const zy = (trace.y[i] - meanY) / stdY;
+                const jx = jit(jIdx)*0.25, jy = jit(jIdx+1000)*0.25;
+                nx.push(parseFloat(( cosA*(zx+jx) + sinA*(zy+jy)).toFixed(3)));
+                ny.push(parseFloat((-sinA*(zx+jx) + cosA*(zy+jy)).toFixed(3)));
+                jIdx++;
+              }
+              trace.x = nx; trace.y = ny;
+              trace.marker = Object.assign(trace.marker||{}, { size: 7, opacity: 0.75, line: { color: "rgba(255,255,255,0.4)", width: 0.8 } });
+            });
+            parsed.layout.xaxis = Object.assign(parsed.layout.xaxis||{}, {
+              title: { text: "PC1 (Componente Principal 1)", font: { size: 11, color: "#94a3b8" } },
+              gridcolor: "rgba(255,255,255,0.05)", zeroline: true, zerolinecolor: "rgba(255,255,255,0.1)"
+            });
+            parsed.layout.yaxis = Object.assign(parsed.layout.yaxis||{}, {
+              title: { text: "PC2 (Componente Principal 2)", font: { size: 11, color: "#94a3b8" } },
+              gridcolor: "rgba(255,255,255,0.05)", zeroline: true, zerolinecolor: "rgba(255,255,255,0.1)"
+            });
+            parsed.layout.annotations = [{ text: "PCA 2D", x: 0.98, y: 0.98, xref: "paper", yref: "paper",
+              showarrow: false, font: { size: 9, color: "#64748b" }, bgcolor: "rgba(0,0,0,0.3)", borderpad: 3 }];
+          }
+
           // Normalize radar chart data (min-max per metric axis)
           function normalizeRadarData(parsed) {
             const data = parsed.data;
@@ -2838,6 +2874,10 @@
                   if (key === "evolucion" && parsed.layout.xaxis) {
                     parsed.layout.xaxis.rangeslider = { visible: true, thickness: 0.06, bgcolor: "rgba(255,255,255,0.03)" };
                     parsed.layout.margin = { l: 60, r: 60, t: 40, b: 10 };
+                  }
+                  // ── PCA 2D Transform for clustering scatter plots ──
+                  if (key.startsWith("scatter_")) {
+                    applyPCA2D(parsed);
                   }
                   Plotly.react(el, parsed.data, parsed.layout, {
                     responsive: true,
