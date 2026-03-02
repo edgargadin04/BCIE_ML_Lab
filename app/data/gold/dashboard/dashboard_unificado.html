@@ -1185,7 +1185,7 @@
                 <div class="kpi-card-sm">
                   <div class="kpi-label">PROYECCIÓN FINAL</div>
                   <div class="kpi-value-sm">$3.3B</div>
-                  <div class="kpi-delta text-green">+123052.4%</div>
+                  <div class="kpi-delta text-green">×1,231</div>
                 </div>
                 <div class="traj-title">Trayectoria Anual Estimada</div>
                 <div class="traj-container">
@@ -1205,7 +1205,7 @@
                     <div class="traj-year">2026</div>
                     <div class="traj-val">$3.1B</div>
                     <div class="traj-growth">
-                      <span class="text-green">+13707.4%</span>
+                      <span class="text-green">×137</span>
                     </div>
                   </div>
                   <div class="traj-card">
@@ -1388,7 +1388,7 @@
                 <div class="kpi-card-sm">
                   <div class="kpi-label">PROYECCIÓN FINAL</div>
                   <div class="kpi-value-sm">$3.7B</div>
-                  <div class="kpi-delta text-green">+22867.2%</div>
+                  <div class="kpi-delta text-green">×229</div>
                 </div>
                 <div class="traj-title">Trayectoria Anual Estimada</div>
                 <div class="traj-container">
@@ -1408,7 +1408,7 @@
                     <div class="traj-year">2026</div>
                     <div class="traj-val">$3.3B</div>
                     <div class="traj-growth">
-                      <span class="text-green">+19926.8%</span>
+                      <span class="text-green">×199</span>
                     </div>
                   </div>
                   <div class="traj-card">
@@ -1591,7 +1591,7 @@
                 <div class="kpi-card-sm">
                   <div class="kpi-label">PROYECCIÓN FINAL</div>
                   <div class="kpi-value-sm">$3.1B</div>
-                  <div class="kpi-delta text-green">+46374.3%</div>
+                  <div class="kpi-delta text-green">×464</div>
                 </div>
                 <div class="traj-title">Trayectoria Anual Estimada</div>
                 <div class="traj-container">
@@ -1611,7 +1611,7 @@
                     <div class="traj-year">2026</div>
                     <div class="traj-val">$3.0B</div>
                     <div class="traj-growth">
-                      <span class="text-green">+45258.2%</span>
+                      <span class="text-green">×453</span>
                     </div>
                   </div>
                   <div class="traj-card">
@@ -1794,7 +1794,7 @@
                 <div class="kpi-card-sm">
                   <div class="kpi-label">PROYECCIÓN FINAL</div>
                   <div class="kpi-value-sm">$2.1B</div>
-                  <div class="kpi-delta text-green">+17708.8%</div>
+                  <div class="kpi-delta text-green">×177</div>
                 </div>
                 <div class="traj-title">Trayectoria Anual Estimada</div>
                 <div class="traj-container">
@@ -1814,7 +1814,7 @@
                     <div class="traj-year">2026</div>
                     <div class="traj-val">$2.1B</div>
                     <div class="traj-growth">
-                      <span class="text-green">+17973.1%</span>
+                      <span class="text-green">×180</span>
                     </div>
                   </div>
                   <div class="traj-card">
@@ -2744,8 +2744,12 @@
                   const pctC = ((c - prevC) / prevC) * 100;
                   const clsM = pctM >= 0 ? "text-green" : "text-red";
                   const clsC = pctC >= 0 ? "text-green" : "text-red";
-                  yoyM = `<span class="${clsM}">${pctM >= 0 ? "+" : ""}${pctM.toFixed(1)}%</span>`;
-                  yoyC = `<span class="${clsC}">${pctC >= 0 ? "+" : ""}${pctC.toFixed(1)}%</span>`;
+                  const fmtPct = (pct) => {
+                    if (Math.abs(pct) > 999) return `×${Math.round(Math.abs(pct/100))}`;
+                    return `${pct >= 0 ? "+" : ""}${pct.toFixed(1)}%`;
+                  };
+                  yoyM = `<span class="${clsM}">${fmtPct(pctM)}</span>`;
+                  yoyC = `<span class="${clsC}">${fmtPct(pctC)}</span>`;
                 }
                 rows.push({
                   year: years[i],
@@ -2776,6 +2780,29 @@
             }
           }
 
+          // Normalize radar chart data (min-max per metric axis)
+          function normalizeRadarData(parsed) {
+            const data = parsed.data;
+            const numAxes = data[0].r.length - 1; // last r repeats first for closure
+            for (let axis = 0; axis < numAxes; axis++) {
+              const vals = data.map(d => d.r[axis]).filter(v => v !== null && v !== undefined);
+              if (vals.length === 0) continue;
+              const mn = Math.min(...vals);
+              const mx = Math.max(...vals);
+              const range = mx - mn || 1;
+              data.forEach(d => {
+                if (d.r[axis] !== null && d.r[axis] !== undefined) {
+                  d.r[axis] = 0.1 + 0.85 * ((d.r[axis] - mn) / range); // scale to 0.1–0.95
+                }
+              });
+              // Update the closing point to match the first
+              if (data[0].r.length > numAxes) {
+                data.forEach(d => { d.r[numAxes] = d.r[0]; });
+              }
+            }
+            return parsed;
+          }
+
           // Render all visible charts
           function renderAll() {
             for (const [key, json_str] of Object.entries(CHARTS)) {
@@ -2799,7 +2826,19 @@
               const el = document.getElementById(el_id);
               if (el && el.offsetParent !== null) {
                 try {
-                  const parsed = JSON.parse(json_str);
+                  let parsed = JSON.parse(json_str);
+                  // Normalize radar chart data
+                  if (key === "radar") {
+                    parsed = normalizeRadarData(parsed);
+                    parsed.layout.polar.radialaxis.tickvals = [0.1, 0.3, 0.5, 0.7, 0.95];
+                    parsed.layout.polar.radialaxis.ticktext = ["Min", "", "Med", "", "Max"];
+                    parsed.layout.polar.radialaxis.tickfont = { size: 9, color: "#64748b" };
+                  }
+                  // Add rangeslider to evolucion chart
+                  if (key === "evolucion" && parsed.layout.xaxis) {
+                    parsed.layout.xaxis.rangeslider = { visible: true, thickness: 0.06, bgcolor: "rgba(255,255,255,0.03)" };
+                    parsed.layout.margin = { l: 60, r: 60, t: 40, b: 10 };
+                  }
                   Plotly.react(el, parsed.data, parsed.layout, {
                     responsive: true,
                     displayModeBar: false,
