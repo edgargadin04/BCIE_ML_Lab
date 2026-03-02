@@ -3021,14 +3021,25 @@
               }
               trace.x = nx; trace.y = ny;
               trace.marker = Object.assign(trace.marker||{}, { size: 7, opacity: 0.75, line: { color: "rgba(255,255,255,0.4)", width: 0.8 } });
+              trace.cliponaxis = false;
             });
+            // Calculate axis padding so points aren't clipped at edges
+            const allPX = [], allPY = [];
+            parsed.data.forEach(tr => { (tr.x||[]).forEach(v => allPX.push(v)); (tr.y||[]).forEach(v => allPY.push(v)); });
+            const padFrac = 0.08;
+            const xMin = Math.min(...allPX), xMax = Math.max(...allPX);
+            const yMin = Math.min(...allPY), yMax = Math.max(...allPY);
+            const xPad = (xMax - xMin) * padFrac || 0.5;
+            const yPad = (yMax - yMin) * padFrac || 0.5;
             parsed.layout.xaxis = Object.assign(parsed.layout.xaxis||{}, {
               title: { text: "PC1 (Componente Principal 1)", font: { size: 11, color: "#94a3b8" } },
-              gridcolor: "rgba(255,255,255,0.05)", zeroline: true, zerolinecolor: "rgba(255,255,255,0.1)"
+              gridcolor: "rgba(255,255,255,0.05)", zeroline: true, zerolinecolor: "rgba(255,255,255,0.1)",
+              range: [xMin - xPad, xMax + xPad]
             });
             parsed.layout.yaxis = Object.assign(parsed.layout.yaxis||{}, {
               title: { text: "PC2 (Componente Principal 2)", font: { size: 11, color: "#94a3b8" } },
-              gridcolor: "rgba(255,255,255,0.05)", zeroline: true, zerolinecolor: "rgba(255,255,255,0.1)"
+              gridcolor: "rgba(255,255,255,0.05)", zeroline: true, zerolinecolor: "rgba(255,255,255,0.1)",
+              range: [yMin - yPad, yMax + yPad]
             });
             parsed.layout.annotations = [{ text: "PCA 2D", x: 0.98, y: 0.98, xref: "paper", yref: "paper",
               showarrow: false, font: { size: 9, color: "#64748b" }, bgcolor: "rgba(0,0,0,0.3)", borderpad: 3 }];
