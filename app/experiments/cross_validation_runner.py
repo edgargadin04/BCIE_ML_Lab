@@ -170,6 +170,59 @@ def run_statsforecast_cv(df_ts, country_data, n_splits):
     return np.mean(mapes) if mapes else np.nan, np.mean(rmses) if rmses else np.nan
 
 
+# ── TimesFM model (loaded once, shared across folds) ──
+_timesfm_model = None
+
+def _get_timesfm():
+    global _timesfm_model
+    if _timesfm_model is None:
+        import torch, timesfm
+        logger.info("    Loading TimesFM 2.5 on GPU...")
+        _timesfm_model = timesfm.TimesFM_2p5_200M_torch.from_pretrained(
+            "google/timesfm-2.5-200m-pytorch"
+        )
+        fc_config = timesfm.ForecastConfig(max_context=512, max_horizon=128)
+        _timesfm_model.compile(fc_config)
+        logger.info(f"    GPU memory: {torch.cuda.memory_allocated()/1e6:.0f}MB")
+    return _timesfm_model
+
+
+def run_timesfm_cv(df_ts, country_data, n_splits):
+    """Cross-validate TimesFM for one country."""
+    import torch
+    tfm = _get_timesfm()
+
+    n = len(country_data)
+    min_train = max(3, n // 3)
+    fold_size = max(1, (n - min_train) // n_splits)
+
+    mapes, rmses = [], []
+    for fold in range(n_splits):
+        train_end = min_train + fold * fold_size
+        if train_end >= n:
+            break
+        test_end = min(train_end + fold_size, n)
+
+        train = country_data.iloc[:train_end]
+        test = country_data.iloc[train_end:test_end]
+
+        if len(test) == 0:
+            continue
+
+        history = train["y"].values.astype(np.float64)
+        with torch.no_grad():
+            pf, _ = tfm.forecast(horizon=len(test), inputs=[history])
+
+        y_pred = pf[0][:len(test)]
+        m = mape(test["y"].values.astype(float), y_pred)
+        r = rmse(test["y"].values.astype(float), y_pred)
+        if not np.isnan(m):
+            mapes.append(m)
+        rmses.append(r)
+
+    return np.mean(mapes) if mapes else np.nan, np.mean(rmses) if rmses else np.nan
+
+
 def run_cv_experiment(config):
     """Run cross-validation for all models across 3-8 folds."""
     fmt = config["paths"].get("format", "parquet")
@@ -191,6 +244,7 @@ def run_cv_experiment(config):
         "Prophet": run_prophet_cv,
         "NeuralProphet": run_neuralprophet_cv,
         "StatsForecast": run_statsforecast_cv,
+        "TimesFM": run_timesfm_cv,
     }
 
     results = {}
@@ -229,10 +283,6 @@ def run_cv_experiment(config):
             logger.info(f"    MAPE={avg_mape:.2f}%, RMSE={avg_rmse:.2f}" if avg_mape else f"    N/A")
 
         results[f"{n_folds}_folds"] = fold_results
-
-    # Add TimesFM placeholder (no easy CV without GPU)
-    for k in results:
-        results[k]["TimesFM"] = {"mape": None, "rmse": None, "countries_evaluated": 0, "note": "Requires GPU"}
 
     # Save results
     out_dir = Path(config["paths"]["gold"]) / "experiments"

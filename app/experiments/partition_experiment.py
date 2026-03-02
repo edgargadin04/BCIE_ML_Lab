@@ -80,6 +80,32 @@ def run_statsforecast_partition(train, test):
     return pred["AutoARIMA"].values
 
 
+# ── TimesFM model (loaded once, shared across partitions) ──
+_timesfm_model = None
+
+def _get_timesfm():
+    global _timesfm_model
+    if _timesfm_model is None:
+        import torch, timesfm
+        logger.info("    Loading TimesFM 2.5 on GPU...")
+        _timesfm_model = timesfm.TimesFM_2p5_200M_torch.from_pretrained(
+            "google/timesfm-2.5-200m-pytorch"
+        )
+        fc_config = timesfm.ForecastConfig(max_context=512, max_horizon=128)
+        _timesfm_model.compile(fc_config)
+        logger.info(f"    GPU memory: {torch.cuda.memory_allocated()/1e6:.0f}MB")
+    return _timesfm_model
+
+
+def run_timesfm_partition(train, test):
+    import torch
+    tfm = _get_timesfm()
+    history = train["y"].values.astype(np.float64)
+    with torch.no_grad():
+        pf, _ = tfm.forecast(horizon=len(test), inputs=[history])
+    return pf[0][:len(test)]
+
+
 def run_partition_experiment(config):
     """Run partition experiments from 60/40 to 95/5."""
     fmt = config["paths"].get("format", "parquet")
@@ -101,6 +127,7 @@ def run_partition_experiment(config):
         "Prophet": run_prophet_partition,
         "NeuralProphet": run_neuralprophet_partition,
         "StatsForecast": run_statsforecast_partition,
+        "TimesFM": run_timesfm_partition,
     }
 
     partitions = list(range(60, 100, 5))  # 60, 65, 70, ..., 95
@@ -162,8 +189,6 @@ def run_partition_experiment(config):
             }
             logger.info(f"    MAPE={avg_mape:.2f}%, RMSE={avg_rmse:.2f}" if avg_mape else f"    N/A")
 
-        # TimesFM placeholder
-        partition_results["TimesFM"] = {"mape": None, "rmse": None, "countries_evaluated": 0, "note": "Requires GPU"}
 
         results[key] = partition_results
 

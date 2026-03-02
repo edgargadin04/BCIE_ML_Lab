@@ -1,4 +1,4 @@
-"""Modelo TimesFM (Google Foundation Model)."""
+"""Modelo TimesFM 2.5 (Google Foundation Model) — PyTorch + CUDA."""
 
 import pandas as pd
 import numpy as np
@@ -12,44 +12,72 @@ class TimesFMModel(ForecastingModel):
     name = "timesfm"
     display_name = "TimesFM (Google)"
 
+    def _load_model(self):
+        """Load and compile TimesFM model (cached across countries)."""
+        if hasattr(self, "_tfm") and self._tfm is not None:
+            return
+
+        import torch
+        import timesfm
+
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        repo_id = self.model_config.get(
+            "repo_id", "google/timesfm-2.5-200m-pytorch"
+        )
+
+        logger.info(f"  Cargando TimesFM: {repo_id} en {device}...")
+        self._tfm = timesfm.TimesFM_2p5_200M_torch.from_pretrained(repo_id)
+
+        # Compile with forecast config
+        config = timesfm.ForecastConfig(
+            max_context=512,
+            max_horizon=self.horizon * 2,
+        )
+        self._tfm.compile(config)
+        self._device = device
+
+        mem = torch.cuda.memory_allocated() / 1e6 if device == "cuda" else 0
+        logger.info(f"  TimesFM listo — GPU memory: {mem:.0f}MB")
+
     def _train_country(self, df_country, country):
         import torch
-        from transformers.models.timesfm.modeling_timesfm import TimesFmModelForPrediction
 
-        repo_id = self.model_config.get("repo_id", "google/timesfm-2.0-500m-pytorch")
-        device = "cuda" if torch.cuda.is_available() else "cpu"
+        self._load_model()
 
-        # Cargar modelo (cacheado globalmente)
-        if not hasattr(self, "_model"):
-            logger.info(f"  Cargando TimesFM: {repo_id} en {device}...")
-            self._model = TimesFmModelForPrediction.from_pretrained(
-                repo_id, trust_remote_code=True, device_map=device,
-            )
-            self._device = device
-
-        history = df_country["y"].values
-        input_tensor = torch.tensor(history, dtype=torch.float32).unsqueeze(0).to(self._device)
-        freq_tensor = torch.tensor([0]).to(self._device)
+        history = df_country["y"].values.astype(np.float64)
 
         with torch.no_grad():
-            outputs = self._model(past_values=input_tensor, freq=freq_tensor)
-            forecast_values = outputs.mean_predictions.cpu().numpy().squeeze()
+            point_forecast, quantiles = self._tfm.forecast(
+                horizon=self.horizon,
+                inputs=[history],
+            )
 
-        if len(forecast_values) > self.horizon:
-            forecast_values = forecast_values[-self.horizon:]
+        forecast_values = point_forecast[0][: self.horizon]
 
         last_year = df_country["ds"].max().year
-        future_dates = [pd.Timestamp(year=last_year + i + 1, month=1, day=1)
-                        for i in range(len(forecast_values))]
+        future_dates = [
+            pd.Timestamp(year=last_year + i + 1, month=1, day=1)
+            for i in range(len(forecast_values))
+        ]
 
-        # Intervalos de confianza (estimación proporcional)
-        cv = 0.15
-        lower = np.maximum(forecast_values - 1.96 * np.abs(forecast_values) * cv, 0)
-        upper = forecast_values + 1.96 * np.abs(forecast_values) * cv
+        # Confidence intervals from quantiles if available
+        if quantiles is not None and len(quantiles) > 0:
+            q_arr = quantiles[0]  # shape: (horizon, n_quantiles)
+            if q_arr.ndim == 2 and q_arr.shape[1] >= 2:
+                lower = np.maximum(q_arr[:, 0], 0)
+                upper = q_arr[:, -1]
+            else:
+                cv = 0.15
+                lower = np.maximum(forecast_values - 1.96 * np.abs(forecast_values) * cv, 0)
+                upper = forecast_values + 1.96 * np.abs(forecast_values) * cv
+        else:
+            cv = 0.15
+            lower = np.maximum(forecast_values - 1.96 * np.abs(forecast_values) * cv, 0)
+            upper = forecast_values + 1.96 * np.abs(forecast_values) * cv
 
         return pd.DataFrame({
             "ds": future_dates,
             "yhat": forecast_values,
-            "yhat_lower": lower,
-            "yhat_upper": upper,
+            "yhat_lower": lower[: len(forecast_values)],
+            "yhat_upper": upper[: len(forecast_values)],
         })
