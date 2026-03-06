@@ -403,11 +403,27 @@ function renderCharts() {
 // Render: Users + Activity History (Feature 3)
 // ============================================
 function renderUsers() {
+  const iconEdit = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
+  const iconTrash = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>';
+  const iconKey = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>';
+  const iconHistory = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
+  const iconToggle = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" stroke-linecap="round" stroke-linejoin="round"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg>';
+  const btnStyle = 'display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:8px;border:1px solid;cursor:pointer;transition:all .2s;';
   document.querySelector('#usersTable tbody').innerHTML = USERS.map(u => `<tr>
-    <td class="text-accent">${u.username}</td><td>${u.displayName}</td><td>${u.role}</td>
+    <td class="text-accent" style="font-weight:600">${u.username}</td>
+    <td>${u.displayName}</td>
+    <td><span style="font-size:.78rem;padding:2px 8px;border-radius:4px;background:${u.role==='Administrador'?'rgba(168,85,247,.15)':'rgba(6,182,212,.15)'};color:${u.role==='Administrador'?'#a855f7':'#06b6d4'}">${u.role}</span></td>
     <td><span class="status-badge ${u.status==='active'?'ok':'inactive'}">${u.status==='active'?t('users.active'):t('users.inactive')}</span></td>
-    <td>${u.lastAccess}</td>
-    <td><div style="display:flex;gap:4px"><button class="btn-sm" onclick="editUser(${u.id})">${t('users.edit')}</button><button class="btn-sm" onclick="resetPassword(${u.id})">${t('users.reset')}</button><button class="btn-sm" onclick="showUserHistory('${u.username}')">${t('users.viewhistory')}</button><button class="btn-sm danger" onclick="toggleUser(${u.id})">${u.status==='active'?t('users.deactivate'):t('users.activate')}</button></div></td>
+    <td style="font-size:.78rem;color:var(--text-muted)">${u.lastAccess}</td>
+    <td>
+      <div style="display:flex;gap:6px;align-items:center">
+        <button onclick="editUser(${u.id})" title="${t('users.edit')}" style="${btnStyle}background:rgba(59,130,246,.1);border-color:rgba(59,130,246,.3);color:#3b82f6">${iconEdit}</button>
+        <button onclick="resetPassword(${u.id})" title="${t('users.reset')}" style="${btnStyle}background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.3);color:#f59e0b">${iconKey}</button>
+        <button onclick="showUserHistory('${u.username}')" title="${t('users.viewhistory')}" style="${btnStyle}background:rgba(6,182,212,.1);border-color:rgba(6,182,212,.3);color:#06b6d4">${iconHistory}</button>
+        <button onclick="deleteUser(${u.id})" title="${t('modal.deleteuser')}" style="${btnStyle}background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.3);color:#ef4444">${iconTrash}</button>
+        <button onclick="toggleUser(${u.id})" title="${u.status==='active'?t('users.deactivate'):t('users.activate')}" style="${btnStyle}background:${u.status==='active'?'rgba(34,197,94,.1)':'rgba(156,163,175,.1)'};border-color:${u.status==='active'?'rgba(34,197,94,.3)':'rgba(156,163,175,.3)'};color:${u.status==='active'?'#22c55e':'#9ca3af'}">${iconToggle}</button>
+      </div>
+    </td>
   </tr>`).join('');
 }
 function showUserHistory(username) {
