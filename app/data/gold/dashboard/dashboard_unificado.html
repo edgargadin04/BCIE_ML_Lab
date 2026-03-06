@@ -3137,6 +3137,7 @@
             if (parsed.data) {
               // ── Continuity fix: connect forecast to last historical point ──
               let lastHistX = null, lastHistY = null;
+              let fcDates = [], fcValues = [];
               // Step 1: Find the last point of the historical trace
               parsed.data.forEach(trace => {
                 if (trace.name && /hist|real|actual|tendencia/i.test(trace.name)) {
@@ -3174,15 +3175,18 @@
                     newY.unshift(lastHistY);
                     trace.x = newX;
                     trace.y = newY;
+                    // Save forecast dates/values for band recentering
+                    fcDates = newX.slice(0);
+                    fcValues = newY.slice(0);
                   }
                 }
-                // Style + connect confidence band (toself polygon)
+                // Style + connect + RECENTER confidence band (toself polygon)
                 if (trace.fill && (trace.fill === 'toself' || trace.fill === 'tonexty' || trace.fill === 'tonextx')) {
                   const bandColor = isDarkFc ? 'rgba(239,68,68,0.10)' : 'rgba(59,130,246,0.08)';
                   const bandLine = isDarkFc ? 'rgba(239,68,68,0.25)' : 'rgba(59,130,246,0.15)';
                   trace.fillcolor = bandColor;
                   trace.line = Object.assign(trace.line || {}, { color: bandLine, width: 0.5 });
-                  // Step 3: Fix band polygon to start from last historical point
+                  // Step 3: Rebuild band polygon centered on forecast values
                   if (lastHistX !== null && trace.x && trace.y && trace.x.length >= 4) {
                     const histDate = new Date(lastHistX).getTime();
                     const n = trace.x.length;
@@ -3193,29 +3197,53 @@
                     const lowerX = trace.x.slice(half);
                     const lowerY = trace.y.slice(half);
                     // Filter upper half to keep only dates > lastHistX
-                    const newUpperX = [], newUpperY = [];
+                    const fUpperX = [], fUpperY = [];
                     for (let i = 0; i < upperX.length; i++) {
                       if (new Date(upperX[i]).getTime() > histDate) {
-                        newUpperX.push(upperX[i]);
-                        newUpperY.push(upperY[i]);
+                        fUpperX.push(upperX[i]);
+                        fUpperY.push(upperY[i]);
                       }
                     }
-                    // Filter lower half (reversed dates) to keep only dates > lastHistX
-                    const newLowerX = [], newLowerY = [];
+                    // Filter lower half to keep only dates > lastHistX
+                    const fLowerX = [], fLowerY = [];
                     for (let i = 0; i < lowerX.length; i++) {
                       if (new Date(lowerX[i]).getTime() > histDate) {
-                        newLowerX.push(lowerX[i]);
-                        newLowerY.push(lowerY[i]);
+                        fLowerX.push(lowerX[i]);
+                        fLowerY.push(lowerY[i]);
                       }
                     }
-                    // Prepend anchor to upper, append anchor to lower (closes polygon at historical point)
-                    newUpperX.unshift(lastHistX);
-                    newUpperY.unshift(lastHistY);
-                    newLowerX.push(lastHistX);
-                    newLowerY.push(lastHistY);
+                    // Recenter band around forecast values if we have them
+                    if (fcDates.length > 1 && fUpperX.length > 0) {
+                      // Build a lookup: date → forecast value
+                      const fcLookup = {};
+                      for (let i = 0; i < fcDates.length; i++) {
+                        fcLookup[new Date(fcDates[i]).getTime()] = fcValues[i];
+                      }
+                      // For each upper point, compute half-width and recenter
+                      for (let i = 0; i < fUpperX.length; i++) {
+                        const dt = new Date(fUpperX[i]).getTime();
+                        // Find matching lower value (reversed order)
+                        const lIdx = fLowerX.length - 1 - i;
+                        const uVal = fUpperY[i];
+                        const lVal = (lIdx >= 0 && lIdx < fLowerY.length) ? fLowerY[lIdx] : uVal;
+                        const halfWidth = Math.abs(uVal - lVal) / 2;
+                        const fcVal = fcLookup[dt];
+                        if (fcVal !== undefined) {
+                          fUpperY[i] = fcVal + halfWidth;
+                          if (lIdx >= 0 && lIdx < fLowerY.length) {
+                            fLowerY[lIdx] = fcVal - halfWidth;
+                          }
+                        }
+                      }
+                    }
+                    // Prepend/append anchor to close polygon at historical point
+                    fUpperX.unshift(lastHistX);
+                    fUpperY.unshift(lastHistY);
+                    fLowerX.push(lastHistX);
+                    fLowerY.push(lastHistY);
                     // Recombine polygon
-                    trace.x = newUpperX.concat(newLowerX);
-                    trace.y = newUpperY.concat(newLowerY);
+                    trace.x = fUpperX.concat(fLowerX);
+                    trace.y = fUpperY.concat(fLowerY);
                   }
                 }
                 // Hide upper/lower bound lines
