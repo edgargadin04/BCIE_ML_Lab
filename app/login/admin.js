@@ -246,30 +246,30 @@ const ALERT_HISTORY = [
 // Auth & Logout
 // ============================================
 (function checkAuth() {
-  const d = sessionStorage.getItem('bcie_auth');
-  if (!d) {
-    // No session → redirect to login
+  const auth = typeof SESSION_GUARD !== 'undefined' ? SESSION_GUARD.getAuthData() : null;
+  if (!auth) {
     window.location.href = 'index.html';
     return;
   }
-  try {
-    const a = JSON.parse(d);
-    if (!a.authenticated || !a.user) {
-      window.location.href = 'index.html';
-      return;
-    }
-    // Role guard: only Administrador can access admin panel
-    if (a.user.role !== 'Administrador') {
-      alert('Acceso denegado. Solo usuarios con rol Administrador pueden acceder al Panel de Administración.');
-      window.location.href = '../dashboard_unificado.html';
-      return;
-    }
-    document.getElementById('navUserName').textContent = a.user.displayName;
-  } catch(e) {
+  // Role guard: only Administrador can access admin panel
+  if (auth.user.role !== 'Administrador') {
+    alert('Acceso denegado. Solo usuarios con rol Administrador pueden acceder al Panel de Administración.');
+    window.location.href = '../dashboard_unificado.html';
+    return;
+  }
+  document.getElementById('navUserName').textContent = auth.user.displayName;
+  // Initialize session guard (timeout, idle tracking)
+  if (typeof SESSION_GUARD !== 'undefined') SESSION_GUARD.init();
+})();
+function handleLogout() {
+  if (typeof SESSION_GUARD !== 'undefined') {
+    SESSION_GUARD.forceLogout('user_logout');
+  } else {
+    sessionStorage.removeItem('bcie_auth');
+    sessionStorage.removeItem('bcie_session');
     window.location.href = 'index.html';
   }
-})();
-function handleLogout() { sessionStorage.removeItem('bcie_auth'); sessionStorage.removeItem('bcie_session'); window.location.href = 'index.html'; }
+}
 
 // ============================================
 // Tab / Sidebar / Breadcrumb

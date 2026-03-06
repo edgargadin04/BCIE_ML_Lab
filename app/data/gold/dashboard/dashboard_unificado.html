@@ -737,6 +737,7 @@
         }
       }
     </style>
+    <script src="login/session-guard.js"></script>
   </head>
   <body>
     <!-- ═══ TOP NAV (matches admin panel) ═══ -->
@@ -3458,39 +3459,34 @@
 
           // Auth verification — ISO 27001 A.9.4.1
           (function checkAuth() {
-            const authData = sessionStorage.getItem("bcie_auth");
-            if (!authData) {
-              // No session → redirect to login
+            const auth = SESSION_GUARD.getAuthData();
+            if (!auth) {
               window.location.href = "login/index.html";
               return;
             }
-            try {
-              const auth = JSON.parse(authData);
-              if (!auth.authenticated || !auth.user) {
-                window.location.href = "login/index.html";
-                return;
-              }
-              // Show user info in header
-              document.getElementById("navUserName").textContent = auth.user.displayName;
-              const roleEl = document.getElementById("navUserRole");
-              if (roleEl) roleEl.textContent = auth.user.role;
-              const greetEl = document.getElementById("greetingText");
-              if (greetEl)
-                greetEl.innerHTML = `${getGreeting()}, <strong>${auth.user.displayName.split(" ")[0]}</strong>`;
-              // Hide admin panel link for non-admin users
-              if (auth.user.role !== 'Administrador') {
-                const adminSection = document.getElementById('sidebarAdminSection');
-                if (adminSection) adminSection.style.display = 'none';
-              }
-            } catch (e) {
-              window.location.href = "login/index.html";
+            // Show user info in header
+            SESSION_GUARD.safeText(document.getElementById("navUserName"), auth.user.displayName);
+            const roleEl = document.getElementById("navUserRole");
+            if (roleEl) SESSION_GUARD.safeText(roleEl, auth.user.role);
+            const greetEl = document.getElementById("greetingText");
+            if (greetEl)
+              greetEl.innerHTML = `${getGreeting()}, <strong>${SESSION_GUARD.sanitizeInput(auth.user.displayName.split(" ")[0])}</strong>`;
+            // Hide admin panel link for non-admin users
+            if (auth.user.role !== 'Administrador') {
+              const adminSection = document.getElementById('sidebarAdminSection');
+              if (adminSection) adminSection.style.display = 'none';
+            } else {
+              // Show admin panel link for admins
+              const adminSection = document.getElementById('sidebarAdminSection');
+              if (adminSection) adminSection.style.display = 'block';
             }
+
+            // Initialize session guard (timeout, checks, etc.)
+            SESSION_GUARD.init();
           })();
 
           function handleLogout() {
-            sessionStorage.removeItem("bcie_auth");
-            sessionStorage.removeItem("bcie_session");
-            window.location.href = "login/index.html";
+            SESSION_GUARD.forceLogout('user_logout');
           }
         </script>
       </div>
