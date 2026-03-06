@@ -3135,24 +3135,90 @@
               if (parsed.layout.yaxis.title) parsed.layout.yaxis.title.font = { color: fcAxisColor };
             }
             if (parsed.data) {
+              // ── Continuity fix: connect forecast to last historical point ──
+              let lastHistX = null, lastHistY = null;
+              // Step 1: Find the last point of the historical trace
+              parsed.data.forEach(trace => {
+                if (trace.name && /hist|real|actual|tendencia/i.test(trace.name)) {
+                  if (trace.x && trace.x.length && trace.y && trace.y.length) {
+                    lastHistX = trace.x[trace.x.length - 1];
+                    lastHistY = trace.y[trace.y.length - 1];
+                  }
+                }
+              });
               const histColor = isDarkFc ? '#e2e8f0' : '#0d9488';
               const fcLineColor = isDarkFc ? '#ef4444' : '#3b82f6';
               parsed.data.forEach(trace => {
+                // Style historical trace
                 if (trace.name && /hist|real|actual|tendencia/i.test(trace.name)) {
                   trace.line = Object.assign(trace.line || {}, { width: 2, dash: 'solid', color: histColor });
                   trace.marker = Object.assign(trace.marker || {}, { size: 4, color: histColor });
                 }
+                // Style + connect forecast trace
                 if (trace.name && /pron|forecast|proyecc|predicci/i.test(trace.name)) {
                   trace.line = Object.assign(trace.line || {}, { width: 2.5, dash: 'solid', color: fcLineColor });
                   trace.marker = Object.assign(trace.marker || {}, { size: 6, symbol: 'circle', color: fcLineColor });
                   trace.mode = 'lines+markers';
+                  // Step 2: Filter overlapping dates & prepend last historical point
+                  if (lastHistX !== null && trace.x && trace.y) {
+                    const histDate = new Date(lastHistX).getTime();
+                    const newX = [], newY = [];
+                    for (let i = 0; i < trace.x.length; i++) {
+                      if (new Date(trace.x[i]).getTime() > histDate) {
+                        newX.push(trace.x[i]);
+                        newY.push(trace.y[i]);
+                      }
+                    }
+                    // Prepend anchor point (last historical value)
+                    newX.unshift(lastHistX);
+                    newY.unshift(lastHistY);
+                    trace.x = newX;
+                    trace.y = newY;
+                  }
                 }
+                // Style + connect confidence band (toself polygon)
                 if (trace.fill && (trace.fill === 'toself' || trace.fill === 'tonexty' || trace.fill === 'tonextx')) {
                   const bandColor = isDarkFc ? 'rgba(239,68,68,0.10)' : 'rgba(59,130,246,0.08)';
                   const bandLine = isDarkFc ? 'rgba(239,68,68,0.25)' : 'rgba(59,130,246,0.15)';
                   trace.fillcolor = bandColor;
                   trace.line = Object.assign(trace.line || {}, { color: bandLine, width: 0.5 });
+                  // Step 3: Fix band polygon to start from last historical point
+                  if (lastHistX !== null && trace.x && trace.y && trace.x.length >= 4) {
+                    const histDate = new Date(lastHistX).getTime();
+                    const n = trace.x.length;
+                    const half = Math.floor(n / 2);
+                    // Split polygon into upper (first half) and lower (second half, reversed)
+                    const upperX = trace.x.slice(0, half);
+                    const upperY = trace.y.slice(0, half);
+                    const lowerX = trace.x.slice(half);
+                    const lowerY = trace.y.slice(half);
+                    // Filter upper half to keep only dates > lastHistX
+                    const newUpperX = [], newUpperY = [];
+                    for (let i = 0; i < upperX.length; i++) {
+                      if (new Date(upperX[i]).getTime() > histDate) {
+                        newUpperX.push(upperX[i]);
+                        newUpperY.push(upperY[i]);
+                      }
+                    }
+                    // Filter lower half (reversed dates) to keep only dates > lastHistX
+                    const newLowerX = [], newLowerY = [];
+                    for (let i = 0; i < lowerX.length; i++) {
+                      if (new Date(lowerX[i]).getTime() > histDate) {
+                        newLowerX.push(lowerX[i]);
+                        newLowerY.push(lowerY[i]);
+                      }
+                    }
+                    // Prepend anchor to upper, append anchor to lower (closes polygon at historical point)
+                    newUpperX.unshift(lastHistX);
+                    newUpperY.unshift(lastHistY);
+                    newLowerX.push(lastHistX);
+                    newLowerY.push(lastHistY);
+                    // Recombine polygon
+                    trace.x = newUpperX.concat(newLowerX);
+                    trace.y = newUpperY.concat(newLowerY);
+                  }
                 }
+                // Hide upper/lower bound lines
                 if (trace.name && /upper|lower|sup|inf|banda|bound|ci_/i.test(trace.name)) {
                   const boundColor = isDarkFc ? 'rgba(239,68,68,0.2)' : 'rgba(59,130,246,0.12)';
                   trace.line = Object.assign(trace.line || {}, { color: boundColor, width: 0.5, dash: 'dot' });
