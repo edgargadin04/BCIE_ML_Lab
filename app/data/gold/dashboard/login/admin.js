@@ -323,8 +323,10 @@ function toggleTheme() {
   renderCharts();
 }
 (function loadTheme() {
-  const saved = localStorage.getItem('bcie-theme');
-  if (saved) { document.documentElement.setAttribute('data-theme', saved); if (saved === 'light') { document.querySelector('.theme-icon-dark').style.display='none'; document.querySelector('.theme-icon-light').style.display='block'; } }
+  const saved = localStorage.getItem('bcie-theme') || 'light';
+  document.documentElement.setAttribute('data-theme', saved);
+  if (saved === 'light') { document.querySelector('.theme-icon-dark').style.display='none'; document.querySelector('.theme-icon-light').style.display='block'; }
+  else { document.querySelector('.theme-icon-dark').style.display='block'; document.querySelector('.theme-icon-light').style.display='none'; }
 })();
 
 // ============================================
