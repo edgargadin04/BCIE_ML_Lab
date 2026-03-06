@@ -672,10 +672,10 @@ function addAlert() {
 function editUser(id) {
   const u = USERS.find(x => x.id === id);
   if (!u) return;
-  const body = document.getElementById('modalBody');
-  const title = document.getElementById('modalTitle');
+  const body = document.getElementById('modalBody'); const title = document.getElementById('modalTitle');
   title.textContent = t('modal.edituser') + ': ' + u.username;
   const roles = ['Administrador', 'Analista BCIE', 'Viewer'];
+  const statuses = [{val:'active',label:t('users.active')},{val:'inactive',label:t('users.inactive')}];
   body.innerHTML = `
     <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.2rem;padding-bottom:.8rem;border-bottom:1px solid var(--border)">
       <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#a855f7);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:1.2rem;flex-shrink:0">${u.displayName.charAt(0)}</div>
@@ -687,16 +687,22 @@ function editUser(id) {
     </div>
     <div class="form-field">
       <label>${t('modal.username')}</label>
-      <input type="text" id="editUsername" value="${u.username}">
+      <input type="text" id="editUsername" value="${u.username}" maxlength="30">
     </div>
     <div class="form-field">
       <label>${t('modal.fullname')}</label>
-      <input type="text" id="editDisplayName" value="${u.displayName}">
+      <input type="text" id="editDisplayName" value="${u.displayName}" maxlength="60">
     </div>
     <div class="form-field">
       <label>${t('modal.role')}</label>
       <select id="editRole">
         ${roles.map(r => `<option ${r===u.role?'selected':''}>${r}</option>`).join('')}
+      </select>
+    </div>
+    <div class="form-field">
+      <label>${t('users.status')}</label>
+      <select id="editStatus">
+        ${statuses.map(s => `<option value="${s.val}" ${s.val===u.status?'selected':''}>${s.label}</option>`).join('')}
       </select>
     </div>
     <div style="display:flex;gap:6px;justify-content:space-between;align-items:center;margin-top:1rem;padding-top:.8rem;border-top:1px solid var(--border)">
@@ -718,15 +724,18 @@ function editUser(id) {
 function saveUser(id) {
   const u = USERS.find(x => x.id === id);
   if (!u) return;
-  const newUsername = document.getElementById('editUsername').value.trim();
-  const newName = document.getElementById('editDisplayName').value.trim();
+  const newUsername = document.getElementById('editUsername').value.trim().replace(/[^a-zA-Z0-9_.]/g, '');
+  const newName = document.getElementById('editDisplayName').value.trim().replace(/[<>"'&]/g, '');
   const newRole = document.getElementById('editRole').value;
+  const newStatus = document.getElementById('editStatus').value;
   if (!newUsername || !newName) return showToast('Completa todos los campos', 'warn');
   u.username = newUsername;
   u.displayName = newName;
   u.role = newRole;
-  AUDIT_LOG.unshift({ ts: new Date().toISOString(), level:'info', event:'Usuario editado', user: sessionStorage.getItem('bcie_auth') ? JSON.parse(sessionStorage.getItem('bcie_auth')).user?.username||'admin' : 'admin', details:`${newUsername} → ${newRole}` });
+  u.status = newStatus;
+  AUDIT_LOG.unshift({ ts: new Date().toISOString(), level:'info', event:'Usuario editado', user: sessionStorage.getItem('bcie_auth') ? JSON.parse(sessionStorage.getItem('bcie_auth')).user?.username||'admin' : 'admin', details:`${newUsername} → ${newRole} (${newStatus})` });
   renderUsers(); renderAudit(); renderOverview(); closeModal();
+  document.getElementById('kpiUsers').textContent = USERS.filter(x=>x.status==='active').length;
   showToast(t('toast.saved'), 'success');
 }
 
