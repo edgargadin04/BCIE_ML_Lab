@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BCIE ML Lab — Panel de Administración</title>
+  <meta name="description" content="Panel de administración del BCIE ML Lab - Gestión de usuarios, modelos ML y seguridad ISO 27001">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <!-- Top Nav -->
+  <nav class="topnav">
+    <div class="topnav-left">
+      <button class="hamburger" id="hamburgerBtn" onclick="toggleSidebar()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <div class="nav-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" width="24" height="24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <div><div class="nav-title">BCIE ML Lab</div><div class="nav-sub" data-i18n="nav.subtitle">Panel de Administración</div></div>
+    </div>
+    <!-- Search Bar -->
+    <div class="search-bar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="globalSearch" placeholder="Buscar usuarios, modelos, eventos..." oninput="handleSearch(this.value)">
+      <div class="search-results" id="searchResults"></div>
+    </div>
+    <div class="topnav-right">
+      <!-- Language Toggle -->
+      <button class="lang-toggle" onclick="toggleLanguage()" title="ES/EN" id="langToggle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        <span id="langLabel">ES</span>
+      </button>
+      <!-- Theme Toggle -->
+      <button class="icon-btn" onclick="toggleTheme()" title="Cambiar tema" id="themeToggle">
+        <svg class="theme-icon-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="theme-icon-light" style="display:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <!-- Notifications -->
+      <div class="notif-wrapper">
+        <button class="icon-btn" onclick="toggleNotifications()" id="notifBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="notif-badge" id="notifCount">3</span>
+        </button>
+        <div class="notif-dropdown" id="notifDropdown"></div>
+      </div>
+      <!-- Export -->
+      <button class="icon-btn" onclick="exportPDF()" title="Exportar reporte PDF">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      </button>
+      <div class="nav-user-badge" id="navUserBadge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span id="navUserName">Admin</span>
+      </div>
+      <button class="btn-logout" onclick="handleLogout()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        <span data-i18n="nav.logout">Cerrar Sesión</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Breadcrumbs -->
+  <div class="breadcrumbs" id="breadcrumbs">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    <span>Admin</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    <span class="bc-current" id="bcCurrent">Resumen</span>
+  </div>
+
+  <div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <!-- Collapse Button (desktop) -->
+      <button class="sidebar-collapse-btn" onclick="toggleSidebarCollapse()" title="Colapsar sidebar" id="sidebarCollapseBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" stroke-linecap="round" stroke-linejoin="round"><polyline points="11 17 6 12 11 7"/><polyline points="18 17 13 12 18 7"/></svg>
+      </button>
+
+      <div class="sidebar-section">
+        <div class="sidebar-label" data-i18n="sidebar.principal">Principal</div>
+        <button class="sidebar-item active" data-tab="overview" onclick="showTab('overview',this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          <span data-i18n="tab.overview">Resumen</span>
+        </button>
+        <button class="sidebar-item" data-tab="users" onclick="showTab('users',this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span data-i18n="tab.users">Usuarios</span>
+        </button>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Machine Learning</div>
+        <button class="sidebar-item" data-tab="models" onclick="showTab('models',this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          <span data-i18n="tab.models">Modelos ML</span>
+        </button>
+        <button class="sidebar-item" data-tab="dashboards" onclick="showTab('dashboards',this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          <span data-i18n="tab.dashboards">Dashboards</span>
+        </button>
+        <button class="sidebar-item" data-tab="etl" onclick="showTab('etl',this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+          <span data-i18n="tab.etl">Datos &amp; ETL</span>
+        </button>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label" data-i18n="sidebar.security">Seguridad</div>
+        <button class="sidebar-item" data-tab="audit" onclick="showTab('audit',this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          <span>Audit Log</span>
+        </button>
+        <button class="sidebar-item" data-tab="sessions" onclick="showTab('sessions',this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          <span data-i18n="tab.sessions">Sesiones Activas</span>
+        </button>
+        <button class="sidebar-item" data-tab="health" onclick="showTab('health',this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          <span>Health Check</span>
+        </button>
+        <button class="sidebar-item" data-tab="alerts" onclick="showTab('alerts',this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span data-i18n="tab.alerts">Alertas</span>
+        </button>
+        <button class="sidebar-item" data-tab="config" onclick="showTab('config',this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span data-i18n="tab.config">Configuración</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+
+      <!-- TAB: Overview -->
+      <div class="tab-content active" id="tab-overview">
+        <div id="skeletonOverview" style="display:none">
+          <div class="kpi-grid"><div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div></div>
+          <div class="grid-3col"><div class="skeleton skeleton-card" style="height:240px"></div><div class="skeleton skeleton-card" style="height:240px"></div><div class="skeleton skeleton-card" style="height:240px"></div></div>
+        </div>
+        <div id="overviewContent">
+          <h2 class="page-title" data-i18n="overview.title">Resumen del Sistema</h2>
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background:rgba(34,197,94,0.1);color:#22c55e">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <div class="kpi-data"><div class="kpi-number" id="kpiUsers">5</div><div class="kpi-label tooltip-trigger" data-tooltip="Total de cuentas con sesión habilitada" data-i18n="overview.users">Usuarios Activos</div></div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background:rgba(6,182,212,0.1);color:#06b6d4">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              </div>
+              <div class="kpi-data"><div class="kpi-number">12</div><div class="kpi-label tooltip-trigger" data-tooltip="Forecasting + Clustering + EDA entrenados" data-i18n="overview.models">Modelos ML</div></div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background:rgba(168,85,247,0.1);color:#a855f7">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              </div>
+              <div class="kpi-data"><div class="kpi-number" id="kpiDashboards">18</div><div class="kpi-label tooltip-trigger" data-tooltip="Dashboards ejecutivos generados y online" data-i18n="overview.dashboards">Dashboards</div></div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background:rgba(245,158,11,0.1);color:#f59e0b">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </div>
+              <div class="kpi-data"><div class="kpi-number">6</div><div class="kpi-label tooltip-trigger" data-tooltip="Controles ISO 27001:2022 implementados" data-i18n="overview.iso">Controles ISO</div></div>
+            </div>
+          </div>
+          <div class="grid-3col">
+            <div class="card"><h3 class="card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span data-i18n="overview.activity">Actividad Reciente</span></h3><div class="activity-list" id="recentActivity"></div></div>
+            <div class="card"><h3 class="card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><span data-i18n="overview.logins">Logins por Día</span></h3><div class="chart-wrap"><canvas id="loginsChart"></canvas></div></div>
+            <div class="card"><h3 class="card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span data-i18n="overview.bytype">Modelos por Tipo</span></h3><div class="chart-wrap"><canvas id="modelsTypeChart"></canvas></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: Users -->
+      <div class="tab-content" id="tab-users">
+        <div class="page-header"><h2 class="page-title" data-i18n="users.title">Gestión de Usuarios</h2>
+          <button class="btn-primary" onclick="openModal('addUser')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span data-i18n="users.add">Agregar Usuario</span></button>
+        </div>
+        <div class="card"><table class="data-table" id="usersTable"><thead><tr><th data-i18n="users.username">Usuario</th><th data-i18n="users.name">Nombre</th><th data-i18n="users.role">Rol</th><th data-i18n="users.status">Estado</th><th data-i18n="users.lastaccess">Último Acceso</th><th data-i18n="users.actions">Acciones</th></tr></thead><tbody></tbody></table></div>
+        <!-- User Activity History -->
+        <div class="card" id="userHistoryCard" style="display:none">
+          <h3 class="card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span data-i18n="users.history">Historial de Actividad</span></h3>
+          <div id="userHistoryContent"></div>
+        </div>
+      </div>
+
+      <!-- TAB: Models -->
+      <div class="tab-content" id="tab-models">
+        <div class="page-header"><h2 class="page-title" data-i18n="models.title">Modelos de Machine Learning</h2>
+          <div class="filter-group"><select class="select-filter" id="modelTypeFilter" onchange="filterModels()"><option value="all" data-i18n="models.all">Todos</option><option value="clustering">Clustering</option><option value="forecasting">Forecasting</option><option value="eda">EDA</option></select></div>
+        </div>
+        <div class="models-grid" id="modelsGrid"></div>
+        <!-- Model Comparison -->
+        <div class="comparison-section">
+          <div class="comparison-header">
+            <h3 class="card-title" style="margin:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span data-i18n="models.comparison">Comparativa de Modelos</span></h3>
+            <div class="filter-group"><select class="select-filter" id="comparisonTypeFilter" onchange="renderComparison()">
+              <option value="forecasting">Forecasting</option><option value="clustering">Clustering</option>
+            </select></div>
+          </div>
+          <div class="card"><div class="chart-wrap" style="height:260px"><canvas id="comparisonChart"></canvas></div></div>
+        </div>
+      </div>
+
+      <!-- TAB: Dashboards -->
+      <div class="tab-content" id="tab-dashboards">
+        <h2 class="page-title" data-i18n="tab.dashboards">Monitoreo de Dashboards</h2>
+        <div class="dashboards-grid" id="dashboardsGrid"></div>
+      </div>
+
+      <!-- TAB: ETL -->
+      <div class="tab-content" id="tab-etl">
+        <h2 class="page-title" data-i18n="etl.title">Datos &amp; Pipeline ETL</h2>
+        <div class="etl-pipeline">
+          <div class="pipeline-stage"><div class="stage-header bronze"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg><span>Bronze (Raw)</span><span class="stage-status ok">Activo</span></div><div class="stage-body"><div class="data-row"><span>Fuente</span><span>BCIE Datos Abiertos API</span></div><div class="data-row"><span>Registros</span><span>3,139 aprobaciones</span></div><div class="data-row"><span>Período</span><span>1961 — 2025</span></div><div class="data-row"><span>Última carga</span><span>25/02/2026 14:26</span></div><div class="data-row"><span>Formato</span><span>CSV / JSON</span></div></div></div>
+          <div class="pipeline-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+          <div class="pipeline-stage"><div class="stage-header silver"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg><span>Silver (Clean)</span><span class="stage-status ok">Activo</span></div><div class="stage-body"><div class="data-row"><span>Transformaciones</span><span>Normalización, encoding</span></div><div class="data-row"><span>Features</span><span>12 columnas</span></div><div class="data-row"><span>Calidad</span><span>99.2% completitud</span></div><div class="data-row"><span>Outliers</span><span>23 detectados</span></div></div></div>
+          <div class="pipeline-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+          <div class="pipeline-stage"><div class="stage-header gold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span>Gold (Models)</span><span class="stage-status ok">Activo</span></div><div class="stage-body"><div class="data-row"><span>Modelos entrenados</span><span>12 / 12</span></div><div class="data-row"><span>Dashboards generados</span><span>5</span></div><div class="data-row"><span>Último entrenamiento</span><span>25/02/2026</span></div><div class="data-row"><span>Dashboard Unificado</span><span class="status-badge ok">Online</span></div></div></div>
+        </div>
+      </div>
+
+      <!-- TAB: Audit -->
+      <div class="tab-content" id="tab-audit">
+        <div class="page-header"><h2 class="page-title" data-i18n="audit.title">Registro de Auditoría (ISO 27001 A.12.4.1)</h2>
+          <div class="filter-group"><select class="select-filter" id="auditLevelFilter" onchange="filterAudit()"><option value="all" data-i18n="audit.all">Todos los niveles</option><option value="info">Info</option><option value="warn">Warning</option><option value="error">Error</option><option value="success">Success</option></select>
+          <button class="btn-secondary" onclick="exportAuditLog()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span data-i18n="audit.export">Exportar CSV</span></button></div>
+        </div>
+        <div class="card"><table class="data-table" id="auditTable"><thead><tr><th>Timestamp</th><th data-i18n="audit.level">Nivel</th><th data-i18n="audit.event">Evento</th><th data-i18n="users.username">Usuario</th><th data-i18n="modal.details">Detalles</th></tr></thead><tbody></tbody></table></div>
+      </div>
+
+      <!-- TAB: Sessions -->
+      <div class="tab-content" id="tab-sessions">
+        <h2 class="page-title" data-i18n="sessions.title">Sesiones Activas</h2>
+        <div class="sessions-grid" id="sessionsGrid"></div>
+      </div>
+
+      <!-- TAB: Health -->
+      <div class="tab-content" id="tab-health">
+        <h2 class="page-title" data-i18n="health.title">Health Check del Sistema</h2>
+        <div class="health-grid" id="healthGrid"></div>
+        <div class="card" style="margin-top:1rem"><h3 class="card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span data-i18n="health.uptime">Uptime del Sistema (7 días)</span></h3><div class="chart-wrap"><canvas id="uptimeChart"></canvas></div></div>
+      </div>
+
+      <!-- TAB: Alerts -->
+      <div class="tab-content" id="tab-alerts">
+        <div class="page-header"><h2 class="page-title" data-i18n="alerts.title">Alertas Programables</h2>
+          <button class="btn-primary" onclick="openModal('addAlert')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span data-i18n="alerts.add">Nueva Alerta</span></button>
+        </div>
+        <div class="card">
+          <h3 class="card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span data-i18n="alerts.rules">Reglas de Alerta</span></h3>
+          <div class="alert-rules" id="alertRules"></div>
+        </div>
+        <div class="card" style="margin-top:.8rem">
+          <h3 class="card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span data-i18n="alerts.history">Historial de Alertas</span></h3>
+          <div id="alertHistory"></div>
+        </div>
+      </div>
+
+      <!-- TAB: Config -->
+      <div class="tab-content" id="tab-config">
+        <h2 class="page-title" data-i18n="config.title">Configuración del Sistema</h2>
+        <div class="grid-2col">
+          <div class="card"><h3 class="card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Políticas de Contraseña (ISO A.9.4.3)</h3><div class="config-form"><div class="config-row"><label>Longitud mínima</label><input type="number" value="6" min="4" max="32" class="config-input"></div><div class="config-row"><label>Requiere mayúsculas</label><input type="checkbox" checked class="config-check"></div><div class="config-row"><label>Requiere números</label><input type="checkbox" checked class="config-check"></div><div class="config-row"><label>Requiere caracteres especiales</label><input type="checkbox" class="config-check"></div><div class="config-row"><label>Expiración (días)</label><input type="number" value="90" min="30" max="365" class="config-input"></div></div></div>
+          <div class="card"><h3 class="card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Control de Sesión (ISO A.9.4.2)</h3><div class="config-form"><div class="config-row"><label>Timeout por inactividad (min)</label><input type="number" value="30" min="5" max="120" class="config-input" id="configTimeout"></div><div class="config-row"><label>Sesión máxima absoluta (hrs)</label><input type="number" value="8" min="1" max="24" class="config-input"></div><div class="config-row"><label>Intentos antes de bloqueo</label><input type="number" value="5" min="3" max="10" class="config-input"></div><div class="config-row"><label>Duración del bloqueo (min)</label><input type="number" value="5" min="1" max="60" class="config-input"></div><div class="config-row"><label>Delay progresivo</label><input type="checkbox" checked class="config-check"></div></div></div>
+          <!-- RBAC Permissions Matrix -->
+          <div class="card" style="grid-column:1/-1">
+            <h3 class="card-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <span data-i18n="rbac.title">Permisos por Rol (RBAC)</span>
+            </h3>
+            <div id="rbacMatrix"></div>
+          </div>
+          <div class="card" style="grid-column:1/-1"><h3 class="card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>Cumplimiento ISO 27001:2022</h3>
+            <table class="data-table"><thead><tr><th>Control</th><th>Norma</th><th>Descripción</th><th>Estado</th></tr></thead><tbody>
+              <tr><td class="text-accent">A.9.3.1</td><td>Autenticación</td><td>Uso de información de autenticación secreta (SHA-256 + salt)</td><td><span class="status-badge ok">Implementado</span></td></tr>
+              <tr><td class="text-accent">A.9.4.1</td><td>Acceso</td><td>Restricción de acceso a la información por rol</td><td><span class="status-badge ok">Implementado</span></td></tr>
+              <tr><td class="text-accent">A.9.4.2</td><td>Sesión</td><td>Procedimientos seguros de inicio de sesión + lockout</td><td><span class="status-badge ok">Implementado</span></td></tr>
+              <tr><td class="text-accent">A.9.4.3</td><td>Contraseñas</td><td>Sistema de gestión y validación de contraseñas</td><td><span class="status-badge ok">Implementado</span></td></tr>
+              <tr><td class="text-accent">A.12.4.1</td><td>Auditoría</td><td>Registro de eventos con timestamps</td><td><span class="status-badge ok">Implementado</span></td></tr>
+              <tr><td class="text-accent">A.14.1.2</td><td>CSRF</td><td>Protección Cross-Site Request Forgery por token</td><td><span class="status-badge ok">Implementado</span></td></tr>
+            </tbody></table></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Sidebar Overlay for mobile -->
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+  <!-- Modal -->
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-header"><h3 id="modalTitle">Modal</h3><button class="modal-close" onclick="closeModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- Session Timeout Warning -->
+  <div class="timeout-overlay" id="timeoutOverlay">
+    <div class="timeout-modal">
+      <div class="timeout-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" width="48" height="48" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <h3 id="timeoutTitle" data-i18n="timeout.title">Sesión por expirar</h3>
+      <p id="timeoutMsg" style="color:var(--text-muted);font-size:.85rem;margin:.5rem 0 .3rem"></p>
+      <div class="timeout-countdown" id="timeoutCountdown">02:00</div>
+      <div class="timeout-bar"><div class="timeout-bar-fill" id="timeoutBarFill"></div></div>
+      <div style="display:flex;gap:.5rem;margin-top:1rem">
+        <button class="btn-secondary" onclick="handleLogout()" data-i18n="nav.logout">Cerrar Sesión</button>
+        <button class="btn-primary" onclick="extendSession()" data-i18n="timeout.extend">Extender Sesión</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Speed Dial FAB -->
+  <div class="fab-container" id="fabContainer">
+    <div class="fab-actions">
+      <a class="fab-action" href="../dashboard_unificado.html" data-label-es="Dashboard Unificado" data-label-en="Unified Dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      </a>
+      <button class="fab-action" onclick="exportPDF()" data-label-es="Exportar PDF" data-label-en="Export PDF">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      </button>
+      <a class="fab-action" href="index.html" data-label-es="Volver al Login" data-label-en="Back to Login">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </a>
+    </div>
+    <button class="fab-main" id="fabMain" aria-label="Quick Actions">
+      <svg class="fab-icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="26" height="26" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      <svg class="fab-icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="26" height="26" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+
+  <!-- ═══ FOOTER BAR ═══ -->
+  <footer style="display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;padding:8px 2rem;margin-bottom:8px;background:var(--bg-sidebar,#0f172a);border-top:1px solid var(--border,#1e293b);z-index:100;">
+    <div style="font-size:0.7rem;color:var(--text-muted,#94a3b8);text-align:center;line-height:1.4;opacity:.85;">Este tablero presenta datos reales obtenidos del portal de datos abiertos del BCIE. Los resultados observados y obtenidos aquí no representan un compromiso financiero por el BCIE, es un desarrollo académico.</div>
+    <div style="font-size:0.7rem;color:var(--text-muted,#94a3b8);text-align:center;line-height:1.4;opacity:.85;">&copy; 2026 · UNIR–BCIE · Trabajo de Colaboración Académica · Proyecto Final de Máster · Equipo 03-D · Desarrollado por Edgar García, Norman Sabillón y Wilson Aguilar · Todos los derechos reservados.</div>
+  </footer>
+
+  <script src="admin.js"></script>
+</body>
+</html>

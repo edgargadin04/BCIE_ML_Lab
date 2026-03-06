@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="BCIE ML Lab — Sistema de Autenticación Segura ISO 27001">
+  <meta name="robots" content="noindex, nofollow">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <title>BCIE ML Lab — Iniciar Sesión</title>
+  <link rel="stylesheet" href="style.css">
+  <script>
+    window.addEventListener("pageshow", function (event) {
+      if (event.persisted) window.location.reload();
+    });
+  </script>
+</head>
+<body>
+
+  <!-- ============================================ -->
+  <!--  LOGIN SCREEN                                -->
+  <!-- ============================================ -->
+  <div class="login-container">
+
+    <!-- Left Panel — Brand -->
+    <div class="brand-panel">
+      <div class="brand-content">
+        <div class="brand-logo">
+          <div class="logo-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <h1 class="brand-title">BCIE ML Lab</h1>
+          <p class="brand-subtitle">Laboratorio de Machine Learning</p>
+        </div>
+
+        <ul class="brand-features">
+          <li>
+            <div class="feature-icon security">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+            </div>
+            <div class="feature-text">
+              <h4>Seguro</h4>
+              <p>Hashing SHA-256 con salt único</p>
+            </div>
+          </li>
+          <li>
+            <div class="feature-icon speed">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                <path d="M9 12l2 2 4-4"/>
+              </svg>
+            </div>
+            <div class="feature-text">
+              <h4>Protección Anti-fuerza Bruta</h4>
+              <p>Bloqueo tras 5 intentos fallidos</p>
+            </div>
+          </li>
+          <li>
+            <div class="feature-icon compliance">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+                <polyline points="10 9 9 9 8 9"/>
+              </svg>
+            </div>
+            <div class="feature-text">
+              <h4>ISO 27001 Compliant</h4>
+              <p>Controles A.9.3, A.9.4, A.12.4</p>
+            </div>
+          </li>
+          <li>
+            <div class="feature-icon audit">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="20" x2="18" y2="10"/>
+                <line x1="12" y1="20" x2="12" y2="4"/>
+                <line x1="6" y1="20" x2="6" y2="14"/>
+              </svg>
+            </div>
+            <div class="feature-text">
+              <h4>Auditoría en Tiempo Real</h4>
+              <p>Registro completo de eventos de acceso</p>
+            </div>
+          </li>
+        </ul>
+
+        <div class="iso-badge">
+          <span class="dot"></span>
+          <span>ISO 27001:2022 · A.9 Access Control</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Panel — Login Form -->
+    <div class="form-panel">
+      <div class="form-wrapper">
+
+        <!-- Session expired notice -->
+        <div class="session-notice" id="sessionNotice">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 6px;">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+          Tu sesión ha expirado por inactividad. Ingresa nuevamente.
+        </div>
+
+        <!-- Header -->
+        <div class="form-header">
+          <h1>Iniciar Sesión</h1>
+          <p>Accede al Laboratorio de Machine Learning del BCIE</p>
+        </div>
+
+        <!-- Alert messages -->
+        <div class="alert" id="loginAlert" role="alert"></div>
+
+        <!-- Lockout timer -->
+        <div class="lockout-timer" id="lockoutTimer">
+          <div class="lock-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="48" height="48">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 9.9-1"/>
+            </svg>
+          </div>
+          <h3>Cuenta Temporalmente Bloqueada</h3>
+          <p>Demasiados intentos fallidos. Por seguridad, espera antes de intentar nuevamente.</p>
+          <div class="countdown" id="lockoutCountdown">5:00</div>
+        </div>
+
+        <!-- Login Form -->
+        <form id="loginForm" autocomplete="off" novalidate>
+          <div id="loginFormFields">
+
+            <!-- Username -->
+            <div class="form-group">
+              <label for="username">Usuario</label>
+              <div class="input-wrapper">
+                <span class="input-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                  </svg>
+                </span>
+                <input 
+                  type="text" 
+                  id="username" 
+                  name="username"
+                  placeholder="Ingresa tu usuario"
+                  autocomplete="username"
+                  spellcheck="false"
+                  required
+                  maxlength="50"
+                >
+              </div>
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+              <label for="password">Contraseña</label>
+              <div class="input-wrapper">
+                <span class="input-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                  </svg>
+                </span>
+                <input 
+                  type="password" 
+                  id="password" 
+                  name="password"
+                  placeholder="Ingresa tu contraseña"
+                  autocomplete="current-password"
+                  required
+                  minlength="6"
+                  maxlength="128"
+                >
+                <button type="button" class="toggle-password" id="togglePwd" aria-label="Mostrar contraseña">
+                  <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                    <circle cx="12" cy="12" r="3"/>
+                  </svg>
+                  <svg class="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" style="display:none">
+                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                    <line x1="1" y1="1" x2="23" y2="23"/>
+                  </svg>
+                </button>
+              </div>
+              <!-- Password Strength Meter -->
+              <div class="password-strength" id="passwordStrength">
+                <div class="strength-bar">
+                  <div class="fill" id="strengthFill"></div>
+                </div>
+                <span class="strength-text" id="strengthText"></span>
+              </div>
+            </div>
+
+            <!-- Options -->
+            <div class="form-options">
+              <label class="checkbox-wrapper">
+                <input type="checkbox" id="rememberMe">
+                <span>Recordarme</span>
+              </label>
+              <a href="#" class="forgot-link" onclick="alert('Contacta al administrador del sistema.'); return false;">
+                ¿Olvidaste tu contraseña?
+              </a>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="btn-login" id="loginBtn">
+              <span class="btn-text">Iniciar Sesión</span>
+              <div class="spinner"></div>
+            </button>
+          </div>
+        </form>
+
+        <!-- Security footer -->
+        <div class="security-footer">
+          <div class="security-badges">
+            <span class="sec-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+              TLS 1.3
+            </span>
+            <span class="sec-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+              SHA-256
+            </span>
+            <span class="sec-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+              </svg>
+              Session Timeout
+            </span>
+            <span class="sec-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+              </svg>
+              Audit Trail
+            </span>
+          </div>
+        </div>
+
+        <div class="login-footer">
+          Este tablero presenta datos reales del portal de datos abiertos del BCIE. Los resultados no representan un compromiso financiero, es un desarrollo académico.<br>
+          &copy; 2026 | UNIR–BCIE | Trabajo de Colaboración Académica | Proyecto Final de Máster | Equipo 03-D | Desarrollado por Edgar García, Norman Sabillón y Wilson Aguilar | Todos los derechos reservados.
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!--  DASHBOARD (Post-Login)                      -->
+  <!-- ============================================ -->
+  <div class="dashboard-container" id="dashboard">
+    <!-- Navigation -->
+    <nav class="dash-nav">
+      <div class="nav-brand">
+        <div class="mini-logo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+            <line x1="18" y1="20" x2="18" y2="10"/>
+            <line x1="12" y1="20" x2="12" y2="4"/>
+            <line x1="6" y1="20" x2="6" y2="14"/>
+          </svg>
+        </div>
+        <span>BCIE ML Lab</span>
+      </div>
+      <div class="nav-user">
+        <div class="user-info">
+          <div class="name" id="navUserName">—</div>
+          <div class="role" id="navUserRole">—</div>
+        </div>
+        <button class="btn-logout" id="logoutBtn">Cerrar Sesión</button>
+      </div>
+    </nav>
+
+    <!-- Content -->
+    <div class="dash-content">
+      <div class="welcome-card">
+        <h2>Bienvenido, <span id="dashUserName">—</span></h2>
+        <p>Rol: <strong id="dashUserRole">—</strong> · Sesión activa y protegida</p>
+
+        <div class="session-info-grid">
+          <div class="session-card">
+            <div class="label">Session ID</div>
+            <div class="value" id="dashSessionId">—</div>
+          </div>
+          <div class="session-card">
+            <div class="label">Inicio de Sesión</div>
+            <div class="value" id="dashLoginTime">—</div>
+          </div>
+          <div class="session-card">
+            <div class="label">Expira</div>
+            <div class="value" id="dashExpires">—</div>
+          </div>
+          <div class="session-card">
+            <div class="label">CSRF Token</div>
+            <div class="value" id="dashCSRF">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Security Compliance Table -->
+      <div style="background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 1px 3px rgba(10,22,40,0.08);">
+        <h3 style="margin-bottom: 1rem; color: #1A2332; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#105682" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
+          Controles de Seguridad ISO 27001 Implementados
+        </h3>
+        <table style="width:100%; border-collapse:collapse; font-size: 0.85rem;">
+          <thead>
+            <tr style="text-align:left; border-bottom: 2px solid #D8DEE6;">
+              <th style="padding: 0.7rem 1rem; color: #5A6B7F; font-weight: 600;">Control ISO</th>
+              <th style="padding: 0.7rem 1rem; color: #5A6B7F; font-weight: 600;">Descripción</th>
+              <th style="padding: 0.7rem 1rem; color: #5A6B7F; font-weight: 600; text-align:center;">Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid #F0F4F8;">
+              <td style="padding: 0.7rem 1rem; font-weight:600; color: #105682;">A.9.3.1</td>
+              <td style="padding: 0.7rem 1rem;">Uso de información de autenticación secreta</td>
+              <td style="padding: 0.7rem 1rem; text-align:center;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg>
+              </td>
+            </tr>
+            <tr style="border-bottom: 1px solid #F0F4F8;">
+              <td style="padding: 0.7rem 1rem; font-weight:600; color: #105682;">A.9.4.1</td>
+              <td style="padding: 0.7rem 1rem;">Restricción de acceso a la información</td>
+              <td style="padding: 0.7rem 1rem; text-align:center;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg>
+              </td>
+            </tr>
+            <tr style="border-bottom: 1px solid #F0F4F8;">
+              <td style="padding: 0.7rem 1rem; font-weight:600; color: #105682;">A.9.4.2</td>
+              <td style="padding: 0.7rem 1rem;">Procedimientos seguros de inicio de sesión</td>
+              <td style="padding: 0.7rem 1rem; text-align:center;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg>
+              </td>
+            </tr>
+            <tr style="border-bottom: 1px solid #F0F4F8;">
+              <td style="padding: 0.7rem 1rem; font-weight:600; color: #105682;">A.9.4.3</td>
+              <td style="padding: 0.7rem 1rem;">Sistema de gestión de contraseñas</td>
+              <td style="padding: 0.7rem 1rem; text-align:center;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg>
+              </td>
+            </tr>
+            <tr style="border-bottom: 1px solid #F0F4F8;">
+              <td style="padding: 0.7rem 1rem; font-weight:600; color: #105682;">A.12.4.1</td>
+              <td style="padding: 0.7rem 1rem;">Registro de eventos (audit trail)</td>
+              <td style="padding: 0.7rem 1rem; text-align:center;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 0.7rem 1rem; font-weight:600; color: #105682;">A.14.1.2</td>
+              <td style="padding: 0.7rem 1rem;">Protección CSRF (Cross-Site Request Forgery)</td>
+              <td style="padding: 0.7rem 1rem; text-align:center;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!--  AUDIT LOG PANEL                             -->
+  <!-- ============================================ -->
+  <div class="audit-panel" id="auditPanel">
+    <div class="audit-header" id="auditHeader">
+      <h4>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" style="vertical-align: -2px; margin-right: 4px;">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+        </svg>
+        Audit Log (ISO 27001 A.12.4.1)
+      </h4>
+      <span class="toggle-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+          <polyline points="18 15 12 9 6 15"/>
+        </svg>
+      </span>
+    </div>
+    <div class="audit-body" id="auditBody">
+      <!-- Dynamic entries rendered here -->
+    </div>
+  </div>
+
+  <script src="auth.js"></script>
+</body>
+</html>
