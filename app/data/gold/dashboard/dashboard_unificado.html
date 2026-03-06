@@ -283,7 +283,7 @@
       /* ── SECTIONS ── */
       .section {
         display: none;
-        padding: 16px 20px;
+        padding: 30px;
         overflow-y: auto;
         overflow-x: hidden;
       }
@@ -298,9 +298,9 @@
       /* ── BENTO GRID (INICIO) ── */
       .bento {
         display: grid;
-        grid-template-columns: 200px 1fr 360px;
+        grid-template-columns: 400px 1fr 504px;
         grid-template-rows: 1fr 1fr 1fr;
-        gap: 12px;
+        gap: 20px;
         height: 100%;
         overflow: hidden;
       }
@@ -317,9 +317,13 @@
       .kpi-stack {
         display: flex;
         flex-direction: column;
-        gap: 12px;
+        gap: 20px;
         grid-row: 1/4;
         justify-content: stretch;
+        /* Override bento > * styles so each kpi-item is its own card */
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
       }
       .kpi-item {
         text-align: center;
@@ -399,7 +403,7 @@
         border-radius: var(--radius);
         border: 1px solid var(--border);
         padding: 16px;
-        overflow: visible;
+        overflow: hidden;
       }
 
       /* ── TABLES ── */
@@ -456,7 +460,7 @@
       .fc-tabs {
         display: flex;
         gap: 4px;
-        margin-bottom: 16px;
+        margin-bottom: 20px;
         background: rgba(255, 255, 255, 0.05);
         border-radius: 8px;
         padding: 3px;
@@ -484,17 +488,20 @@
       .fc-layout {
         display: grid;
         grid-template-columns: 220px 1fr;
-        gap: 16px;
+        gap: 20px;
+        width: 100%;
       }
       .fc-sidebar {
         display: flex;
         flex-direction: column;
-        gap: 12px;
+        gap: 20px;
       }
       .fc-main {
         display: flex;
         flex-direction: column;
-        gap: 16px;
+        gap: 20px;
+        min-width: 0;
+        width: 100%;
       }
       .kpi-card-sm {
         background: var(--bg-card);
@@ -523,7 +530,7 @@
         display: flex;
         flex-direction: column;
         gap: 8px;
-        overflow-y: auto;
+        overflow-y: hidden;
       }
       .traj-card {
         background: var(--bg-card-alt);
@@ -556,7 +563,7 @@
       .cl-tabs {
         display: flex;
         gap: 4px;
-        margin-bottom: 16px;
+        margin-bottom: 20px;
         flex-wrap: wrap;
         background: rgba(255, 255, 255, 0.05);
         border-radius: 8px;
@@ -584,8 +591,8 @@
       }
       .cl-metrics {
         display: flex;
-        gap: 16px;
-        margin-bottom: 16px;
+        gap: 20px;
+        margin-bottom: 20px;
       }
       .cl-metric {
         background: var(--bg-card);
@@ -637,7 +644,7 @@
         font-size: 14px;
         font-weight: 700;
         color: var(--text-dark);
-        margin: 8px 0;
+        margin: 0 0 20px 0;
       }
       .table-wrapper {
         background: var(--bg-card);
@@ -665,7 +672,7 @@
         align-items: center;
         gap: 5px;
         padding: 8px 2rem;
-        margin-bottom: 8px;
+        margin-bottom: 0;
         background: var(--bg-sidebar);
         border-top: 1px solid var(--border);
         position: relative;
@@ -1032,7 +1039,6 @@
               <div id="chart-evolucion" style="width: 100%; height: 100%"></div>
             </div>
 
-            <!-- Tabla Detalle Anual (derecha, span 3 rows) -->
             <div class="annual-panel">
               <div class="annual-title">Detalle Anual</div>
               <div class="annual-scroll">
@@ -1040,10 +1046,10 @@
                   <thead>
                     <tr>
                       <th>Año</th>
-                      <th>Monto</th>
-                      <th>Cant.</th>
-                      <th>Prom. Aprob.</th>
-                      <th>Var. YoY</th>
+                      <th style="text-align:right">Monto</th>
+                      <th style="text-align:center">Cant.</th>
+                      <th style="text-align:right;white-space:normal;max-width:100px;line-height:1.2">Promedio por<br>Aprobación</th>
+                      <th style="text-align:right;white-space:normal;max-width:120px;line-height:1.2">Variación YoY<br>(Monto / Cantidad)</th>
                     </tr>
                   </thead>
                   <tbody id="annual-tbody"></tbody>
@@ -1051,78 +1057,60 @@
               </div>
             </div>
 
-            <!-- Distribución Sector + Tipo Socio (centro medio) -->
+            <!-- Distribución Sector + Tipo Socio side by side in row 2 -->
             <div
-              class="chart-card"
               style="
                 grid-column: 2;
                 grid-row: 2;
                 display: flex;
-                gap: 12px;
-                padding: 12px;
+                gap: 20px;
+                background: transparent;
+                border: none;
+                padding: 0;
               "
             >
+              <!-- Frame 1: Sector Institucional -->
               <div
+                class="chart-card"
                 style="
-                  flex: 1.2;
+                  flex: 1.4;
                   display: flex;
-                  flex-direction: column;
-                  min-width: 0;
+                  flex-direction: row;
+                  align-items: stretch;
+                  padding: 12px;
+                  margin: 0;
                 "
               >
-                <div
-                  class="section-title"
-                  style="font-size: 12px; margin-bottom: 4px"
-                >
-                  Sector Institucional
-                </div>
-                <div
-                  style="
-                    display: flex;
-                    flex: 1;
-                    min-height: 0;
-                    gap: 4px;
-                    align-items: center;
-                  "
-                >
+                <div style="display:flex;flex-direction:column;flex:2;min-height:0">
                   <div
-                    id="chart-donut-monto"
-                    style="flex: 1; height: 100%"
-                  ></div>
-                  <div
-                    class="sector-legend"
-                    style="font-size: 10px; min-width: 120px"
+                    class="section-title"
+                    style="font-size: 12px; margin-bottom: 6px"
                   >
-                    <div class="sector-item">
-                      <div class="sector-name"><strong>Privado</strong></div>
-                      <div class="sector-val">
-                        Monto: <span class="text-accent">$38.9B</span>
-                      </div>
-                      <div class="sector-val">Cantidad: 273</div>
-                    </div>
-                    <div class="sector-item" style="margin-top: 6px">
-                      <div class="sector-name"><strong>Público</strong></div>
-                      <div class="sector-val">
-                        Monto: <span class="text-accent">$18.5B</span>
-                      </div>
-                      <div class="sector-val">Cantidad: 97</div>
-                    </div>
+                    Distribución por Sector Institucional
                   </div>
-                  <div
-                    id="chart-donut-cant"
-                    style="flex: 1; height: 100%"
-                  ></div>
+                  <div style="display:flex;flex:1;min-height:0;gap:0">
+                    <div
+                      id="chart-donut-monto"
+                      style="flex: 1; min-height: 0"
+                    ></div>
+                    <div
+                      id="chart-donut-cant"
+                      style="flex: 1; min-height: 0"
+                    ></div>
+                  </div>
                 </div>
+                <div id="leg-sec" style="flex:0 0 210px;overflow-y:auto;padding-left:8px;display:flex;align-items:center"></div>
               </div>
+
+              <!-- Frame 2: Tipo de Socio -->
               <div
-                style="width: 1px; background: var(--border); margin: 0 4px"
-              ></div>
-              <div
+                class="chart-card"
                 style="
                   flex: 0.8;
                   display: flex;
                   flex-direction: column;
-                  min-width: 0;
+                  padding: 12px;
+                  margin: 0;
                 "
               >
                 <div
@@ -1135,7 +1123,7 @@
               </div>
             </div>
 
-            <!-- Participación por País (centro abajo) -->
+            <!-- Participación por País (centro fila 3) -->
             <div class="chart-card" style="grid-column: 2; grid-row: 3">
               <div
                 class="section-title"
@@ -2034,17 +2022,17 @@
             <span>Modelos de Clustering</span>
             <div style="display:flex;gap:6px">
               <button id="btn-cl-individual" class="cl-tab active" onclick="toggleClView('individual')" style="font-size:11px;padding:4px 12px">
-                📑 Individual
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg> Individual
               </button>
               <button id="btn-cl-lab" class="cl-tab" onclick="toggleClView('lab')" style="font-size:11px;padding:4px 12px">
-                🔬 Lab View
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M9 3h6v11l4 4H5l4-4z"/><line x1="12" y1="3" x2="12" y2="7"/><line x1="5" y1="21" x2="19" y2="21"/></svg> Lab View
               </button>
             </div>
           </div>
 
           <!-- ─── LAB VIEW: All models side-by-side ─── -->
           <div id="cl-lab-view" style="display:none">
-            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px">
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:16px">
               <div class="chart-card" style="padding:10px" data-lab-model="dbscan">
                 <div style="font-weight:700;font-size:12px;color:#06b6d4;margin-bottom:4px">DBSCAN</div>
                 <div style="display:flex;gap:8px;font-size:10px;color:var(--text-muted);margin-bottom:6px">
@@ -2052,7 +2040,7 @@
                   <span>K: <strong style="color:#22c55e">3</strong></span>
                   <span>DBI: <strong style="color:var(--text-light)">0.701</strong></span>
                 </div>
-                <div id="lab-scatter-dbscan" style="width:100%;height:200px"></div>
+                <div id="lab-scatter-dbscan" style="width:100%;height:220px"></div>
               </div>
               <div class="chart-card" style="padding:10px" data-lab-model="gmm">
                 <div style="font-weight:700;font-size:12px;color:#a855f7;margin-bottom:4px">GMM</div>
@@ -2061,7 +2049,7 @@
                   <span>K: <strong style="color:#22c55e">3</strong></span>
                   <span>DBI: <strong style="color:var(--text-light)">0.792</strong></span>
                 </div>
-                <div id="lab-scatter-gmm" style="width:100%;height:200px"></div>
+                <div id="lab-scatter-gmm" style="width:100%;height:220px"></div>
               </div>
               <div class="chart-card" style="padding:10px" data-lab-model="hdbscan">
                 <div style="font-weight:700;font-size:12px;color:#f59e0b;margin-bottom:4px">HDBSCAN</div>
@@ -2070,7 +2058,7 @@
                   <span>K: <strong style="color:#f59e0b">14</strong></span>
                   <span>DBI: <strong style="color:var(--text-light)">1.943</strong></span>
                 </div>
-                <div id="lab-scatter-hdbscan" style="width:100%;height:200px"></div>
+                <div id="lab-scatter-hdbscan" style="width:100%;height:220px"></div>
               </div>
               <div class="chart-card" style="padding:10px" data-lab-model="hierarchical">
                 <div style="font-weight:700;font-size:12px;color:#14b8a6;margin-bottom:4px">Hierarchical</div>
@@ -2079,16 +2067,16 @@
                   <span>K: <strong style="color:#22c55e">4</strong></span>
                   <span>DBI: <strong style="color:var(--text-light)">0.777</strong></span>
                 </div>
-                <div id="lab-scatter-hierarchical" style="width:100%;height:200px"></div>
+                <div id="lab-scatter-hierarchical" style="width:100%;height:220px"></div>
               </div>
               <div class="chart-card" style="padding:10px" data-lab-model="kmeans">
-                <div style="font-weight:700;font-size:12px;color:#22c55e;margin-bottom:4px">KMeans ⭐</div>
+                <div style="font-weight:700;font-size:12px;color:#22c55e;margin-bottom:4px">KMeans <svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:1px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
                 <div style="display:flex;gap:8px;font-size:10px;color:var(--text-muted);margin-bottom:6px">
                   <span>Sil: <strong style="color:var(--text-light)">0.565</strong></span>
                   <span>K: <strong style="color:#22c55e">4</strong></span>
                   <span>DBI: <strong style="color:var(--text-light)">0.587</strong></span>
                 </div>
-                <div id="lab-scatter-kmeans" style="width:100%;height:200px"></div>
+                <div id="lab-scatter-kmeans" style="width:100%;height:220px"></div>
               </div>
               <div class="chart-card" style="padding:10px" data-lab-model="kmedoids">
                 <div style="font-weight:700;font-size:12px;color:#ec4899;margin-bottom:4px">KMedoids</div>
@@ -2097,7 +2085,7 @@
                   <span>K: <strong style="color:#22c55e">4</strong></span>
                   <span>DBI: <strong style="color:var(--text-light)">0.587</strong></span>
                 </div>
-                <div id="lab-scatter-kmedoids" style="width:100%;height:200px"></div>
+                <div id="lab-scatter-kmedoids" style="width:100%;height:220px"></div>
               </div>
               <div class="chart-card" style="padding:10px" data-lab-model="mixed">
                 <div style="font-weight:700;font-size:12px;color:#eab308;margin-bottom:4px">Mixed (Composite)</div>
@@ -2106,17 +2094,17 @@
                   <span>K: <strong style="color:#22c55e">3</strong></span>
                   <span>DBI: <strong style="color:#22c55e">0.230</strong></span>
                 </div>
-                <div id="lab-scatter-mixed" style="width:100%;height:200px"></div>
+                <div id="lab-scatter-mixed" style="width:100%;height:220px"></div>
               </div>
               <!-- Summary card -->
               <div class="chart-card" style="padding:14px;display:flex;flex-direction:column;justify-content:center">
-                <div style="font-weight:700;font-size:13px;color:var(--accent);margin-bottom:10px">📊 Resumen Lab</div>
+                <div style="font-weight:700;font-size:13px;color:var(--accent);margin-bottom:10px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> Resumen Lab</div>
                 <div style="font-size:11px;color:var(--text-light);line-height:1.7">
-                  <div>🥇 <strong style="color:#22c55e">Mixed</strong> — Mejor Sil (0.830) & DBI (0.230)</div>
-                  <div>🥈 <strong style="color:#06b6d4">DBSCAN</strong> — Mejor Sil unitario (0.591)</div>
-                  <div>🥉 <strong style="color:#14b8a6">KMeans</strong> — Más estable (0.998)</div>
+                  <div><svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/><text x="12" y="11" text-anchor="middle" fill="#f59e0b" stroke="none" font-size="8" font-weight="bold">1</text></svg> <strong style="color:#22c55e">Mixed</strong> — Mejor Sil (0.830) & DBI (0.230)</div>
+                  <div><svg viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/><text x="12" y="11" text-anchor="middle" fill="#94a3b8" stroke="none" font-size="8" font-weight="bold">2</text></svg> <strong style="color:#06b6d4">DBSCAN</strong> — Mejor Sil unitario (0.591)</div>
+                  <div><svg viewBox="0 0 24 24" fill="none" stroke="#cd7f32" stroke-width="2" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/><text x="12" y="11" text-anchor="middle" fill="#cd7f32" stroke="none" font-size="8" font-weight="bold">3</text></svg> <strong style="color:#14b8a6">KMeans</strong> — Más estable (0.998)</div>
                   <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);color:var(--text-muted);font-size:10px">
-                    ✅ Recomendación: <strong style="color:#22c55e">KMeans K=4</strong> para segmentación operativa. Mixed para validación.
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Recomendación: <strong style="color:#22c55e">KMeans K=4</strong> para segmentación operativa. Mixed para validación.
                   </div>
                 </div>
               </div>
@@ -2175,7 +2163,7 @@
                 class="section-title"
                 style="font-size: 13px; margin-bottom: 8px"
               >
-                📋 Perfil de Clusters — DBSCAN
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg> Perfil de Clusters — DBSCAN
               </div>
               <div
                 style="
@@ -2196,7 +2184,7 @@
                   <div
                     style="font-weight: 700; color: #06b6d4; margin-bottom: 4px"
                   >
-                    🟢 Tier A — Regular
+                    <svg viewBox="0 0 24 24" fill="#22c55e" width="12" height="12" style="display:inline-block;vertical-align:middle;margin-right:3px"><circle cx="12" cy="12" r="10"/></svg> Tier A — Regular
                   </div>
                   <div style="color: var(--text-light)">
                     499 operaciones · ~$30M USD promedio
@@ -2222,7 +2210,7 @@
                   <div
                     style="font-weight: 700; color: #f59e0b; margin-bottom: 4px"
                   >
-                    🟡 Tier B — High Value
+                    <svg viewBox="0 0 24 24" fill="#f59e0b" width="12" height="12" style="display:inline-block;vertical-align:middle;margin-right:3px"><circle cx="12" cy="12" r="10"/></svg> Tier B — High Value
                   </div>
                   <div style="color: var(--text-light)">
                     12 operaciones · ~$65M USD promedio
@@ -2249,7 +2237,7 @@
                   <div
                     style="font-weight: 700; color: #a855f7; margin-bottom: 4px"
                   >
-                    🟣 Tier C — Low Value
+                    <svg viewBox="0 0 24 24" fill="#a855f7" width="12" height="12" style="display:inline-block;vertical-align:middle;margin-right:3px"><circle cx="12" cy="12" r="10"/></svg> Tier C — Low Value
                   </div>
                   <div style="color: var(--text-light)">
                     14 operaciones · ~$441K USD promedio
@@ -2298,7 +2286,7 @@
                 class="section-title"
                 style="font-size: 13px; margin-bottom: 8px"
               >
-                📋 Perfil — GMM (Gaussian Mixture Model)
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg> Perfil — GMM (Gaussian Mixture Model)
               </div>
               <div
                 style="
@@ -2347,7 +2335,7 @@
                 class="section-title"
                 style="font-size: 13px; margin-bottom: 8px"
               >
-                📋 Perfil — HDBSCAN
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg> Perfil — HDBSCAN
               </div>
               <div
                 style="
@@ -2356,7 +2344,7 @@
                   line-height: 1.6;
                 "
               >
-                ⚠️ Detecta
+                <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Detecta
                 <strong style="color: #f59e0b">14 micro-clusters</strong> con
                 <strong style="color: #ef4444">26.7% de ruido</strong>. Útil
                 para encontrar nichos muy específicos pero difícil de
@@ -2396,7 +2384,7 @@
                 class="section-title"
                 style="font-size: 13px; margin-bottom: 8px"
               >
-                📋 Perfil — Hierarchical (Ward)
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg> Perfil — Hierarchical (Ward)
               </div>
               <div
                 style="
@@ -2444,7 +2432,7 @@
                 class="section-title"
                 style="font-size: 13px; margin-bottom: 8px"
               >
-                📋 Perfil — KMeans
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg> Perfil — KMeans
               </div>
               <div
                 style="
@@ -2459,7 +2447,7 @@
                 interpretable para negocio con 4 grupos balanceados. Estabilidad
                 perfecta (0.998≈1.00).
                 <strong style="color: #22c55e"
-                  >✅ Recomendado para segmentación operativa.</strong
+                  ><svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Recomendado para segmentación operativa.</strong
                 >
               </div>
             </div>
@@ -2495,7 +2483,7 @@
                 class="section-title"
                 style="font-size: 13px; margin-bottom: 8px"
               >
-                📋 Perfil — KMedoids
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg> Perfil — KMedoids
               </div>
               <div
                 style="
@@ -2544,7 +2532,7 @@
                 class="section-title"
                 style="font-size: 13px; margin-bottom: 8px"
               >
-                📋 Perfil — Mixed (Composite)
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg> Perfil — Mixed (Composite)
               </div>
               <div
                 style="
@@ -2553,7 +2541,7 @@
                   line-height: 1.6;
                 "
               >
-                ⚠️ Mejor Silhouette (<strong style="color: #22c55e"
+                <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Mejor Silhouette (<strong style="color: #22c55e"
                   >0.830</strong
                 >) y mejor DBI (<strong style="color: #22c55e">0.230</strong>)
                 de todos los modelos, pero
@@ -2571,76 +2559,76 @@
 
         <!-- ═══════════ CROSS-VALIDATION ═══════════ -->
         <div class="section" id="sec-crossval">
-          <div class="section-title" style="font-size:16px;margin-bottom:12px">⚡ Cross-Validation de Forecasting (3–8 Folds)</div>
+          <div class="section-title" style="font-size:16px;margin-bottom:12px"><svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Cross-Validation de Forecasting (3–8 Folds)</div>
           <div class="chart-card" style="padding:24px">
-            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px">
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:20px">
               <div style="background:var(--bg-card-alt);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center">
                 <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px">Prophet</div>
                 <div style="font-size:28px;font-weight:800;color:#06b6d4;margin:4px 0">275.0%</div>
                 <div style="font-size:11px;color:var(--text-muted)">Mejor MAPE (6-fold) · v1.3</div>
-                <div style="font-size:10px;color:#22c55e;margin-top:4px">✅ 5 países · scaling=minmax</div>
+                <div style="font-size:10px;color:#22c55e;margin-top:4px"><svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> 5 países · scaling=minmax</div>
               </div>
               <div style="background:var(--bg-card-alt);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center">
                 <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px">NeuralProphet</div>
                 <div style="font-size:28px;font-weight:800;color:#a855f7;margin:4px 0">186.7%</div>
                 <div style="font-size:11px;color:var(--text-muted)">Mejor MAPE (8-fold) · LR=0.01</div>
-                <div style="font-size:10px;color:#22c55e;margin-top:4px">✅ 5 países · trend mode</div>
+                <div style="font-size:10px;color:#22c55e;margin-top:4px"><svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> 5 países · trend mode</div>
               </div>
               <div style="background:var(--bg-card-alt);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center">
                 <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px">StatsForecast</div>
                 <div style="font-size:28px;font-weight:800;color:#22c55e;margin:4px 0">183.3%</div>
                 <div style="font-size:11px;color:var(--text-muted)">Mejor MAPE (4-fold)</div>
-                <div style="font-size:10px;color:#22c55e;margin-top:4px">✅ AutoARIMA + Theta</div>
+                <div style="font-size:10px;color:#22c55e;margin-top:4px"><svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> AutoARIMA + Theta</div>
               </div>
               <div style="background:var(--bg-card-alt);border:1px solid #f59e0b55;border-radius:12px;padding:16px;text-align:center">
-                <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px">TimesFM 🏆</div>
+                <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px">TimesFM <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg></div>
                 <div style="font-size:28px;font-weight:800;color:#f59e0b;margin:4px 0">111.1%</div>
-                <div style="font-size:11px;color:var(--text-muted)">Mejor MAPE (4-fold) ⭐⭐</div>
-                <div style="font-size:10px;color:#22c55e;margin-top:4px">✅ GPU RTX 3060 · 934MB</div>
+                <div style="font-size:11px;color:var(--text-muted)">Mejor MAPE (4-fold) <svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:1px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:1px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+                <div style="font-size:10px;color:#22c55e;margin-top:4px"><svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> GPU RTX 3060 · 934MB</div>
               </div>
             </div>
             <div style="font-size:12px;color:var(--text-light);margin-bottom:16px">
-              <strong>Metodología:</strong> TimeSeriesSplit con K folds (K ∈ {3..8}). Modelos optimizados: Prophet v1.3 (minmax), NeuralProphet (LR=0.01, n_lags=3). <strong style="color:#f59e0b">🏆 = TimesFM gana todos los folds</strong>.
+              <strong>Metodología:</strong> TimeSeriesSplit con K folds (K ∈ {3..8}). Modelos optimizados: Prophet v1.3 (minmax), NeuralProphet (LR=0.01, n_lags=3). <strong style="color:#f59e0b"><svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg> = TimesFM gana todos los folds</strong>.
             </div>
             <table class="exec-table" style="font-size:12px">
-              <thead><tr><th>Fold</th><th>Train</th><th>Test</th><th>Prophet v1.3</th><th>NeuralProphet</th><th>StatsForecast</th><th style="color:#f59e0b">TimesFM 🏆</th></tr></thead>
+              <thead><tr><th>Fold</th><th>Train</th><th>Test</th><th>Prophet v1.3</th><th>NeuralProphet</th><th>StatsForecast</th><th style="color:#f59e0b">TimesFM <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg></th></tr></thead>
               <tbody>
-                <tr><td class="text-bold">3-fold</td><td>66%</td><td>33%</td><td>300.3%</td><td>322.7%</td><td>217.4%</td><td style="color:#f59e0b;font-weight:700">129.1% ⭐</td></tr>
-                <tr><td class="text-bold">4-fold</td><td>75%</td><td>25%</td><td>299.8%</td><td>383.8%</td><td>183.3%</td><td style="color:#f59e0b;font-weight:700">111.1% ⭐⭐</td></tr>
-                <tr><td class="text-bold">5-fold</td><td>80%</td><td>20%</td><td>292.0%</td><td>197.1%</td><td>263.7%</td><td style="color:#f59e0b;font-weight:700">166.7% ⭐</td></tr>
-                <tr><td class="text-bold">6-fold</td><td>83%</td><td>17%</td><td>275.0%</td><td>345.8%</td><td>210.4%</td><td style="color:#f59e0b;font-weight:700">159.2% ⭐</td></tr>
-                <tr><td class="text-bold">7-fold</td><td>86%</td><td>14%</td><td>278.9%</td><td>299.2%</td><td>239.1%</td><td style="color:#f59e0b;font-weight:700">182.4% ⭐</td></tr>
-                <tr><td class="text-bold">8-fold</td><td>87.5%</td><td>12.5%</td><td>281.2%</td><td>186.7%</td><td>247.0%</td><td style="color:#f59e0b;font-weight:700">169.3% ⭐</td></tr>
+                <tr><td class="text-bold">3-fold</td><td>66%</td><td>33%</td><td>300.3%</td><td>322.7%</td><td>217.4%</td><td style="color:#f59e0b;font-weight:700">129.1% <svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:1px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></td></tr>
+                <tr><td class="text-bold">4-fold</td><td>75%</td><td>25%</td><td>299.8%</td><td>383.8%</td><td>183.3%</td><td style="color:#f59e0b;font-weight:700">111.1% <svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:1px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:1px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></td></tr>
+                <tr><td class="text-bold">5-fold</td><td>80%</td><td>20%</td><td>292.0%</td><td>197.1%</td><td>263.7%</td><td style="color:#f59e0b;font-weight:700">166.7% <svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:1px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></td></tr>
+                <tr><td class="text-bold">6-fold</td><td>83%</td><td>17%</td><td>275.0%</td><td>345.8%</td><td>210.4%</td><td style="color:#f59e0b;font-weight:700">159.2% <svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:1px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></td></tr>
+                <tr><td class="text-bold">7-fold</td><td>86%</td><td>14%</td><td>278.9%</td><td>299.2%</td><td>239.1%</td><td style="color:#f59e0b;font-weight:700">182.4% <svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:1px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></td></tr>
+                <tr><td class="text-bold">8-fold</td><td>87.5%</td><td>12.5%</td><td>281.2%</td><td>186.7%</td><td>247.0%</td><td style="color:#f59e0b;font-weight:700">169.3% <svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:1px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></td></tr>
               </tbody>
             </table>
-            <div style="margin-top:12px;padding:12px;background:linear-gradient(135deg, #f59e0b11, #f59e0b05);border:1px solid #f59e0b33;border-radius:8px;font-size:11px;color:var(--text-light)">
-              🏆 <strong>Hallazgo:</strong> <strong style="color:#f59e0b">TimesFM gana 6 de 6 folds</strong> con MAPE mínimo de <strong>111.1%</strong> (4-fold). NeuralProphet (LR=0.01, trend mode) logra <strong>186.7%</strong> en 8-fold — supera a Prophet en la mayoría de folds. StatsForecast (AutoARIMA) es el modelo tradicional más estable. Ranking: TimesFM > StatsForecast > NeuralProphet > Prophet.
+            <div style="margin-top:20px;padding:14px 18px;background:linear-gradient(135deg, #f59e0b11, #f59e0b05);border:1px solid #f59e0b33;border-radius:8px;font-size:11px;color:var(--text-light);max-width:1200px;line-height:1.6">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg> <strong>Hallazgo:</strong> <strong style="color:#f59e0b">TimesFM gana 6 de 6 folds</strong> con MAPE mínimo de <strong>111.1%</strong> (4-fold). NeuralProphet (LR=0.01, trend mode) logra <strong>186.7%</strong> en 8-fold — supera a Prophet en la mayoría de folds. StatsForecast (AutoARIMA) es el modelo tradicional más estable. Ranking: TimesFM > StatsForecast > NeuralProphet > Prophet.
             </div>
           </div>
         </div>
 
         <!-- ═══════════ PARTICIONES ═══════════ -->
         <div class="section" id="sec-particiones">
-          <div class="section-title" style="font-size:16px;margin-bottom:12px">📊 Experimentación de Particiones (60/40 → 95/5)</div>
+          <div class="section-title" style="font-size:16px;margin-bottom:12px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> Experimentación de Particiones (60/40 → 95/5)</div>
           <div class="chart-card" style="padding:24px">
             <div style="font-size:12px;color:var(--text-light);margin-bottom:16px">
-              <strong>Objetivo:</strong> Determinar la proporción óptima train/test. Modelos optimizados (Prophet v1.3, NP LR=0.01). <strong style="color:#f59e0b">🏆 TimesFM gana TODAS las particiones</strong>.
+              <strong>Objetivo:</strong> Determinar la proporción óptima train/test. Modelos optimizados (Prophet v1.3, NP LR=0.01). <strong style="color:#f59e0b"><svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg> TimesFM gana TODAS las particiones</strong>.
             </div>
             <table class="exec-table" style="font-size:12px">
-              <thead><tr><th>Partición</th><th>Train</th><th>Test</th><th>Prophet v1.3</th><th>NeuralProphet</th><th>StatsForecast</th><th style="color:#f59e0b">TimesFM 🏆</th></tr></thead>
+              <thead><tr><th>Partición</th><th>Train</th><th>Test</th><th>Prophet v1.3</th><th>NeuralProphet</th><th>StatsForecast</th><th style="color:#f59e0b">TimesFM <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg></th></tr></thead>
               <tbody>
-                <tr><td class="text-bold">60/40</td><td>60%</td><td>40%</td><td>222.3%</td><td>387.6%</td><td>248.8%</td><td style="color:#f59e0b;font-weight:700">100.7% ⭐⭐</td></tr>
-                <tr><td class="text-bold">65/35</td><td>65%</td><td>35%</td><td>232.4%</td><td>119.2%</td><td>215.7%</td><td style="color:#f59e0b;font-weight:700">106.5% ⭐</td></tr>
-                <tr><td class="text-bold">70/30</td><td>70%</td><td>30%</td><td>342.9%</td><td>128.3%</td><td>431.7%</td><td style="color:#f59e0b;font-weight:700">127.6% ⭐</td></tr>
-                <tr><td class="text-bold">75/25</td><td>75%</td><td>25%</td><td>445.0%</td><td>242.1%</td><td>404.2%</td><td style="color:#f59e0b;font-weight:700">125.0% ⭐</td></tr>
-                <tr><td class="text-bold">80/20</td><td>80%</td><td>20%</td><td>550.3%</td><td>217.5%</td><td>501.1%</td><td style="color:#f59e0b;font-weight:700">267.6% ⭐</td></tr>
-                <tr><td class="text-bold">85/15</td><td>85%</td><td>15%</td><td>654.4%</td><td>751.1%</td><td>573.4%</td><td style="color:#f59e0b;font-weight:700">355.9% ⭐</td></tr>
-                <tr><td class="text-bold">90/10</td><td>90%</td><td>10%</td><td>854.3%</td><td>749.8%</td><td>632.7%</td><td style="color:#f59e0b;font-weight:700">492.5% ⭐</td></tr>
-                <tr><td class="text-bold">95/5</td><td>95%</td><td>5%</td><td>215.1%</td><td>112.5%</td><td>165.8%</td><td style="color:#f59e0b;font-weight:700">106.4% ⭐</td></tr>
+                <tr><td class="text-bold">60/40</td><td>60%</td><td>40%</td><td>222.3%</td><td>387.6%</td><td>248.8%</td><td style="color:#f59e0b;font-weight:700">100.7% <svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:1px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:1px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></td></tr>
+                <tr><td class="text-bold">65/35</td><td>65%</td><td>35%</td><td>232.4%</td><td>119.2%</td><td>215.7%</td><td style="color:#f59e0b;font-weight:700">106.5% <svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:1px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></td></tr>
+                <tr><td class="text-bold">70/30</td><td>70%</td><td>30%</td><td>342.9%</td><td>128.3%</td><td>431.7%</td><td style="color:#f59e0b;font-weight:700">127.6% <svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:1px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></td></tr>
+                <tr><td class="text-bold">75/25</td><td>75%</td><td>25%</td><td>445.0%</td><td>242.1%</td><td>404.2%</td><td style="color:#f59e0b;font-weight:700">125.0% <svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:1px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></td></tr>
+                <tr><td class="text-bold">80/20</td><td>80%</td><td>20%</td><td>550.3%</td><td>217.5%</td><td>501.1%</td><td style="color:#f59e0b;font-weight:700">267.6% <svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:1px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></td></tr>
+                <tr><td class="text-bold">85/15</td><td>85%</td><td>15%</td><td>654.4%</td><td>751.1%</td><td>573.4%</td><td style="color:#f59e0b;font-weight:700">355.9% <svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:1px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></td></tr>
+                <tr><td class="text-bold">90/10</td><td>90%</td><td>10%</td><td>854.3%</td><td>749.8%</td><td>632.7%</td><td style="color:#f59e0b;font-weight:700">492.5% <svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:1px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></td></tr>
+                <tr><td class="text-bold">95/5</td><td>95%</td><td>5%</td><td>215.1%</td><td>112.5%</td><td>165.8%</td><td style="color:#f59e0b;font-weight:700">106.4% <svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:1px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></td></tr>
               </tbody>
             </table>
-            <div style="margin-top:12px;padding:12px;background:linear-gradient(135deg, #f59e0b11, #f59e0b05);border:1px solid #f59e0b33;border-radius:8px;font-size:11px;color:var(--text-light)">
-              🏆 <strong>Hallazgo:</strong> <strong style="color:#f59e0b">TimesFM gana 8 de 8 particiones</strong>. Mejor resultado: <strong>100.7%</strong> (60/40). NeuralProphet destaca en 65/35 (119.2%) y 95/5 (112.5%) — competitivo con TimesFM. Ranking: 🥇 TimesFM (101-493%) > 🥈 NeuralProphet (112-751%) > 🥉 StatsForecast (166-633%) > Prophet (215-854%).
+            <div style="margin-top:20px;padding:14px 18px;background:linear-gradient(135deg, #f59e0b11, #f59e0b05);border:1px solid #f59e0b33;border-radius:8px;font-size:11px;color:var(--text-light);max-width:1200px;line-height:1.6">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg> <strong>Hallazgo:</strong> <strong style="color:#f59e0b">TimesFM gana 8 de 8 particiones</strong>. Mejor resultado: <strong>100.7%</strong> (60/40). NeuralProphet destaca en 65/35 (119.2%) y 95/5 (112.5%) — competitivo con TimesFM. Ranking: <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/><text x="12" y="11" text-anchor="middle" fill="#f59e0b" stroke="none" font-size="8" font-weight="bold">1</text></svg> TimesFM (101-493%) > <svg viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/><text x="12" y="11" text-anchor="middle" fill="#94a3b8" stroke="none" font-size="8" font-weight="bold">2</text></svg> NeuralProphet (112-751%) > <svg viewBox="0 0 24 24" fill="none" stroke="#cd7f32" stroke-width="2" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/><text x="12" y="11" text-anchor="middle" fill="#cd7f32" stroke="none" font-size="8" font-weight="bold">3</text></svg> StatsForecast (166-633%) > Prophet (215-854%).
             </div>
           </div>
         </div>
@@ -2648,10 +2636,10 @@
         <!-- ═══════════ DECISION PANEL (UNIFIED) ═══════════ -->
         <div class="section" id="sec-decision">
           <div class="section-title" style="font-size:16px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between">
-            <span>🎯 ¿Qué Modelo Usar? — Panel de Decisión Unificado</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> ¿Qué Modelo Usar? — Panel de Decisión Unificado</span>
             <div style="display:flex;gap:6px">
-              <button id="btn-dec-clustering" class="cl-tab active" onclick="toggleDecisionTab('clustering')" style="font-size:11px;padding:4px 14px">📊 Clustering</button>
-              <button id="btn-dec-forecasting" class="cl-tab" onclick="toggleDecisionTab('forecasting')" style="font-size:11px;padding:4px 14px">📈 Forecasting</button>
+              <button id="btn-dec-clustering" class="cl-tab active" onclick="toggleDecisionTab('clustering')" style="font-size:11px;padding:4px 14px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> Clustering</button>
+              <button id="btn-dec-forecasting" class="cl-tab" onclick="toggleDecisionTab('forecasting')" style="font-size:11px;padding:4px 14px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg> Forecasting</button>
             </div>
           </div>
 
@@ -2679,12 +2667,12 @@
             </div>
             <!-- Clustering Narrative -->
             <div class="chart-card" style="margin-top:16px;padding:20px">
-              <div class="section-title" style="font-size:14px;margin-bottom:12px">📝 Análisis Comparativo — ¿Cuál es mejor y por qué?</div>
+              <div class="section-title" style="font-size:14px;margin-bottom:12px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Análisis Comparativo — ¿Cuál es mejor y por qué?</div>
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;font-size:12px">
                 <div>
-                  <div style="font-weight:700;color:#22c55e;margin-bottom:8px">✅ Recomendados para Segmentación Operativa</div>
+                  <div style="font-weight:700;color:#22c55e;margin-bottom:8px"><svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Recomendados para Segmentación Operativa</div>
                   <div style="background:var(--bg-card-alt);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:8px">
-                    <strong style="color:#06b6d4">KMeans (K=4)</strong> — La opción más interpretable y estable (ARI=0.998). Produce 4 segmentos claros y balanceados. <span style="color:#22c55e">⭐ Primera elección para negocio.</span>
+                    <strong style="color:#06b6d4">KMeans (K=4)</strong> — La opción más interpretable y estable (ARI=0.998). Produce 4 segmentos claros y balanceados. <span style="color:#22c55e"><svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:1px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> Primera elección para negocio.</span>
                   </div>
                   <div style="background:var(--bg-card-alt);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:8px">
                     <strong style="color:#06b6d4">DBSCAN (K=3)</strong> — Detecta 3 tiers operativos claros (Regular/High Value/Low Value) + ruido controlado (13.9%). <span style="color:#22c55e">Ideal para clasificación por densidad.</span>
@@ -2694,7 +2682,7 @@
                   </div>
                 </div>
                 <div>
-                  <div style="font-weight:700;color:#f59e0b;margin-bottom:8px">⚠️ Uso Especializado</div>
+                  <div style="font-weight:700;color:#f59e0b;margin-bottom:8px"><svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Uso Especializado</div>
                   <div style="background:var(--bg-card-alt);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:8px">
                     <strong style="color:#f59e0b">HDBSCAN (K=14)</strong> — Demasiados micro-clusters con 26.7% de ruido. Difícil de operativizar. <span style="color:var(--text-muted)">→ Solo para detección de anomalías.</span>
                   </div>
@@ -2717,7 +2705,7 @@
                 <table class="exec-table">
                   <thead><tr><th>Modelo</th><th>MAPE</th><th>MAE (USD M)</th><th>RMSE (USD M)</th><th>R²</th><th>CV Best</th></tr></thead>
                   <tbody>
-                    <tr style="background:rgba(249,115,22,0.08)"><td class="text-bold">TimesFM 🏆</td><td style="color:#22c55e;font-weight:700">8.3%</td><td>12.4</td><td>18.7</td><td style="color:#22c55e">0.94</td><td style="color:#f59e0b">111.1%</td></tr>
+                    <tr style="background:rgba(249,115,22,0.08)"><td class="text-bold">TimesFM <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg></td><td style="color:#22c55e;font-weight:700">8.3%</td><td>12.4</td><td>18.7</td><td style="color:#22c55e">0.94</td><td style="color:#f59e0b">111.1%</td></tr>
                     <tr><td class="text-bold">StatsForecast</td><td>15.6%</td><td>23.1</td><td>31.2</td><td>0.87</td><td>183.3%</td></tr>
                     <tr><td class="text-bold">NeuralProphet</td><td>18.2%</td><td>27.0</td><td>35.8</td><td>0.83</td><td>246.1%</td></tr>
                     <tr><td class="text-bold">Prophet</td><td>22.1%</td><td>32.7</td><td>42.3</td><td>0.79</td><td>275.0%</td></tr>
@@ -2725,7 +2713,7 @@
                 </table>
               </div>
               <div class="chart-card" style="padding:16px">
-                <div style="font-weight:700;font-size:13px;color:var(--accent);margin-bottom:10px">🔬 Ranking de Modelos</div>
+                <div style="font-weight:700;font-size:13px;color:var(--accent);margin-bottom:10px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M9 3h6v11l4 4H5l4-4z"/><line x1="12" y1="3" x2="12" y2="7"/><line x1="5" y1="21" x2="19" y2="21"/></svg> Ranking de Modelos</div>
                 <div style="font-size:12px;color:var(--text-light);line-height:1.8">
                   <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
                     <span style="background:#f59e0b;color:#0f172a;font-size:10px;font-weight:800;padding:2px 8px;border-radius:4px">1°</span>
@@ -2747,7 +2735,7 @@
               </div>
             </div>
             <!-- Model Cards -->
-            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:16px">
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:20px">
               <div class="chart-card" style="padding:20px;text-align:center;border-top:3px solid #06b6d4">
                 <div style="font-size:13px;font-weight:700;color:#06b6d4;margin-bottom:8px">Prophet</div>
                 <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px">Facebook Prophet (GAM)</div>
@@ -2767,7 +2755,7 @@
                 <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px">Ensemble: AutoARIMA + Theta</div>
                 <div style="font-size:22px;font-weight:800;color:var(--text-light)">$3.0B</div>
                 <div style="font-size:10px;color:var(--text-muted)">Proyección 2026</div>
-                <div style="margin-top:8px;font-size:10px;padding:4px 8px;background:#22c55e22;color:#22c55e;border-radius:4px;display:inline-block">⭐ Producción</div>
+                <div style="margin-top:8px;font-size:10px;padding:4px 8px;background:#22c55e22;color:#22c55e;border-radius:4px;display:inline-block"><svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:1px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> Producción</div>
               </div>
               <div class="chart-card" style="padding:20px;text-align:center;border-top:3px solid #f59e0b">
                 <div style="font-size:13px;font-weight:700;color:#f59e0b;margin-bottom:8px">TimesFM</div>
@@ -2779,13 +2767,13 @@
             </div>
             <!-- Recommendation -->
             <div class="chart-card" style="padding:20px">
-              <div class="section-title" style="font-size:14px;margin-bottom:12px">📋 Recomendación del Laboratorio</div>
+              <div class="section-title" style="font-size:14px;margin-bottom:12px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg> Recomendación del Laboratorio</div>
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;font-size:12px">
                 <div>
                   <div style="background:var(--bg-card-alt);border-left:3px solid #22c55e;border-radius:0 8px 8px 0;padding:14px;margin-bottom:10px">
                     <strong style="color:#22c55e">Para Producción:</strong> <strong>StatsForecast</strong> — Ensemble robusto y conservador. Intervalos de confianza al 80%. La opción más segura para reportes financieros.
                   </div>
-                  <div style="background:var(--bg-card-alt);border-left:3px solid #f59e0b;border-radius:0 8px 8px 0;padding:14px">
+                  <div style="background:var(--bg-card-alt);border-left:3px solid #f59e0b;border-radius:0 8px 8px 0;padding:14px;line-height:1.6">
                     <strong style="color:#f59e0b">Para Exploración:</strong> <strong>TimesFM</strong> — MAPE &lt;30% en economías estables (Costa Rica). Representa el estado del arte en IA generativa para series temporales.
                   </div>
                 </div>
@@ -2793,8 +2781,8 @@
                   <div style="background:var(--bg-card-alt);border-left:3px solid #06b6d4;border-radius:0 8px 8px 0;padding:14px;margin-bottom:10px">
                     <strong style="color:#06b6d4">Para Interpretabilidad:</strong> <strong>Prophet</strong> — Descomposición clara en tendencia + estacionalidad + feriados. Ideal cuando el negocio necesita explicar las proyecciones.
                   </div>
-                  <div style="background:var(--bg-card-alt);border-left:3px solid #f59e0b;border-radius:0 8px 8px 0;padding:14px">
-                    <strong style="color:#f59e0b">⚠️ Nota:</strong> CV y particiones completadas para todos los modelos. NeuralProphet ejecutado en modo trend (sin n_lags) para predicción multi-paso. TimesFM usa GPU RTX 3060.
+                  <div style="background:var(--bg-card-alt);border-left:3px solid #f59e0b;border-radius:0 8px 8px 0;padding:14px;line-height:1.6">
+                    <strong style="color:#f59e0b"><svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Nota:</strong> CV y particiones completadas para todos los modelos. NeuralProphet ejecutado en modo trend (sin n_lags) para predicción multi-paso. TimesFM usa GPU RTX 3060.
                   </div>
                 </div>
               </div>
@@ -2858,12 +2846,19 @@
             setTimeout(() => {
               const el = document.getElementById("chart-forecast-" + name);
               if (el && CHARTS["forecast_" + name]) {
+                const fcParsed = JSON.parse(CHARTS["forecast_" + name]);
+                // H-04: Expand forecast chart to fill container
+                fcParsed.layout.margin = Object.assign(fcParsed.layout.margin || {}, { l: 60, r: 40, t: 40, b: 40 });
+                fcParsed.layout.autosize = true;
+                delete fcParsed.layout.width;
                 Plotly.react(
                   el,
-                  JSON.parse(CHARTS["forecast_" + name]).data,
-                  JSON.parse(CHARTS["forecast_" + name]).layout,
+                  fcParsed.data,
+                  fcParsed.layout,
                   { responsive: true },
                 );
+                // Force resize after render for full width
+                setTimeout(() => { try { Plotly.Plots.resize(el); } catch(e){} }, 100);
               }
             }, 50);
           }
@@ -2921,78 +2916,120 @@
                 applyPCA2D(parsed);
                 // Compact layout for mini charts
                 parsed.data.forEach(tr => { if(tr.marker) { tr.marker.size = 5; tr.showlegend = false; } });
-                parsed.layout.margin = { l: 30, r: 10, t: 10, b: 30 };
+                parsed.layout.margin = { l: 35, r: 20, t: 15, b: 30 };
                 parsed.layout.xaxis.title = { text: "PC1", font: { size: 9, color: "#64748b" } };
                 parsed.layout.yaxis.title = { text: "PC2", font: { size: 9, color: "#64748b" } };
                 parsed.layout.xaxis.tickfont = { size: 8 };
                 parsed.layout.yaxis.tickfont = { size: 8 };
                 parsed.layout.annotations = []; // No PCA badge in mini
+                // Ensure Y-axis minimum is at least -2 so points aren't clipped
+                if (parsed.layout.yaxis && parsed.layout.yaxis.range) {
+                  parsed.layout.yaxis.range[0] = Math.min(parsed.layout.yaxis.range[0], -2);
+                }
                 Plotly.react(el, parsed.data, parsed.layout, { responsive: true, displayModeBar: false });
               }
             });
             labRendered = true;
           }
 
-          // Populate annual table from chart data
+          // Correct yearly data (sums by year) from preview dashboard
+          const dYear = [
+            {Año:1961,Monto:275000,Cantidad:1,Var_YOY:null,Var_YOY_Cant:null},
+            {Año:1962,Monto:3238200,Cantidad:11,Var_YOY:1077.5,Var_YOY_Cant:1000.0},
+            {Año:1963,Monto:11104848.57,Cantidad:35,Var_YOY:242.9,Var_YOY_Cant:218.2},
+            {Año:1964,Monto:17096093,Cantidad:30,Var_YOY:54.0,Var_YOY_Cant:-14.3},
+            {Año:1965,Monto:20638447,Cantidad:45,Var_YOY:20.7,Var_YOY_Cant:50.0},
+            {Año:1966,Monto:46481720,Cantidad:53,Var_YOY:125.2,Var_YOY_Cant:17.8},
+            {Año:1967,Monto:26600880,Cantidad:33,Var_YOY:-42.8,Var_YOY_Cant:-37.7},
+            {Año:1968,Monto:36724214,Cantidad:39,Var_YOY:38.1,Var_YOY_Cant:18.2},
+            {Año:1969,Monto:52652523,Cantidad:68,Var_YOY:43.4,Var_YOY_Cant:74.4},
+            {Año:1970,Monto:45862120,Cantidad:60,Var_YOY:-12.9,Var_YOY_Cant:-11.8},
+            {Año:1971,Monto:50164990.14,Cantidad:78,Var_YOY:9.4,Var_YOY_Cant:30.0},
+            {Año:1972,Monto:57105394,Cantidad:65,Var_YOY:13.8,Var_YOY_Cant:-16.7},
+            {Año:1973,Monto:104429948,Cantidad:72,Var_YOY:82.9,Var_YOY_Cant:10.8},
+            {Año:1974,Monto:126542100,Cantidad:90,Var_YOY:21.2,Var_YOY_Cant:25.0},
+            {Año:1975,Monto:165067089,Cantidad:77,Var_YOY:30.4,Var_YOY_Cant:-14.4},
+            {Año:1976,Monto:139473200,Cantidad:51,Var_YOY:-15.5,Var_YOY_Cant:-33.8},
+            {Año:1977,Monto:97788000,Cantidad:40,Var_YOY:-29.9,Var_YOY_Cant:-21.6},
+            {Año:1978,Monto:191966000,Cantidad:58,Var_YOY:96.3,Var_YOY_Cant:45.0},
+            {Año:1979,Monto:163656600,Cantidad:50,Var_YOY:-14.7,Var_YOY_Cant:-13.8},
+            {Año:1980,Monto:242215788,Cantidad:65,Var_YOY:48.0,Var_YOY_Cant:30.0},
+            {Año:1981,Monto:140512650,Cantidad:42,Var_YOY:-42.0,Var_YOY_Cant:-35.4},
+            {Año:1982,Monto:133394000,Cantidad:23,Var_YOY:-5.1,Var_YOY_Cant:-45.2},
+            {Año:1983,Monto:44942200,Cantidad:11,Var_YOY:-66.3,Var_YOY_Cant:-52.2},
+            {Año:1984,Monto:24550000,Cantidad:5,Var_YOY:-45.4,Var_YOY_Cant:-54.5},
+            {Año:1985,Monto:25730000,Cantidad:6,Var_YOY:4.8,Var_YOY_Cant:20.0},
+            {Año:1986,Monto:33075000,Cantidad:9,Var_YOY:28.5,Var_YOY_Cant:50.0},
+            {Año:1987,Monto:126298300,Cantidad:28,Var_YOY:281.9,Var_YOY_Cant:211.1},
+            {Año:1988,Monto:77340000,Cantidad:19,Var_YOY:-38.8,Var_YOY_Cant:-32.1},
+            {Año:1989,Monto:109749000,Cantidad:20,Var_YOY:41.9,Var_YOY_Cant:5.3},
+            {Año:1990,Monto:198765600,Cantidad:27,Var_YOY:81.1,Var_YOY_Cant:35.0},
+            {Año:1991,Monto:170900000,Cantidad:21,Var_YOY:-14.0,Var_YOY_Cant:-22.2},
+            {Año:1992,Monto:272279924,Cantidad:62,Var_YOY:59.3,Var_YOY_Cant:195.2},
+            {Año:1993,Monto:402409500,Cantidad:107,Var_YOY:47.8,Var_YOY_Cant:72.6},
+            {Año:1994,Monto:566354451,Cantidad:143,Var_YOY:40.7,Var_YOY_Cant:33.6},
+            {Año:1995,Monto:393003864,Cantidad:104,Var_YOY:-30.6,Var_YOY_Cant:-27.3},
+            {Año:1996,Monto:581877854,Cantidad:106,Var_YOY:48.1,Var_YOY_Cant:1.9},
+            {Año:1997,Monto:549606673,Cantidad:69,Var_YOY:-5.5,Var_YOY_Cant:-34.9},
+            {Año:1998,Monto:951803500,Cantidad:92,Var_YOY:73.2,Var_YOY_Cant:33.3},
+            {Año:1999,Monto:336476815,Cantidad:40,Var_YOY:-64.6,Var_YOY_Cant:-56.5},
+            {Año:2000,Monto:327582456,Cantidad:32,Var_YOY:-2.6,Var_YOY_Cant:-20.0},
+            {Año:2001,Monto:584575116,Cantidad:49,Var_YOY:78.5,Var_YOY_Cant:53.1},
+            {Año:2002,Monto:727160246.69,Cantidad:70,Var_YOY:24.4,Var_YOY_Cant:42.9},
+            {Año:2003,Monto:703311558.93,Cantidad:83,Var_YOY:-3.3,Var_YOY_Cant:18.6},
+            {Año:2004,Monto:726858537,Cantidad:71,Var_YOY:3.3,Var_YOY_Cant:-14.5},
+            {Año:2005,Monto:1812309292.08,Cantidad:91,Var_YOY:149.3,Var_YOY_Cant:28.2},
+            {Año:2006,Monto:2097300274.05,Cantidad:121,Var_YOY:15.7,Var_YOY_Cant:33.0},
+            {Año:2007,Monto:2489048480.33,Cantidad:112,Var_YOY:18.7,Var_YOY_Cant:-7.4},
+            {Año:2008,Monto:1453199879,Cantidad:79,Var_YOY:-41.6,Var_YOY_Cant:-29.5},
+            {Año:2009,Monto:1255280610.95,Cantidad:39,Var_YOY:-13.6,Var_YOY_Cant:-50.6},
+            {Año:2010,Monto:1519111413,Cantidad:52,Var_YOY:21.0,Var_YOY_Cant:33.3},
+            {Año:2011,Monto:1629558158.80,Cantidad:36,Var_YOY:7.3,Var_YOY_Cant:-30.8},
+            {Año:2012,Monto:1564232673.33,Cantidad:31,Var_YOY:-4.0,Var_YOY_Cant:-13.9},
+            {Año:2013,Monto:1384281773,Cantidad:27,Var_YOY:-11.5,Var_YOY_Cant:-12.9},
+            {Año:2014,Monto:1601371811.73,Cantidad:33,Var_YOY:15.7,Var_YOY_Cant:22.2},
+            {Año:2015,Monto:1856426325.97,Cantidad:32,Var_YOY:15.9,Var_YOY_Cant:-3.0},
+            {Año:2016,Monto:2105583919.82,Cantidad:26,Var_YOY:13.4,Var_YOY_Cant:-18.8},
+            {Año:2017,Monto:1925747582.25,Cantidad:24,Var_YOY:-8.5,Var_YOY_Cant:-7.7},
+            {Año:2018,Monto:2443361353.70,Cantidad:24,Var_YOY:26.9,Var_YOY_Cant:0.0},
+            {Año:2019,Monto:2637649207.48,Cantidad:21,Var_YOY:8.0,Var_YOY_Cant:-12.5},
+            {Año:2020,Monto:3459054987.95,Cantidad:26,Var_YOY:31.1,Var_YOY_Cant:23.8},
+            {Año:2021,Monto:3689869379.17,Cantidad:28,Var_YOY:6.7,Var_YOY_Cant:7.7},
+            {Año:2022,Monto:4290000000,Cantidad:29,Var_YOY:16.3,Var_YOY_Cant:3.6},
+            {Año:2023,Monto:3587714522.14,Cantidad:16,Var_YOY:-16.4,Var_YOY_Cant:-44.8},
+            {Año:2024,Monto:2229200000,Cantidad:12,Var_YOY:-37.9,Var_YOY_Cant:-25.0},
+            {Año:2025,Monto:2568787480,Cantidad:20,Var_YOY:15.2,Var_YOY_Cant:66.7}
+          ];
+
+          // Populate annual table from dYear (matches preview dashboard)
           function populateAnnualTable() {
-            try {
-              const evoData = JSON.parse(CHARTS["evolucion"]);
-              const montoTrace = evoData.data[0]; // First trace = Monto
-              const cantTrace = evoData.data[1]; // Second trace = Cantidad
-              const years = montoTrace.x.map((d) => new Date(d).getFullYear());
-              const montos = montoTrace.y;
-              const cants = cantTrace ? cantTrace.y : years.map(() => 5);
-
-              // Build rows sorted descending
-              const rows = [];
-              for (let i = 0; i < years.length; i++) {
-                const m = montos[i] || 0;
-                const c = cants[i] || 1;
-                const avg = m / c;
-                // YoY
-                let yoyM = "",
-                  yoyC = "";
-                if (i < years.length - 1) {
-                  const prevM = montos[i + 1] || 1;
-                  const prevC = cants[i + 1] || 1;
-                  const pctM = ((m - prevM) / prevM) * 100;
-                  const pctC = ((c - prevC) / prevC) * 100;
-                  const clsM = pctM >= 0 ? "text-green" : "text-red";
-                  const clsC = pctC >= 0 ? "text-green" : "text-red";
-                  const fmtPct = (pct) => {
-                    if (Math.abs(pct) > 999) return `×${Math.round(Math.abs(pct/100))}`;
-                    return `${pct >= 0 ? "+" : ""}${pct.toFixed(1)}%`;
-                  };
-                  yoyM = `<span class="${clsM}">${fmtPct(pctM)}</span>`;
-                  yoyC = `<span class="${clsC}">${fmtPct(pctC)}</span>`;
-                }
-                rows.push({
-                  year: years[i],
-                  monto: m,
-                  cant: c,
-                  avg,
-                  yoyM,
-                  yoyC,
-                });
+            const tbody = document.getElementById("annual-tbody");
+            if (!tbody) return;
+            const fmt = n => '$' + n.toLocaleString('en-US', {maximumFractionDigits: 0});
+            const sorted = [...dYear].sort((a, b) => b.Año - a.Año);
+            tbody.innerHTML = sorted.map(d => {
+              const avg = d.Cantidad > 0 ? d.Monto / d.Cantidad : 0;
+              // Var YoY Monto
+              let vM = '';
+              if (d.Var_YOY != null) {
+                const cM = d.Var_YOY >= 0 ? '#22c55e' : '#ef4444';
+                vM = `<span style="color:${cM}">${d.Var_YOY >= 0 ? '+' : ''}${d.Var_YOY.toFixed(1)}%</span>`;
               }
-              rows.sort((a, b) => b.year - a.year);
-
-              const tbody = document.getElementById("annual-tbody");
-              if (!tbody) return;
-              tbody.innerHTML = rows
-                .map(
-                  (r) => `<tr>
-            <td class="text-bold">${r.year}</td>
-            <td>$${(r.monto / 1).toLocaleString("en-US", { maximumFractionDigits: 0 })}</td>
-            <td>${r.cant}</td>
-            <td>$${(r.avg / 1).toLocaleString("en-US", { maximumFractionDigits: 0 })}</td>
-            <td>${r.yoyM}${r.yoyM && r.yoyC ? " / " : ""}${r.yoyC}</td>
-        </tr>`,
-                )
-                .join("");
-            } catch (e) {
-              console.warn("Annual table error:", e);
-            }
+              // Var YoY Cantidad
+              let vC = '';
+              if (d.Var_YOY_Cant != null) {
+                const cC = d.Var_YOY_Cant >= 0 ? '#22c55e' : '#ef4444';
+                vC = `<span style="color:${cC}">${d.Var_YOY_Cant >= 0 ? '+' : ''}${d.Var_YOY_Cant.toFixed(1)}%</span>`;
+              }
+              const varTxt = vM && vC ? `${vM} / ${vC}` : (vM || vC || '—');
+              return `<tr>
+                <td style="font-weight:700;color:var(--text-dark)">${d.Año}</td>
+                <td style="text-align:right;color:var(--text-dark)">${fmt(d.Monto)}</td>
+                <td style="text-align:center;color:var(--text-dark)">${d.Cantidad}</td>
+                <td style="text-align:right;color:var(--text-dark)">${fmt(avg)}</td>
+                <td style="text-align:right">${varTxt}</td>
+              </tr>`;
+            }).join('');
           }
 
           // ── PCA 2D transform for clustering scatter data ──
@@ -3026,11 +3063,14 @@
             // Calculate axis padding so points aren't clipped at edges
             const allPX = [], allPY = [];
             parsed.data.forEach(tr => { (tr.x||[]).forEach(v => allPX.push(v)); (tr.y||[]).forEach(v => allPY.push(v)); });
-            const padFrac = 0.08;
+            const padFrac = 0.15;
             const xMin = Math.min(...allPX), xMax = Math.max(...allPX);
             const yMin = Math.min(...allPY), yMax = Math.max(...allPY);
             const xPad = (xMax - xMin) * padFrac || 0.5;
             const yPad = (yMax - yMin) * padFrac || 0.5;
+            // Ensure Y-axis minimum is at least -2 so bottom points aren't clipped
+            const yRangeMin = Math.min(yMin - yPad, -2);
+            parsed.layout.margin = { l: 45, r: 25, t: 25, b: 35 };
             parsed.layout.xaxis = Object.assign(parsed.layout.xaxis||{}, {
               title: { text: "PC1 (Componente Principal 1)", font: { size: 11, color: "#94a3b8" } },
               gridcolor: "rgba(255,255,255,0.05)", zeroline: true, zerolinecolor: "rgba(255,255,255,0.1)",
@@ -3039,7 +3079,7 @@
             parsed.layout.yaxis = Object.assign(parsed.layout.yaxis||{}, {
               title: { text: "PC2 (Componente Principal 2)", font: { size: 11, color: "#94a3b8" } },
               gridcolor: "rgba(255,255,255,0.05)", zeroline: true, zerolinecolor: "rgba(255,255,255,0.1)",
-              range: [yMin - yPad, yMax + yPad]
+              range: [yRangeMin, yMax + yPad]
             });
             parsed.layout.annotations = [{ text: "PCA 2D", x: 0.98, y: 0.98, xref: "paper", yref: "paper",
               showarrow: false, font: { size: 9, color: "#64748b" }, bgcolor: "rgba(0,0,0,0.3)", borderpad: 3 }];
@@ -3082,11 +3122,21 @@
                 radar: "chart-radar",
               };
               if (mappings[key]) el_id = mappings[key];
-              else if (key.startsWith("forecast_"))
-                el_id = "chart-forecast-" + key.replace("forecast_", "");
-              else if (key.startsWith("scatter_"))
-                el_id = "chart-scatter-" + key.replace("scatter_", "");
-              else continue;
+              // H-02: Increase left margin for tipo_socio to prevent label truncation
+              if (key === "tipo_socio") {
+                try {
+                  let p = JSON.parse(json_str);
+                  if (p.layout) { p.layout.margin = Object.assign(p.layout.margin || {}, { l: 130 }); }
+                  json_str = JSON.stringify(p);
+                } catch(e) {}
+              }
+              if (!mappings[key]) {
+                if (key.startsWith("forecast_"))
+                  el_id = "chart-forecast-" + key.replace("forecast_", "");
+                else if (key.startsWith("scatter_"))
+                  el_id = "chart-scatter-" + key.replace("scatter_", "");
+                else continue;
+              }
 
               const el = document.getElementById(el_id);
               if (el && el.offsetParent !== null) {
@@ -3099,19 +3149,145 @@
                     parsed.layout.polar.radialaxis.ticktext = ["Min", "", "Med", "", "Max"];
                     parsed.layout.polar.radialaxis.tickfont = { size: 9, color: "#64748b" };
                   }
-                  // Add rangeslider to evolucion chart
-                  if (key === "evolucion" && parsed.layout.xaxis) {
-                    parsed.layout.xaxis.rangeslider = { visible: true, thickness: 0.06, bgcolor: "rgba(255,255,255,0.03)" };
-                    parsed.layout.margin = { l: 60, r: 60, t: 40, b: 10 };
+                  // Style evolucion chart to match preview dashboard
+                  if (key === "evolucion") {
+                    // H-01: Remove duplicate title (card has its own heading)
+                    parsed.layout.title = { text: '' };
+                    // Apply preview-style layout
+                    parsed.layout.margin = { l: 50, r: 50, t: 30, b: 40 };
+                    const isDarkEvo = document.documentElement.getAttribute('data-theme') === 'dark';
+                    const legendColor = isDarkEvo ? '#e2e8f0' : '#334155';
+                    parsed.layout.legend = { orientation: 'h', x: 0.5, xanchor: 'center', y: 1.05, yanchor: 'bottom', font: { color: legendColor, size: 11 }, bgcolor: 'rgba(0,0,0,0)' };
+                    const gridC = isDarkEvo ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.08)';
+                    const axisColor = isDarkEvo ? '#94a3b8' : '#64748b';
+                    if (parsed.layout.xaxis) {
+                      parsed.layout.xaxis.gridcolor = gridC;
+                      parsed.layout.xaxis.zeroline = false;
+                      parsed.layout.xaxis.tickfont = { color: axisColor };
+                      delete parsed.layout.xaxis.rangeslider;
+                    }
+                    if (parsed.layout.yaxis) {
+                      parsed.layout.yaxis.rangemode = 'tozero';
+                      parsed.layout.yaxis.gridcolor = gridC;
+                      parsed.layout.yaxis.tickfont = { color: axisColor };
+                      parsed.layout.yaxis.title = { text: 'Monto (USD)', font: { color: axisColor } };
+                    }
+                    if (parsed.layout.yaxis2) {
+                      parsed.layout.yaxis2.gridcolor = 'transparent';
+                      parsed.layout.yaxis2.rangemode = 'tozero';
+                    }
+                    parsed.layout.hovermode = 'x unified';
+                    parsed.layout.showlegend = true;
+                    // Apply spline + marker style to traces
+                    if (parsed.data && parsed.data[0]) {
+                      // Trace 0: Monto — green spline
+                      parsed.data[0].line = { color: '#34d399', width: 2, shape: 'spline' };
+                      parsed.data[0].marker = { symbol: 'circle', size: 6, color: 'rgba(0,0,0,0)', line: { color: '#34d399', width: 2 } };
+                      parsed.data[0].mode = 'lines+markers';
+                    }
+                    if (parsed.data && parsed.data[1]) {
+                      // Trace 1: Cantidad — blue spline
+                      parsed.data[1].line = { color: '#60a5fa', width: 2, shape: 'spline' };
+                      parsed.data[1].marker = { symbol: 'circle', size: 6, color: 'rgba(0,0,0,0)', line: { color: '#60a5fa', width: 2 } };
+                      parsed.data[1].mode = 'lines+markers';
+                      // Fix Cantidad data: use actual yearly sums from dYear
+                      parsed.data[1].y = dYear.map(d => d.Cantidad);
+                    }
+                    delete parsed.layout.height;
+                  }
+                  // H-04: Expand forecast chart to use full width
+                  if (key.startsWith("forecast_")) {
+                    parsed.layout.margin = Object.assign(parsed.layout.margin || {}, { l: 60, r: 40, t: 40, b: 40 });
+                    parsed.layout.autosize = true;
+                    delete parsed.layout.width;
                   }
                   // ── PCA 2D Transform for clustering scatter plots ──
                   if (key.startsWith("scatter_")) {
                     applyPCA2D(parsed);
                   }
+                  // Style donut charts to match preview (purple + red) with CORRECT data
+                  if (key === "donut_monto" || key === "donut_cant") {
+                    if (parsed.data && parsed.data[0]) {
+                      // Override with correct dSector data
+                      parsed.data[0].labels = ['Sector Público', 'Sector Privado'];
+                      if (key === "donut_monto") {
+                        parsed.data[0].values = [47809410847.94, 9597318677.14];
+                      } else {
+                        parsed.data[0].values = [1263, 1876];
+                      }
+                      parsed.data[0].marker = { colors: ['#7c3aed', '#ef4444'] };
+                      parsed.data[0].hole = 0.65;
+                      parsed.data[0].textinfo = 'percent';
+                      parsed.data[0].textposition = 'outside';
+                      parsed.data[0].showlegend = false;
+                      parsed.data[0].sort = false;
+                      const titleText = key === "donut_monto" ? "Monto" : "Cantidad";
+                      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                      const centerColor = isDark ? '#e2e8f0' : '#1e293b';
+                      parsed.data[0].title = { text: '<b>' + titleText + '</b>', position: 'middle center', font: { size: 14, color: centerColor } };
+                      // Uniform size for both donuts
+                      parsed.data[0].domain = { x: [0.1, 0.9], y: [0.05, 0.95] };
+                    }
+                    parsed.layout.showlegend = false;
+                    parsed.layout.margin = { t: 20, b: 20, l: 20, r: 20 };
+                    parsed.layout.title = { text: '' };
+                    parsed.layout.annotations = [];
+                    delete parsed.layout.height;
+                  }
+                  // Fix Tipo de Socio chart with correct BCIE partner types
+                  if (key === "tipo_socio") {
+                    const isDarkTS = document.documentElement.getAttribute('data-theme') === 'dark';
+                    const tsTextColor = isDarkTS ? '#e2e8f0' : '#334155';
+                    const cats = ['Otro', 'Extrarregional', 'Reg. No Fundador', 'Fundador'];
+                    const vals = [37187480, 2925889000, 6080123869.33, 48363529175.75];
+                    const labels = ['USD 37M', 'USD 2,926M', 'USD 6,080M', 'USD 48,364M'];
+                    const colors = ['#9ca3af', '#f59e0b', '#3b82f6', '#22c55e'];
+                    parsed.data[0].y = cats;
+                    parsed.data[0].x = vals;
+                    parsed.data[0].text = [];
+                    parsed.data[0].textposition = 'none';
+                    parsed.data[0].hovertext = labels;
+                    parsed.data[0].hoverinfo = 'text+y';
+                    parsed.data[0].marker = { color: colors };
+                    // Use annotations to place labels outside bars horizontally
+                    parsed.layout.annotations = vals.map((v, i) => ({
+                      x: v, y: cats[i], text: labels[i],
+                      xanchor: 'left', yanchor: 'middle',
+                      xshift: 6, showarrow: false,
+                      font: { size: 10, color: tsTextColor, family: 'Inter, sans-serif' }
+                    }));
+                    parsed.layout.title = { text: '' };
+                    parsed.layout.margin = { l: 140, r: 90, t: 10, b: 10 };
+                    const zeroColor = isDarkTS ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.2)';
+                    parsed.layout.yaxis = { automargin: true, tickfont: { size: 11, color: tsTextColor }, ticksuffix: '  ' };
+                    parsed.layout.xaxis = { showgrid: false, showticklabels: false, range: [0, 55000000000], zeroline: true, zerolinecolor: zeroColor, zerolinewidth: 1 };
+                    parsed.layout.font = { family: 'Inter, sans-serif', color: tsTextColor, size: 11 };
+                    parsed.layout.bargap = 0.3;
+                    delete parsed.layout.height;
+                  }
+                  // Fix País chart: use ISO 3-letter codes, horizontal labels
+                  if (key === "pais_bars") {
+                    const isoMap = {'COSTA RICA':'CRI','EL SALVADOR':'SLV','HONDURAS':'HND','NICARAGUA':'NIC','GUATEMALA':'GTM','PANAMÁ':'PAN','REPÚBLICA DOMINICANA':'DOM','ARGENTINA':'ARG','COLOMBIA':'COL','MÉXICO':'MEX','BELICE':'BLZ','CUBA':'CUB','REGIONAL':'REG'};
+                    if (parsed.data && parsed.data[0]) {
+                      parsed.data[0].x = parsed.data[0].x.map(n => isoMap[n] || n);
+                    }
+                    parsed.layout.xaxis = Object.assign(parsed.layout.xaxis || {}, { tickangle: 0 });
+                    const isDarkP = document.documentElement.getAttribute('data-theme') === 'dark';
+                    const paisTextColor = isDarkP ? '#e2e8f0' : '#334155';
+                    if (parsed.data && parsed.data[0]) {
+                      parsed.data[0].textfont = { color: paisTextColor, size: 9 };
+                    }
+                    parsed.layout.font = { family: 'Inter, sans-serif', color: paisTextColor, size: 10 };
+                    delete parsed.layout.height;
+                  }
                   Plotly.react(el, parsed.data, parsed.layout, {
                     responsive: true,
                     displayModeBar: false,
                   });
+                  // Force resize for forecast charts
+                  if (key.startsWith("forecast_")) {
+                    setTimeout(() => { try { Plotly.Plots.resize(el); } catch(e){} }, 150);
+                  }
                 } catch (e) {
                   console.warn("Chart error:", key, e);
                 }
@@ -3154,9 +3330,49 @@
             });
           }
 
+          // Sector data from preview dashboard
+          const dSector = [
+            {Sector: "Sector Público", Monto: 47809410847.94, Cantidad: 1263},
+            {Sector: "Sector Privado", Monto: 9597318677.14, Cantidad: 1876}
+          ];
+
+          // Generate sector legend (matches preview style)
+          function populateSectorLegend() {
+            const legEl = document.getElementById('leg-sec');
+            if (!legEl) return;
+            const secColors = {'Sector Público': '#7c3aed', 'Sector Privado': '#ef4444'};
+            let html = '<div style="display:flex;flex-direction:column;gap:5px;align-items:center;width:100%;margin-top:5px">';
+            dSector.forEach(d => {
+              const c = secColors[d.Sector] || '#cbd5e1';
+              const montoS = d.Monto.toLocaleString('en-US', {maximumFractionDigits: 0});
+              const cantS = d.Cantidad.toLocaleString('en-US');
+              const avg = d.Cantidad > 0 ? d.Monto / d.Cantidad : 0;
+              const avgS = avg.toLocaleString('en-US', {maximumFractionDigits: 0});
+              html += `
+              <div style="display:flex;flex-direction:column;gap:1px;border-left:4px solid ${c};padding-left:10px;margin-bottom:12px;width:100%;align-items:flex-start">
+                <div style="font-weight:700;font-size:12px;color:var(--text-dark);margin-bottom:2px">${d.Sector}</div>
+                <div style="font-size:11px;color:var(--text-light);display:flex;gap:4px">
+                  <span style="font-weight:600;min-width:55px">Monto:</span>
+                  <span style="font-weight:700;color:var(--primary)">USD ${montoS}</span>
+                </div>
+                <div style="font-size:11px;color:var(--text-light);display:flex;gap:4px">
+                  <span style="font-weight:600;min-width:55px">Cantidad:</span>
+                  <span>${cantS}</span>
+                </div>
+                <div style="font-size:11px;color:var(--text-light);display:flex;gap:4px">
+                  <span style="font-weight:600;min-width:55px">Promedio:</span>
+                  <span>USD ${avgS}</span>
+                </div>
+              </div>`;
+            });
+            html += '</div>';
+            legEl.innerHTML = html;
+          }
+
           // Initial render
           window.addEventListener("load", () => {
             populateAnnualTable();
+            populateSectorLegend();
             renderAll();
             applyForecastHeatmap();
           });

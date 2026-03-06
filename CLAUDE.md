@@ -92,9 +92,36 @@ Models use YAML configuration (`config/local.yaml`) for:
 
 pandas, numpy, scikit-learn, prophet, neuralprophet, statsforecast, hdbscan, xgboost, plotly, torch, transformers
 
+## Unified Dashboard
+
+The main dashboard is at `app/data/gold/dashboard/dashboard_unificado.html`. It is a single-page standalone HTML application using Plotly.js with sidebar navigation.
+
+### Sections
+
+- **Inicio** (sec-home): Landing page with KPIs, evolution charts, and annual summary table
+- **Forecasting** (sec-forecasting): Tabs for Prophet, NeuralProphet, StatsForecast, TimesFM models with projection charts and forecast matrices
+- **Clustering** (sec-clustering): Two view modes:
+  - **Individual**: Tabbed panels per model (DBSCAN, GMM, HDBSCAN, Hierarchical, KMeans, KMedoids, Mixed) with full scatter plot and cluster profiles
+  - **Lab View**: All 7 models side-by-side in a 4-column CSS grid + summary card
+- **Administration** (sec-admin): Admin panel link
+
+### Key Functions (JavaScript)
+
+- `applyPCA2D(parsed)`: Transforms raw scatter data into PCA-like 2D projection with log scaling, rotation, and jitter. Sets axis ranges with padding and enforces Y-axis minimum of -2.
+- `renderLabScatters()`: Renders mini scatter plots in Lab View with compact margins and marker size 5. Called lazily on first Lab View toggle.
+- `showClModel(name)`: Switches between individual clustering model tabs.
+- `toggleClView(mode)`: Toggles between Individual and Lab View.
+
+### Chart Data Pipeline
+
+Chart data is embedded in a `CHARTS` object as JSON strings, keyed by chart identifier (e.g., `scatter_dbscan`, `evolucion`, `forecast_prophet`). The `sync_forecasts.py` script ensures data consistency between model labs and the unified dashboard.
+
 ## Development Notes
 
 - Run IDs are auto-generated with format `run_YYYYMMDD_HHMMSS_<uuid6>` for versioning outputs
 - Validation uses Bootstrap ARI, Silhouette scores, and Composite Score optimization
 - Dashboards are standalone HTML files with interactive Plotly charts
 - Models track status in `models/checklist_modelos.csv`
+- Clustering Lab View grid uses `gap: 20px` between chart cards; mini scatter containers are 220px tall
+- PCA 2D axis ranges enforce a Y-minimum of -2 to prevent bottom data points from being clipped
+- **Icons: SVG only.** All icons in the unified dashboard MUST be inline SVGs (no emoji characters). Use `<svg viewBox="0 0 24 24" ...>` with `display:inline-block;vertical-align:middle` for text-flow alignment. Never use emoji (📊, ⭐, ✅, etc.) — always convert to corresponding SVG icons.
