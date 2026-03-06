@@ -2849,10 +2849,7 @@
               const el = document.getElementById("chart-forecast-" + name);
               if (el && CHARTS["forecast_" + name]) {
                 const fcParsed = JSON.parse(CHARTS["forecast_" + name]);
-                // H-04: Expand forecast chart to fill container
-                fcParsed.layout.margin = Object.assign(fcParsed.layout.margin || {}, { l: 60, r: 40, t: 40, b: 40 });
-                fcParsed.layout.autosize = true;
-                delete fcParsed.layout.width;
+                applyForecastTheme(fcParsed);
                 Plotly.react(
                   el,
                   fcParsed.data,
@@ -3110,6 +3107,61 @@
             return parsed;
           }
 
+          // === Forecast theme-aware styling (shared by renderAll + showFcModel) ===
+          function applyForecastTheme(parsed) {
+            const isDarkFc = document.documentElement.getAttribute('data-theme') === 'dark';
+            const fcTextColor = isDarkFc ? '#e2e8f0' : '#334155';
+            const fcGridColor = isDarkFc ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.08)';
+            const fcAxisColor = isDarkFc ? '#94a3b8' : '#64748b';
+            const fcBg = 'rgba(0,0,0,0)';
+            parsed.layout.margin = Object.assign(parsed.layout.margin || {}, { l: 60, r: 40, t: 40, b: 40 });
+            parsed.layout.autosize = true;
+            parsed.layout.paper_bgcolor = fcBg;
+            parsed.layout.plot_bgcolor = fcBg;
+            parsed.layout.font = Object.assign(parsed.layout.font || {}, { color: fcTextColor, family: 'Inter, sans-serif' });
+            delete parsed.layout.width;
+            parsed.layout.legend = Object.assign(parsed.layout.legend || {}, { font: { color: fcTextColor, size: 11 }, bgcolor: 'rgba(0,0,0,0)' });
+            parsed.layout.showlegend = true;
+            if (parsed.layout.xaxis) {
+              parsed.layout.xaxis.gridcolor = fcGridColor;
+              parsed.layout.xaxis.tickfont = { color: fcAxisColor, size: 10 };
+              parsed.layout.xaxis.zeroline = false;
+              if (parsed.layout.xaxis.title) parsed.layout.xaxis.title.font = { color: fcAxisColor };
+            }
+            if (parsed.layout.yaxis) {
+              parsed.layout.yaxis.gridcolor = fcGridColor;
+              parsed.layout.yaxis.tickfont = { color: fcAxisColor, size: 10 };
+              parsed.layout.yaxis.zeroline = false;
+              if (parsed.layout.yaxis.title) parsed.layout.yaxis.title.font = { color: fcAxisColor };
+            }
+            if (parsed.data) {
+              const histColor = isDarkFc ? '#e2e8f0' : '#0d9488';
+              const fcLineColor = isDarkFc ? '#ef4444' : '#3b82f6';
+              parsed.data.forEach(trace => {
+                if (trace.name && /hist|real|actual|tendencia/i.test(trace.name)) {
+                  trace.line = Object.assign(trace.line || {}, { width: 2, dash: 'solid', color: histColor });
+                  trace.marker = Object.assign(trace.marker || {}, { size: 4, color: histColor });
+                }
+                if (trace.name && /pron|forecast|proyecc|predicci/i.test(trace.name)) {
+                  trace.line = Object.assign(trace.line || {}, { width: 2.5, dash: 'solid', color: fcLineColor });
+                  trace.marker = Object.assign(trace.marker || {}, { size: 6, symbol: 'circle', color: fcLineColor });
+                  trace.mode = 'lines+markers';
+                }
+                if (trace.fill && (trace.fill === 'toself' || trace.fill === 'tonexty' || trace.fill === 'tonextx')) {
+                  const bandColor = isDarkFc ? 'rgba(239,68,68,0.10)' : 'rgba(59,130,246,0.08)';
+                  const bandLine = isDarkFc ? 'rgba(239,68,68,0.25)' : 'rgba(59,130,246,0.15)';
+                  trace.fillcolor = bandColor;
+                  trace.line = Object.assign(trace.line || {}, { color: bandLine, width: 0.5 });
+                }
+                if (trace.name && /upper|lower|sup|inf|banda|bound|ci_/i.test(trace.name)) {
+                  const boundColor = isDarkFc ? 'rgba(239,68,68,0.2)' : 'rgba(59,130,246,0.12)';
+                  trace.line = Object.assign(trace.line || {}, { color: boundColor, width: 0.5, dash: 'dot' });
+                  trace.showlegend = false;
+                }
+              });
+            }
+          }
+
           // Render all visible charts
           function renderAll() {
             for (const [key, json_str] of Object.entries(CHARTS)) {
@@ -3197,11 +3249,9 @@
                     }
                     delete parsed.layout.height;
                   }
-                  // H-04: Expand forecast chart to use full width
+                  // H-04: Expand forecast chart + THEME-AWARE styling
                   if (key.startsWith("forecast_")) {
-                    parsed.layout.margin = Object.assign(parsed.layout.margin || {}, { l: 60, r: 40, t: 40, b: 40 });
-                    parsed.layout.autosize = true;
-                    delete parsed.layout.width;
+                    applyForecastTheme(parsed);
                   }
                   // ── PCA 2D Transform for clustering scatter plots ──
                   if (key.startsWith("scatter_")) {
