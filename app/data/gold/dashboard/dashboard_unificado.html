@@ -821,6 +821,7 @@
             <circle cx="12" cy="7" r="4" />
           </svg>
           <span id="navUserName">—</span>
+          <span id="navUserRole" style="font-size:.65rem;opacity:.7;margin-left:4px"></span>
         </div>
         <!-- Logout -->
         <button class="btn-logout" onclick="handleLogout()">
@@ -941,9 +942,9 @@
             <span>¿Qué Modelo?</span>
           </button>
         </div>
-        <div class="sidebar-section">
+        <div class="sidebar-section" id="sidebarAdminSection">
           <div class="sidebar-label">Administración</div>
-          <a class="sidebar-admin" href="../../../login/admin.html">
+          <a class="sidebar-admin" href="login/admin.html">
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -3458,27 +3459,38 @@
           // Auth verification — ISO 27001 A.9.4.1
           (function checkAuth() {
             const authData = sessionStorage.getItem("bcie_auth");
-            const greetEl = document.getElementById("greetingText");
-            if (authData) {
-              try {
-                const auth = JSON.parse(authData);
-                if (auth.authenticated && auth.user) {
-                  document.getElementById("navUserName").textContent =
-                    auth.user.displayName;
-                  if (greetEl)
-                    greetEl.innerHTML = `${getGreeting()}, <strong>${auth.user.displayName.split(" ")[0]}</strong>`;
-                }
-              } catch (e) {}
-            } else {
+            if (!authData) {
+              // No session → redirect to login
+              window.location.href = "login/index.html";
+              return;
+            }
+            try {
+              const auth = JSON.parse(authData);
+              if (!auth.authenticated || !auth.user) {
+                window.location.href = "login/index.html";
+                return;
+              }
+              // Show user info in header
+              document.getElementById("navUserName").textContent = auth.user.displayName;
+              const roleEl = document.getElementById("navUserRole");
+              if (roleEl) roleEl.textContent = auth.user.role;
+              const greetEl = document.getElementById("greetingText");
               if (greetEl)
-                greetEl.innerHTML = `${getGreeting()}, <strong>Visitante</strong>`;
+                greetEl.innerHTML = `${getGreeting()}, <strong>${auth.user.displayName.split(" ")[0]}</strong>`;
+              // Hide admin panel link for non-admin users
+              if (auth.user.role !== 'Administrador') {
+                const adminSection = document.getElementById('sidebarAdminSection');
+                if (adminSection) adminSection.style.display = 'none';
+              }
+            } catch (e) {
+              window.location.href = "login/index.html";
             }
           })();
 
           function handleLogout() {
             sessionStorage.removeItem("bcie_auth");
             sessionStorage.removeItem("bcie_session");
-            window.location.href = "../../../login/index.html";
+            window.location.href = "login/index.html";
           }
         </script>
       </div>
