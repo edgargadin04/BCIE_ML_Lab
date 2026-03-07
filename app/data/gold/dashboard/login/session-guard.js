@@ -1,17 +1,17 @@
 /**
  * ============================================
- *  BCIE ML Lab — Session Guard Module
- *  ISO 27001:2022 Compliant
+ *  BCIE ML Lab — Módulo de Guardia de Sesión
+ *  Conforme ISO 27001:2022
  * ============================================
  * 
- * This module provides cross-page security:
- * - Session timeout after inactivity (A.9.4.2)
- * - Input sanitization / anti-injection (A.14.2.5)
- * - CSRF validation
- * - Activity tracking
- * - Session expiry enforcement
+ * Seguridad transversal entre páginas:
+ * - Timeout de sesión por inactividad (A.9.4.2)
+ * - Sanitización de entrada / anti-inyección (A.14.2.5)
+ * - Validación CSRF
+ * - Rastreo de actividad del usuario
+ * - Cumplimiento de expiración de sesión
  * 
- * Include this script in ALL protected pages
+ * Incluir en TODAS las páginas protegidas
  * (dashboard_unificado.html, admin.html, etc.)
  */
 
@@ -20,19 +20,19 @@
 const SESSION_GUARD = (function() {
 
   // ============================================
-  // Configuration — ISO 27001 A.9.4.2
+  // Configuración — ISO 27001 A.9.4.2
   // ============================================
   const CONFIG = Object.freeze({
-    SESSION_TIMEOUT_MS: 30 * 60 * 1000,   // 30 minutes idle timeout
-    SESSION_MAX_MS: 8 * 60 * 60 * 1000,   // 8 hours absolute max
-    WARNING_BEFORE_MS: 2 * 60 * 1000,     // Warn 2 minutes before expiry
-    CHECK_INTERVAL_MS: 30 * 1000,         // Check every 30 seconds
-    LOGIN_URL: null,                       // Set dynamically based on page
+    SESSION_TIMEOUT_MS: 30 * 60 * 1000,   // Timeout inactividad: 30 min
+    SESSION_MAX_MS: 8 * 60 * 60 * 1000,   // Máximo absoluto: 8 horas
+    WARNING_BEFORE_MS: 2 * 60 * 1000,     // Advertencia 2 min antes
+    CHECK_INTERVAL_MS: 30 * 1000,         // Verificación cada 30 seg
+    LOGIN_URL: null,                       // Se establece dinámicamente
     ACTIVITY_EVENTS: ['mousemove', 'keypress', 'click', 'scroll', 'touchstart'],
   });
 
   // ============================================
-  // State
+  // Estado
   // ============================================
   let idleTimer = null;
   let checkInterval = null;
@@ -41,7 +41,7 @@ const SESSION_GUARD = (function() {
   let warningModal = null;
 
   // ============================================
-  // Input Sanitization — ISO 27001 A.14.2.5
+  // Sanitización de entrada — ISO 27001 A.14.2.5
   // ============================================
   function sanitizeInput(input) {
     if (typeof input !== 'string') return input;
@@ -59,13 +59,13 @@ const SESSION_GUARD = (function() {
     return input.replace(/[^\w\s@.\-]/g, '');
   }
 
-  // Prevent script injection via innerHTML
+  // Prevenir inyección de scripts vía innerHTML
   function safeText(element, text) {
     if (element) element.textContent = text;
   }
 
   // ============================================
-  // Session Validation
+  // Validación de sesión
   // ============================================
   function getLoginUrl() {
     const path = window.location.pathname;
@@ -101,7 +101,7 @@ const SESSION_GUARD = (function() {
 
     const session = getSessionData();
     if (session && session.expiresAt && Date.now() > session.expiresAt) {
-      // Absolute session timeout
+      // Timeout absoluto de sesión
       console.log('[SESSION_GUARD] Session expired (absolute timeout)');
       return false;
     }
@@ -110,7 +110,7 @@ const SESSION_GUARD = (function() {
   }
 
   // ============================================
-  // Idle Timeout — ISO 27001 A.9.4.2
+  // Timeout por inactividad — ISO 27001 A.9.4.2
   // ============================================
   function resetIdleTimer() {
     lastActivity = Date.now();
@@ -137,7 +137,7 @@ const SESSION_GUARD = (function() {
   }
 
   // ============================================
-  // Timeout Warning Modal
+  // Modal de advertencia de timeout
   // ============================================
   function createWarningModal() {
     if (warningModal) return;
@@ -222,7 +222,7 @@ const SESSION_GUARD = (function() {
       if (countdown) countdown.textContent = `${m}:${s.toString().padStart(2, '0')}`;
     }, 1000);
 
-    // Store interval so we can clear it
+    // Almacenar intervalo para limpieza
     warningModal._interval = interval;
   }
 
@@ -238,28 +238,28 @@ const SESSION_GUARD = (function() {
   }
 
   // ============================================
-  // Force Logout
+  // Cierre forzado de sesión
   // ============================================
   function forceLogout(reason = 'timeout') {
     hideWarning();
     clearTimeout(idleTimer);
     clearInterval(checkInterval);
 
-    // Log reason
-    console.log(`[SESSION_GUARD] Logout — reason: ${reason}`);
+    // Registrar motivo
+    console.log(`[SESSION_GUARD] Logout — motivo: ${reason}`);
 
-    // Clear session data
+    // Limpiar datos de sesión
     sessionStorage.removeItem('bcie_auth');
     sessionStorage.removeItem('bcie_session');
 
-    // Redirect to login with reason
+    // Redirigir al login con motivo
     const loginUrl = getLoginUrl();
     const separator = loginUrl.includes('?') ? '&' : '?';
     window.location.href = `${loginUrl}${separator}reason=${reason}`;
   }
 
   // ============================================
-  // Periodic Session Check
+  // Verificación periódica de sesión
   // ============================================
   function startPeriodicCheck() {
     checkInterval = setInterval(() => {
@@ -268,7 +268,7 @@ const SESSION_GUARD = (function() {
         return;
       }
 
-      // Check idle time
+      // Verificar tiempo de inactividad
       const idleMs = Date.now() - lastActivity;
       if (idleMs > CONFIG.SESSION_TIMEOUT_MS) {
         forceLogout('idle_timeout');
@@ -277,32 +277,32 @@ const SESSION_GUARD = (function() {
   }
 
   // ============================================
-  // Initialize Guard
+  // Inicialización del guardia
   // ============================================
   function init(options = {}) {
-    // Check if we have a valid session
+    // Verificar sesión válida
     if (!isSessionValid()) {
       forceLogout('no_session');
       return false;
     }
 
-    // Set up idle tracking
+    // Configurar rastreo de actividad
     CONFIG.ACTIVITY_EVENTS.forEach(event => {
       document.addEventListener(event, () => {
         resetIdleTimer();
       }, { passive: true });
     });
 
-    // Start timers
+    // Iniciar temporizadores
     resetIdleTimer();
     startPeriodicCheck();
 
-    console.log('[SESSION_GUARD] Initialized — 30min idle timeout, periodic checks active');
+    console.log('[SESSION_GUARD] Inicializado — timeout 30min, verificación periódica activa');
     return true;
   }
 
   // ============================================
-  // Public API
+  // API pública
   // ============================================
   return {
     init,

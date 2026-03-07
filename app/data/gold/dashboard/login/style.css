@@ -1,13 +1,13 @@
 /* =========================================
-   BCIE ML Lab — Login System
-   ISO 27001/27002 Compliant UI
+   BCIE ML Lab — Sistema de Login
+   Interfaz conforme ISO 27001/27002
    ========================================= */
 
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
 
-/* === Design Tokens === */
+/* === Tokens de diseño === */
 :root {
-  /* BCIE Brand Colors */
+  /* Colores institucionales BCIE */
   --bcie-navy: #0a1628;
   --bcie-blue: #105682;
   --bcie-teal: #1a7aaf;
@@ -15,7 +15,7 @@
   --bcie-gold: #d4a843;
   --bcie-gold-light: #e8c96a;
 
-  /* Neutral Palette */
+  /* Paleta neutra */
   --bg-primary: #f4f7fa;
   --bg-card: #ffffff;
   --bg-input: #f0f4f8;
@@ -26,13 +26,13 @@
   --border-color: #d8dee6;
   --border-focus: var(--bcie-teal);
 
-  /* Semantic Colors */
+  /* Colores semánticos */
   --success: #27ae60;
   --warning: #f2994a;
   --danger: #eb5757;
   --info: var(--bcie-teal);
 
-  /* Effects */
+  /* Efectos */
   --shadow-sm: 0 1px 3px rgba(10, 22, 40, 0.08);
   --shadow-md: 0 4px 16px rgba(10, 22, 40, 0.12);
   --shadow-lg: 0 8px 32px rgba(10, 22, 40, 0.16);
@@ -41,13 +41,13 @@
   --radius-md: 12px;
   --radius-lg: 16px;
 
-  /* Transitions */
+  /* Transiciones */
   --transition-fast: 150ms ease;
   --transition-normal: 250ms ease;
   --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* === Reset & Base === */
+/* === Reset y base === */
 *,
 *::before,
 *::after {
@@ -71,14 +71,14 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* === Main Layout === */
+/* === Disposición principal === */
 .login-container {
   display: flex;
   min-height: 100vh;
   overflow: hidden;
 }
 
-/* === Left Panel — Brand === */
+/* === Panel izquierdo — Marca === */
 .brand-panel {
   flex: 0 0 42%;
   background: linear-gradient(
@@ -178,7 +178,7 @@ body {
   text-transform: uppercase;
 }
 
-/* Feature list */
+/* Lista de características */
 .brand-features {
   list-style: none;
   text-align: left;
@@ -250,7 +250,7 @@ body {
   font-weight: 400;
 }
 
-/* ISO Badge */
+/* Insignia ISO */
 .iso-badge {
   margin-top: 2.5rem;
   display: flex;
@@ -289,7 +289,7 @@ body {
   letter-spacing: 0.5px;
 }
 
-/* === Right Panel — Form === */
+/* === Panel derecho — Formulario === */
 .form-panel {
   flex: 1;
   display: flex;
@@ -306,7 +306,7 @@ body {
   max-width: 420px;
 }
 
-/* Session expired notice */
+/* Aviso de sesión expirada */
 .session-notice {
   display: none;
   align-items: center;
@@ -341,7 +341,7 @@ body {
   color: var(--text-secondary);
 }
 
-/* === Form Elements === */
+/* === Elementos de formulario === */
 .form-group {
   margin-bottom: 1.2rem;
   position: relative;
@@ -409,7 +409,7 @@ body {
   font-weight: 400;
 }
 
-/* Password toggle */
+/* Botón visibilidad contraseña */
 .toggle-password {
   position: absolute;
   right: 12px;
@@ -434,7 +434,7 @@ body {
   color: var(--bcie-teal);
 }
 
-/* Password strength meter */
+/* Medidor de fortaleza de contraseña */
 .password-strength {
   margin-top: 0.5rem;
   display: none;
@@ -484,7 +484,7 @@ body {
   color: var(--text-muted);
 }
 
-/* Remember me & Forgot */
+/* Recordarme y recuperar */
 .form-options {
   display: flex;
   justify-content: space-between;
@@ -524,7 +524,7 @@ body {
   text-decoration: underline;
 }
 
-/* Submit button */
+/* Botón de envío */
 .btn-login {
   width: 100%;
   padding: 0.9rem;
@@ -581,7 +581,7 @@ body {
   }
 }
 
-/* Error / Alert Messages */
+/* Mensajes de error/alerta */
 .alert {
   display: none;
   padding: 0.75rem 1rem;
@@ -633,7 +633,7 @@ body {
   color: var(--bcie-teal);
 }
 
-/* Lockout progress */
+/* Temporizador de bloqueo */
 .lockout-timer {
   display: none;
   text-align: center;
@@ -677,7 +677,7 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
-/* Security info footer */
+/* Pie de seguridad */
 .security-footer {
   margin-top: 2rem;
   padding-top: 1.5rem;
@@ -711,7 +711,7 @@ body {
   flex-shrink: 0;
 }
 
-/* Footer */
+/* Pie de página */
 .login-footer {
   text-align: center;
   margin-top: 2rem;
@@ -719,7 +719,7 @@ body {
   color: var(--text-muted);
 }
 
-/* Audit log panel */
+/* Panel de auditoría */
 .audit-panel {
   position: fixed;
   bottom: 0;
@@ -948,7 +948,7 @@ body {
   font-weight: 600;
 }
 
-/* === Responsive === */
+/* === Responsivo === */
 @media (max-width: 900px) {
   .login-container {
     flex-direction: column;

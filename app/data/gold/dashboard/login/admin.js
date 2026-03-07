@@ -1,6 +1,6 @@
 'use strict';
 // ============================================
-// i18n — Internationalization
+// i18n — Internacionalización
 // ============================================
 let currentLang = localStorage.getItem('bcie-lang') || 'es';
 const I18N = {
@@ -149,7 +149,7 @@ function toggleLanguage() {
 }
 
 // ============================================
-// Data Store
+// Almacén de datos
 // ============================================
 const USERS = [
   { id:1, username:'admin', displayName:'Administrador BCIE', role:'Administrador', status:'active', lastAccess:'26/02/2026 18:10', created:'01/01/2026' },
@@ -243,7 +243,7 @@ const ALERT_HISTORY = [
 ];
 
 // ============================================
-// Auth & Logout
+// Autenticación y cierre de sesión
 // ============================================
 (function checkAuth() {
   const auth = typeof SESSION_GUARD !== 'undefined' ? SESSION_GUARD.getAuthData() : null;
@@ -251,14 +251,14 @@ const ALERT_HISTORY = [
     window.location.href = 'index.html';
     return;
   }
-  // Role guard: only Administrador can access admin panel
+  // Guardia de rol: solo Administrador accede al panel
   if (auth.user.role !== 'Administrador') {
     alert('Acceso denegado. Solo usuarios con rol Administrador pueden acceder al Panel de Administración.');
     window.location.href = '../dashboard_unificado.html';
     return;
   }
   document.getElementById('navUserName').textContent = auth.user.displayName;
-  // Initialize session guard (timeout, idle tracking)
+  // Inicializar guardia de sesión (timeout, rastreo inactividad)
   if (typeof SESSION_GUARD !== 'undefined') SESSION_GUARD.init();
 })();
 function handleLogout() {
@@ -272,7 +272,7 @@ function handleLogout() {
 }
 
 // ============================================
-// Tab / Sidebar / Breadcrumb
+// Navegación por pestañas / Barra lateral
 // ============================================
 function showTab(id, btn) {
   document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
@@ -292,7 +292,7 @@ function toggleSidebar() {
   document.getElementById('sidebarOverlay').classList.toggle('visible');
 }
 // ============================================
-// Sidebar Collapse (Feature 1)
+// Colapso de barra lateral
 // ============================================
 function toggleSidebarCollapse() {
   const sb = document.getElementById('sidebar');
@@ -310,7 +310,7 @@ function toggleSidebarCollapse() {
 })();
 
 // ============================================
-// Theme Toggle
+// Alternador de tema claro/oscuro
 // ============================================
 function toggleTheme() {
   const html = document.documentElement;
@@ -330,7 +330,7 @@ function toggleTheme() {
 })();
 
 // ============================================
-// Search
+// Búsqueda global
 // ============================================
 function handleSearch(q) {
   const box = document.getElementById('searchResults');
@@ -348,7 +348,7 @@ function handleSearch(q) {
 document.addEventListener('click', e => { if (!e.target.closest('.search-bar')) document.getElementById('searchResults').classList.remove('visible'); });
 
 // ============================================
-// Notifications
+// Notificaciones
 // ============================================
 function toggleNotifications() { document.getElementById('notifDropdown').classList.toggle('visible'); }
 function renderNotifications() {
@@ -361,7 +361,7 @@ function renderNotifications() {
 document.addEventListener('click', e => { if (!e.target.closest('.notif-wrapper')) document.getElementById('notifDropdown').classList.remove('visible'); });
 
 // ============================================
-// Skeleton Loading (Feature 6)
+// Carga esquelética (animación placeholder)
 // ============================================
 function showSkeleton() {
   const sk = document.getElementById('skeletonOverview');
@@ -375,7 +375,7 @@ function hideSkeleton() {
 }
 
 // ============================================
-// Render: Overview
+// Renderizado: Resumen general
 // ============================================
 function renderOverview() {
   const el = document.getElementById('recentActivity');
@@ -386,7 +386,7 @@ function renderOverview() {
 }
 
 // ============================================
-// Charts (Chart.js)
+// Gráficos (Chart.js)
 // ============================================
 let loginsChartInst, modelsChartInst;
 function renderCharts() {
@@ -402,7 +402,7 @@ function renderCharts() {
 }
 
 // ============================================
-// Render: Users + Activity History (Feature 3)
+// Renderizado: Usuarios + Historial
 // ============================================
 function renderUsers() {
   const iconEdit = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
@@ -447,7 +447,7 @@ function showUserHistory(username) {
 }
 
 // ============================================
-// Render: Models with tooltips (Feature 2)
+// Renderizado: Modelos ML con tooltips
 // ============================================
 const METRIC_TOOLTIPS = { mape:'tooltip.mape', rmse:'tooltip.rmse', r2:'tooltip.r2', silhouette:'tooltip.silhouette', clusters:'tooltip.clusters', inertia:'tooltip.inertia' };
 function renderModels(filter='all') {
@@ -481,7 +481,7 @@ function openModelDetail(idx) {
 }
 
 // ============================================
-// Model Comparison Chart (Feature 4)
+// Gráfico comparativo de modelos
 // ============================================
 let compFcChartInst, compClChartInst;
 function renderComparison() {
@@ -526,7 +526,7 @@ function renderComparison() {
 }
 
 // ============================================
-// Render: Dashboards
+// Renderizado: Dashboards
 // ============================================
 function renderDashboards() {
   const typeColors = {unificado:'#f59e0b',forecasting:'#06b6d4',clustering:'#a855f7',eda:'#22c55e'};
@@ -547,7 +547,7 @@ function renderDashboards() {
 }
 
 // ============================================
-// Render: Audit
+// Renderizado: Auditoría
 // ============================================
 function renderAudit(filter='all') {
   const filtered = filter==='all' ? AUDIT_LOG : AUDIT_LOG.filter(e=>e.level===filter);
@@ -564,7 +564,7 @@ function exportAuditLog() {
 }
 
 // ============================================
-// Render: Sessions
+// Renderizado: Sesiones activas
 // ============================================
 function renderSessions() {
   document.getElementById('sessionsGrid').innerHTML = SESSIONS.map(s => `
@@ -578,7 +578,7 @@ function renderSessions() {
 }
 
 // ============================================
-// Render: Health
+// Renderizado: Salud del sistema
 // ============================================
 const HEALTH_ICONS = {
   globe:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>',
@@ -606,7 +606,7 @@ function renderUptimeChart() {
 }
 
 // ============================================
-// Alerts (Feature 5)
+// Alertas programables
 // ============================================
 function renderAlerts() {
   const rulesEl = document.getElementById('alertRules');
@@ -634,7 +634,7 @@ function toggleAlertRule(id) {
 }
 
 // ============================================
-// Export System Report
+// Exportar reporte del sistema
 // ============================================
 function exportSystemReport() {
   const now = new Date().toISOString().slice(0,19).replace('T',' ');
@@ -655,7 +655,7 @@ function exportSystemReport() {
 }
 
 // ============================================
-// Modal (User CRUD)
+// Modal (CRUD de usuarios)
 // ============================================
 function openModal(type) {
   const body = document.getElementById('modalBody'); const title = document.getElementById('modalTitle');
@@ -852,7 +852,7 @@ function toggleUser(id) {
 }
 
 // ============================================
-// Toast Notifications
+// Notificaciones emergentes (Toast)
 // ============================================
 function showToast(msg, type='info') {
   const colors = { success:'#22c55e', warn:'#f59e0b', error:'#ef4444', info:'#3b82f6' };
@@ -864,7 +864,7 @@ function showToast(msg, type='info') {
 }
 
 // ============================================
-// Render all
+// Renderizado completo
 // ============================================
 function renderAll() {
   renderOverview(); renderUsers(); renderModels();
@@ -874,7 +874,7 @@ function renderAll() {
 }
 
 // ============================================
-// Feature 6: RBAC — Role-Based Access Control
+// RBAC — Control de acceso basado en roles
 // ============================================
 const RBAC_PERMISSIONS = {
   'Administrador': { overview:'full', users:'full', models:'full', dashboards:'full', etl:'full', audit:'full', sessions:'full', health:'full', alerts:'full', config:'full' },
@@ -926,7 +926,7 @@ function applyRBAC() {
 }
 
 // ============================================
-// Feature 7: Session Timeout Warning
+// Advertencia de timeout de sesión
 // ============================================
 let sessionTimeoutMs = 30 * 60 * 1000; // 30 min default
 let sessionWarningMs = 2 * 60 * 1000;  // warn 2 min before
@@ -984,14 +984,14 @@ function extendSession() {
   AUDIT_LOG.unshift({ ts: new Date().toISOString(), level:'info', event:'Sesión extendida', user:'admin', details: 'Timeout reiniciado' });
 }
 
-// Listen for user activity to reset timer
+// Escuchar actividad del usuario para reiniciar timer
 ['click', 'keydown', 'mousemove', 'scroll'].forEach(evt => {
   document.addEventListener(evt, () => {
-    // Only reset if warning is NOT visible (don't hide warning on mouse move)
+    // Solo reiniciar si la advertencia NO está visible
     if (!document.getElementById('timeoutOverlay').classList.contains('visible')) {
       clearTimeout(sessionTimer);
       clearTimeout(sessionWarningTimer);
-      // Set new timers
+      // Establecer nuevos temporizadores
       sessionWarningTimer = setTimeout(() => showTimeoutWarning(), sessionTimeoutMs - sessionWarningMs);
       sessionTimer = setTimeout(() => handleLogout(), sessionTimeoutMs);
     }
@@ -999,10 +999,10 @@ function extendSession() {
 });
 
 // ============================================
-// Feature 8: PDF Export
+// Exportación PDF
 // ============================================
 function exportPDF() {
-  // Build a clean report in a new window and trigger print -> Save as PDF
+  // Generar reporte limpio en nueva ventana y disparar impresión -> Guardar como PDF
   const now = new Date();
   const dateStr = now.toLocaleDateString('es-HN', { year:'numeric', month:'long', day:'numeric' });
   const timeStr = now.toLocaleTimeString('es-HN', { hour12:false });
@@ -1074,7 +1074,7 @@ function exportPDF() {
 }
 
 // ============================================
-// Speed Dial FAB
+// Botón flotante de acción rápida (FAB)
 // ============================================
 function toggleFab() {
   document.getElementById('fabContainer').classList.toggle('open');
@@ -1089,21 +1089,21 @@ function updateFabLabels() {
     }
   });
 }
-// Close FAB when clicking outside
+// Cerrar FAB al hacer clic fuera
 document.addEventListener('click', e => {
   const fab = document.getElementById('fabContainer');
   if (fab && fab.classList.contains('open') && !fab.contains(e.target)) {
     fab.classList.remove('open');
   }
 });
-// Attach toggle to main button
+// Vincular toggle al botón principal
 document.addEventListener('DOMContentLoaded', () => {
   const fabMain = document.getElementById('fabMain');
   if (fabMain) fabMain.addEventListener('click', toggleFab);
 });
 
 // ============================================
-// Init with skeleton loading
+// Inicialización con carga esquelética
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
   showSkeleton();

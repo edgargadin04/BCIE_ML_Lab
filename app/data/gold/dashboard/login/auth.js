@@ -1,58 +1,58 @@
 /**
  * ============================================
- *  BCIE ML Lab — Authentication System
- *  ISO 27001/27002 Compliant Implementation
+ *  BCIE ML Lab — Sistema de Autenticación
+ *  Implementación conforme ISO 27001/27002
  * ============================================
  *
- * Security Controls Implemented:
- * - A.9.4.2  Secure log-on procedures
- * - A.9.4.3  Password management system
- * - A.9.3.1  Use of secret authentication info
- * - A.12.4.1 Event logging (audit trail)
- * - A.9.4.1  Information access restriction
+ * Controles de seguridad implementados:
+ * - A.9.4.2  Procedimientos seguros de inicio de sesión
+ * - A.9.4.3  Gestión de contraseñas
+ * - A.9.3.1  Uso de información secreta de autenticación
+ * - A.12.4.1 Registro de eventos (pista de auditoría)
+ * - A.9.4.1  Restricción de acceso a la información
  *
- * Features:
- * - SHA-256 password hashing with salt
- * - Account lockout after max failed attempts
- * - Progressive delay on failed attempts
- * - Full audit trail with timestamps
- * - Session timeout management
- * - CSRF token simulation
- * - Password strength validation
- * - Rate limiting per IP/session
+ * Funcionalidades:
+ * - Hash SHA-256 con salt para contraseñas
+ * - Bloqueo de cuenta tras intentos fallidos
+ * - Retardo progresivo por intento fallido
+ * - Pista de auditoría completa con timestamps
+ * - Gestión de timeout de sesión
+ * - Simulación de token CSRF
+ * - Validación de fortaleza de contraseña
+ * - Limitación de tasa por sesión
  */
 
 'use strict';
 
 // ============================================
-// Configuration — ISO 27001 A.9.4.2
+// Configuración — ISO 27001 A.9.4.2
 // ============================================
 const AUTH_CONFIG = Object.freeze({
   SALT: 'BCIE_ML_LAB_2026_SALT_v1',
-  MAX_ATTEMPTS: 5,                   // ISO: Account lockout threshold
-  LOCKOUT_DURATION_MS: 5 * 60 * 1000, // 5 minutes lockout
-  SESSION_TIMEOUT_MS: 30 * 60 * 1000, // 30 minutes idle timeout
-  SESSION_MAX_MS: 8 * 60 * 60 * 1000, // 8 hours absolute maximum
+  MAX_ATTEMPTS: 5,                   // Umbral de bloqueo de cuenta
+  LOCKOUT_DURATION_MS: 5 * 60 * 1000, // Bloqueo: 5 minutos
+  SESSION_TIMEOUT_MS: 30 * 60 * 1000, // Timeout inactividad: 30 min
+  SESSION_MAX_MS: 8 * 60 * 60 * 1000, // Máximo absoluto: 8 horas
   MIN_PASSWORD_LENGTH: 6,
-  PROGRESSIVE_DELAY_MS: 1000,        // Base delay per attempt
+  PROGRESSIVE_DELAY_MS: 1000,        // Retardo base por intento
   CSRF_TOKEN_LENGTH: 32,
 });
 
 // ============================================
-// User Store (Hashed) — ISO 27001 A.9.4.3
+// Almacén de usuarios (hash) — ISO 27001 A.9.4.3
 // ============================================
-// In production, this would be a server-side database
-// Passwords are stored as SHA-256(salt + password)
+// En producción: base de datos servidor
+// Contraseñas almacenadas como SHA-256(salt + password)
 let USER_STORE = {};
 
-// Dashboard routing per role
+// Rutas de dashboard por rol
 const DASHBOARD_ROUTES = Object.freeze({
-  'Administrador': 'admin.html',                  // Admin → full admin panel (same /login/ folder)
-  'Analista BCIE': '../dashboard_unificado.html',  // BCIE user → real dashboard (parent folder)
+  'Administrador': 'admin.html',                  // Admin → panel completo
+  'Analista BCIE': '../dashboard_unificado.html',  // Analista → dashboard unificado
 });
 
 // ============================================
-// State Management
+// Estado de la aplicación
 // ============================================
 const state = {
   failedAttempts: 0,
@@ -64,7 +64,7 @@ const state = {
 };
 
 // ============================================
-// Crypto Utilities — SHA-256
+// Utilidades criptográficas — SHA-256
 // ============================================
 async function sha256(message) {
   const msgBuffer = new TextEncoder().encode(message);
@@ -78,7 +78,7 @@ async function hashPassword(password) {
 }
 
 // ============================================
-// CSRF Token — ISO 27001 A.14.1.2
+// Token CSRF — ISO 27001 A.14.1.2
 // ============================================
 function generateCSRFToken() {
   const array = new Uint8Array(AUTH_CONFIG.CSRF_TOKEN_LENGTH);
@@ -88,7 +88,7 @@ function generateCSRFToken() {
 }
 
 // ============================================
-// Audit Logger — ISO 27001 A.12.4.1
+// Registro de auditoría — ISO 27001 A.12.4.1
 // ============================================
 function auditLog(level, message, details = {}) {
   const entry = {
@@ -104,20 +104,20 @@ function auditLog(level, message, details = {}) {
 
   state.auditLog.push(entry);
 
-  // Keep last 100 entries
+  // Mantener últimas 100 entradas
   if (state.auditLog.length > 100) {
     state.auditLog.shift();
   }
 
-  // Render to audit panel
+  // Renderizar en panel de auditoría
   renderAuditEntry(entry);
 
-  // In production: send to SIEM/logging server
+  // En producción: enviar a servidor SIEM
   console.log(`[AUDIT][${level.toUpperCase()}] ${entry.timestamp} — ${message}`);
 }
 
 // ============================================
-// Password Strength — ISO 27001 A.9.4.3
+// Fortaleza de contraseña — ISO 27001 A.9.4.3
 // ============================================
 function evaluatePasswordStrength(password) {
   let score = 0;
@@ -144,12 +144,12 @@ function evaluatePasswordStrength(password) {
 }
 
 // ============================================
-// Account Lockout — ISO 27001 A.9.4.2
+// Bloqueo de cuenta — ISO 27001 A.9.4.2
 // ============================================
 function isAccountLocked() {
   if (!state.lockedUntil) return false;
   if (Date.now() >= state.lockedUntil) {
-    // Lockout expired
+    // Bloqueo expirado
     state.lockedUntil = null;
     state.failedAttempts = 0;
     auditLog('info', 'Account lockout expired, attempts reset');
@@ -171,7 +171,7 @@ function getRemainingLockoutSeconds() {
 }
 
 // ============================================
-// Session Management — ISO 27001 A.9.4.2
+// Gestión de sesiones — ISO 27001 A.9.4.2
 // ============================================
 function createSession(username, role) {
   const sessionId = crypto.randomUUID();
@@ -187,7 +187,7 @@ function createSession(username, role) {
     csrfToken: generateCSRFToken(),
   };
 
-  // Store in sessionStorage (not localStorage for security)
+  // Almacenar en sessionStorage (no localStorage por seguridad)
   sessionStorage.setItem('bcie_session', JSON.stringify({
     id: sessionId,
     username,
@@ -196,7 +196,7 @@ function createSession(username, role) {
     expiresAt: state.currentSession.expiresAt,
   }));
 
-  // Start idle timeout
+  // Iniciar temporizador de inactividad
   resetIdleTimer();
 
   auditLog('success', `Session created for user "${username}"`, {
@@ -232,10 +232,10 @@ function destroySession(expired = false) {
 }
 
 // ============================================
-// Authentication — Core
+// Autenticación — Núcleo
 // ============================================
 async function authenticate(username, password) {
-  // Check lockout
+  // Verificar bloqueo
   if (isAccountLocked()) {
     const remaining = getRemainingLockoutSeconds();
     auditLog('warn', `Login attempt blocked — account locked (${remaining}s remaining)`, { username });
@@ -247,13 +247,13 @@ async function authenticate(username, password) {
     };
   }
 
-  // Rate limiting — progressive delay
+  // Limitación de tasa — retardo progresivo
   if (state.failedAttempts > 0) {
     const delay = state.failedAttempts * AUTH_CONFIG.PROGRESSIVE_DELAY_MS;
     await new Promise(resolve => setTimeout(resolve, delay));
   }
 
-  // Validate input
+  // Validar entrada
   if (!username || !password) {
     auditLog('warn', 'Login attempt with empty credentials');
     return { success: false, error: 'validation', message: 'Ingresa usuario y contraseña.' };
@@ -264,7 +264,7 @@ async function authenticate(username, password) {
     return { success: false, error: 'validation', message: 'La contraseña no cumple los requisitos mínimos.' };
   }
 
-  // Hash and compare
+  // Calcular hash y comparar
   const hashedInput = await hashPassword(password);
   const user = USER_STORE[username.toLowerCase()];
 
@@ -277,7 +277,7 @@ async function authenticate(username, password) {
       remainingAttempts: remaining,
     });
 
-    // Lock if max attempts reached
+    // Bloquear si se alcanzó el máximo de intentos
     if (state.failedAttempts >= AUTH_CONFIG.MAX_ATTEMPTS) {
       lockAccount();
       return {
@@ -288,7 +288,7 @@ async function authenticate(username, password) {
       };
     }
 
-    // Generic error message (don't reveal if username exists — ISO best practice)
+    // Mensaje genérico (no revelar si el usuario existe — buena práctica ISO)
     return {
       success: false,
       error: 'invalid',
@@ -297,7 +297,7 @@ async function authenticate(username, password) {
     };
   }
 
-  // Success
+  // Autenticación exitosa
   state.failedAttempts = 0;
   const session = createSession(user.username, user.role);
 
@@ -309,7 +309,7 @@ async function authenticate(username, password) {
 }
 
 // ============================================
-// UI Rendering
+// Renderizado de interfaz
 // ============================================
 function renderAuditEntry(entry) {
   const auditBody = document.getElementById('auditBody');
@@ -394,7 +394,7 @@ function showDashboard(user, session) {
   loginContainer.style.display = 'none';
   dashboard.classList.add('visible');
 
-  // Populate dashboard
+  // Poblar datos del dashboard
   document.getElementById('dashUserName').textContent = user.displayName;
   document.getElementById('dashUserRole').textContent = user.role;
   document.getElementById('navUserName').textContent = user.displayName;
@@ -406,7 +406,7 @@ function showDashboard(user, session) {
 }
 
 // ============================================
-// Password Visibility Toggle
+// Visibilidad de contraseña
 // ============================================
 function togglePasswordVisibility() {
   const input = document.getElementById('password');
@@ -426,7 +426,7 @@ function togglePasswordVisibility() {
 }
 
 // ============================================
-// Password Strength Display
+// Indicador de fortaleza de contraseña
 // ============================================
 function updatePasswordStrength(password) {
   const container = document.getElementById('passwordStrength');
@@ -446,13 +446,13 @@ function updatePasswordStrength(password) {
 }
 
 // ============================================
-// Initialization
+// Inicialización del sistema
 // ============================================
 async function initializeAuth() {
   auditLog('info', 'Authentication system initialized');
   auditLog('info', `Security: SHA-256 hashing, ${AUTH_CONFIG.MAX_ATTEMPTS}-attempt lockout, ${AUTH_CONFIG.SESSION_TIMEOUT_MS / 60000}min timeout`);
 
-  // Pre-compute password hashes
+  // Pre-calcular hashes de contraseñas
   const adminHash = await hashPassword('UNIR03d');
   const bcieHash = await hashPassword('2026ML');
 
@@ -493,7 +493,7 @@ async function initializeAuth() {
   generateCSRFToken();
   auditLog('info', `CSRF token generated: ${state.csrfToken.substring(0, 12)}…`);
 
-  // Check existing session
+  // Verificar sesión existente
   const existing = sessionStorage.getItem('bcie_session');
   if (existing) {
     try {
@@ -521,12 +521,12 @@ async function initializeAuth() {
 }
 
 // ============================================
-// Event Handlers
+// Manejadores de eventos
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
   initializeAuth();
 
-  // Login form submission
+  // Envío del formulario de login
   const form = document.getElementById('loginForm');
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -539,7 +539,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.classList.add('loading');
     btn.disabled = true;
 
-    // Simulate network latency for realistic feel
+    // Simular latencia de red
     await new Promise(r => setTimeout(r, 800));
 
     const result = await authenticate(username, password);
@@ -550,11 +550,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (result.success) {
       showAlert('success', 'Autenticación exitosa. Redirigiendo…');
       
-      // Determine destination based on role
+      // Determinar destino según rol
       const route = DASHBOARD_ROUTES[result.user.role] || 'inline';
       
       if (route !== 'inline') {
-        // Store auth info for the dashboard page to read
+        // Almacenar info de auth para la página destino
         sessionStorage.setItem('bcie_auth', JSON.stringify({
           authenticated: true,
           user: result.user,
@@ -567,7 +567,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
       
-      // Inline dashboard for admin
+      // Dashboard embebido para admin
       await new Promise(r => setTimeout(r, 1000));
       showDashboard(result.user, result.session);
       form.reset();
@@ -581,26 +581,26 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Password strength
+  // Fortaleza de contraseña
   const pwdInput = document.getElementById('password');
   pwdInput.addEventListener('input', (e) => {
     updatePasswordStrength(e.target.value);
   });
 
-  // Toggle password visibility
+  // Alternar visibilidad de contraseña
   document.getElementById('togglePwd').addEventListener('click', togglePasswordVisibility);
 
-  // Audit panel toggle
+  // Alternar panel de auditoría
   document.getElementById('auditHeader').addEventListener('click', () => {
     document.getElementById('auditPanel').classList.toggle('expanded');
   });
 
-  // Logout
+  // Cierre de sesión
   document.getElementById('logoutBtn')?.addEventListener('click', () => {
     destroySession(false);
   });
 
-  // Reset idle timer on activity
+  // Reiniciar temporizador por actividad del usuario
   ['mousemove', 'keypress', 'click', 'scroll'].forEach(event => {
     document.addEventListener(event, () => {
       if (state.currentSession) resetIdleTimer();

@@ -1,7 +1,7 @@
-/* Admin Panel — BCIE ML Lab — Enhanced v3 */
+/* Panel de Administración — BCIE ML Lab — v3 */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
 
-/* === Theme Variables === */
+/* === Variables de tema === */
 :root,
 [data-theme="dark"] {
   --bg: #0b1120;
@@ -63,7 +63,7 @@ body {
   flex-direction: column;
 }
 
-/* === Top Nav === */
+/* === Barra de navegación === */
 .topnav {
   display: flex;
   justify-content: space-between;
@@ -172,7 +172,7 @@ body {
   color: var(--accent);
 }
 
-/* === Search === */
+/* === Búsqueda === */
 .search-bar {
   position: relative;
   flex: 1;
@@ -252,7 +252,7 @@ body {
   color: #f59e0b;
 }
 
-/* === Notifications === */
+/* === Notificaciones === */
 .notif-wrapper {
   position: relative;
 }
@@ -342,7 +342,7 @@ body {
   margin-top: 2px;
 }
 
-/* === Breadcrumbs === */
+/* === Migas de pan === */
 .breadcrumbs {
   display: flex;
   align-items: center;
@@ -360,7 +360,7 @@ body {
   font-weight: 600;
 }
 
-/* === Layout === */
+/* === Disposición === */
 .layout {
   display: flex;
   flex: 1;
@@ -368,7 +368,7 @@ body {
   overflow: hidden;
 }
 
-/* === Sidebar === */
+/* === Barra lateral === */
 .sidebar {
   width: var(--sidebar-w);
   background: var(--bg-sidebar);
@@ -427,7 +427,7 @@ body {
   background: rgba(6, 182, 212, 0.1);
   color: var(--accent);
 }
-/* Collapsed sidebar */
+/* Barra lateral colapsada */
 .sidebar.collapsed {
   width: 58px;
   padding: 1rem 0.4rem;
@@ -462,7 +462,7 @@ body {
   background: var(--bg-card);
 }
 
-/* === Main === */
+/* === Contenido principal === */
 .main-content {
   flex: 1;
   padding: 1.4rem 1.8rem;
@@ -509,7 +509,7 @@ body {
   }
 }
 
-/* === Skeleton Loading === */
+/* === Carga esquelética === */
 @keyframes shimmer {
   0% {
     background-position: -200px 0;
@@ -542,7 +542,7 @@ body {
   width: 50%;
 }
 
-/* === KPI === */
+/* === Indicadores clave (KPI) === */
 .kpi-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -585,7 +585,7 @@ body {
   margin-top: 2px;
 }
 
-/* === Cards & Grids === */
+/* === Tarjetas y grillas === */
 .card {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -620,7 +620,7 @@ body {
   height: 210px;
 }
 
-/* === Tooltips === */
+/* === Tooltips informativos === */
 .tooltip-trigger {
   position: relative;
   cursor: help;
@@ -655,7 +655,7 @@ body {
   z-index: 501;
 }
 
-/* === Data Table === */
+/* === Tabla de datos === */
 .data-table {
   width: 100%;
   border-collapse: collapse;
@@ -690,7 +690,7 @@ body {
   font-weight: 700 !important;
 }
 
-/* === Status === */
+/* === Estados === */
 .status-badge {
   display: inline-flex;
   align-items: center;
@@ -726,7 +726,7 @@ body {
   border: 1px solid rgba(100, 116, 139, 0.2);
 }
 
-/* === Activity === */
+/* === Actividad reciente === */
 .activity-list {
   display: flex;
   flex-direction: column;
@@ -763,7 +763,7 @@ body {
   white-space: nowrap;
 }
 
-/* === Models === */
+/* === Modelos ML === */
 .models-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(265px, 1fr));
@@ -874,7 +874,7 @@ body {
   color: var(--text-muted);
 }
 
-/* === Sessions === */
+/* === Sesiones === */
 .sessions-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -951,7 +951,7 @@ body {
   }
 }
 
-/* === Health === */
+/* === Salud del sistema === */
 .health-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -1020,7 +1020,7 @@ body {
   color: var(--text-muted);
 }
 
-/* === ETL === */
+/* === Pipeline ETL === */
 .etl-pipeline {
   display: flex;
   align-items: flex-start;
@@ -1102,7 +1102,7 @@ body {
   padding-top: 2.5rem;
 }
 
-/* === Model Comparison === */
+/* === Comparativa de modelos === */
 .comparison-section {
   margin-top: 1.2rem;
 }
@@ -1113,7 +1113,7 @@ body {
   margin-bottom: 0.8rem;
 }
 
-/* === Alerts Config === */
+/* === Configuración de alertas === */
 .alert-rules {
   display: flex;
   flex-direction: column;
@@ -1151,7 +1151,7 @@ body {
   background: #64748b;
 }
 
-/* === Buttons === */
+/* === Botones === */
 .btn-primary {
   display: flex;
   align-items: center;
@@ -1304,7 +1304,7 @@ body {
   box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.15);
 }
 
-/* === Config === */
+/* === Configuración del sistema === */
 .config-form {
   display: flex;
   flex-direction: column;
@@ -1339,7 +1339,7 @@ body {
   cursor: pointer;
 }
 
-/* === Responsive === */
+/* === Responsivo === */
 @media (max-width: 900px) {
   .hamburger {
     display: flex;
@@ -1391,7 +1391,7 @@ body {
   }
 }
 
-/* === Session Timeout Warning === */
+/* === Advertencia de timeout de sesión === */
 .timeout-overlay {
   display: none;
   position: fixed;
@@ -1448,7 +1448,7 @@ body {
   width: 100%;
 }
 
-/* === RBAC Matrix === */
+/* === Matriz RBAC === */
 .rbac-table {
   width: 100%;
   border-collapse: collapse;
@@ -1523,7 +1523,7 @@ body {
   border: 1px solid rgba(100, 116, 139, 0.2);
 }
 
-/* === Print (PDF Export) === */
+/* === Impresión (exportación PDF) === */
 @media print {
   body {
     background: #fff !important;
@@ -1599,7 +1599,7 @@ body {
   }
 }
 
-/* === Speed Dial FAB === */
+/* === Botón flotante de acción rápida === */
 .fab-container {
   position: fixed;
   bottom: 1.5rem;
@@ -1651,7 +1651,7 @@ body {
   box-shadow: 0 4px 20px rgba(239, 68, 68, 0.35);
 }
 
-/* FAB Actions */
+/* Acciones del botón flotante */
 .fab-actions {
   display: flex;
   flex-direction: column;
@@ -1710,7 +1710,7 @@ body {
   transform: scale(1.1);
 }
 
-/* FAB Tooltip Labels */
+/* Tooltips del botón flotante */
 .fab-action::before {
   content: attr(data-label);
   position: absolute;
@@ -1738,7 +1738,7 @@ body {
   transform: translateY(-50%) translateX(0);
 }
 
-/* Pulse animation on main FAB */
+/* Animación de pulso del botón principal */
 @keyframes fabPulse {
   0%,
   100% {
