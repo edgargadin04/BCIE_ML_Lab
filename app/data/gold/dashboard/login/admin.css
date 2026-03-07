@@ -47,15 +47,20 @@
 }
 html,
 body {
-  height: 100%;
+  height: 100vh;
   font-family: var(--font);
   font-size: 14px;
   color: var(--text);
   background: var(--bg);
   -webkit-font-smoothing: antialiased;
+  overflow: hidden;
   transition:
     background 0.3s,
     color 0.3s;
+}
+body {
+  display: flex;
+  flex-direction: column;
 }
 
 /* === Top Nav === */
@@ -66,8 +71,7 @@ body {
   padding: 1.1rem 1.8rem;
   background: var(--bg-sidebar);
   border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: 0;
+  flex-shrink: 0;
   z-index: 100;
   gap: 1.5rem;
   transition: background 0.3s;
@@ -348,6 +352,7 @@ body {
   color: var(--text-dim);
   background: var(--bg);
   border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
   transition: padding 0.3s;
 }
 .bc-current {
@@ -358,7 +363,9 @@ body {
 /* === Layout === */
 .layout {
   display: flex;
-  min-height: calc(100vh - 105px);
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
 }
 
 /* === Sidebar === */
