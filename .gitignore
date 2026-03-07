@@ -210,3 +210,40 @@ __marimo__/
 lightning_logs/
 *.ckpt
 .lr_find_*.ckpt
+
+# ============================================
+# Project-specific ignores
+# ============================================
+
+# AI Agent / IDE artifacts (must not appear in repo)
+.agent/
+.gemini/
+.cursor/
+CLAUDE.md
+*.bak
+
+# Binary ML model artifacts
+*.joblib
+*.pkl
+*.h5
+*.pt
+
+# Backup directories inside models
+**/backup_*/
+
+# Temporary audit/debug scripts
+apply_audit_fixes.py
+audit_fc.py
+audit_kpi.py
+check_chart.py
+verify_env.py
+verify_env.py.bak
+setup_project.py
+
+# Test/scratch files
+prueba_conexion_*.txt
+estructura_proyecto.txt
+model_documentation.txt
+
+# Data artifacts (heavy)
+*.parquet
