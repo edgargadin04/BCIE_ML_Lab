@@ -460,7 +460,7 @@ function renderModels(filter='all') {
       const tip = METRIC_TOOLTIPS[k] ? ` class="tooltip-trigger" data-tooltip="${t(METRIC_TOOLTIPS[k])}"` : '';
       return `<div class="metric-row"><span${tip}>${k}</span><span>${v}</span></div>`;
     }).join('');
-    return `<div class="model-card"><div class="model-name">${m.name}</div><div class="model-type" style="color:${c}">${m.type}</div><div class="model-metrics">${metricsHtml}</div><div class="model-footer"><span class="status-badge ok">${m.status}</span><div style="display:flex;gap:5px"><button class="btn-sm" onclick="event.stopPropagation();openModelDetail(${MODELS.indexOf(m)})">${t('models.detail')}</button><button class="btn-sm" onclick="event.stopPropagation();window.open('${m.dashUrl}','_blank')" style="border-color:var(--accent);color:var(--accent)">${t('models.viewdash')}</button></div></div></div>`;
+    return `<div class="model-card"><div class="model-name">${m.name}</div><div class="model-type" style="color:${c}">${m.type}</div><div class="model-metrics">${metricsHtml}</div><div class="model-footer"><span class="status-badge ok">${m.status}</span><div style="display:flex;gap:5px"><button class="btn-sm" onclick="event.stopPropagation();openModelDetail(${MODELS.indexOf(m)})">${t('models.detail')}</button></div></div></div>`;
   }).join('');
 }
 function filterModels() { renderModels(document.getElementById('modelTypeFilter').value); }
@@ -475,47 +475,53 @@ function openModelDetail(idx) {
     <h4 style="font-size:.8rem;color:var(--text-muted);margin-bottom:.5rem">${t('modal.metrics')}</h4>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-bottom:1rem">${Object.entries(m.metrics).map(([k,v])=>`<div style="background:var(--bg-input);padding:.5rem;border-radius:6px;text-align:center"><div style="font-size:.65rem;color:var(--text-muted);text-transform:uppercase">${k}</div><div style="font-size:1.1rem;font-weight:800;color:var(--text)">${v}</div></div>`).join('')}</div>
     <h4 style="font-size:.8rem;color:var(--text-muted);margin-bottom:.5rem">${t('modal.details')}</h4>
-    <div style="font-size:.78rem"><div class="data-row"><span>${t('modal.folder')}</span><span>${m.folder}</span></div><div class="data-row"><span>${t('modal.trained')}</span><span>${m.trained}</span></div><div class="data-row"><span>${t('modal.dataset')}</span><span>3,139 aprobaciones BCIE</span></div></div>
-    <div style="margin-top:1rem;display:flex;justify-content:flex-end"><button class="btn-primary" onclick="window.open('${m.dashUrl}','_blank')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-      ${t('models.viewdash')}</button></div>`;
+    <div style="font-size:.78rem"><div class="data-row"><span>${t('modal.folder')}</span><span>${m.folder}</span></div><div class="data-row"><span>${t('modal.trained')}</span><span>${m.trained}</span></div><div class="data-row"><span>${t('modal.dataset')}</span><span>3,139 aprobaciones BCIE</span></div></div>`;
+
   document.getElementById('modalOverlay').classList.add('visible');
 }
 
 // ============================================
 // Model Comparison Chart (Feature 4)
 // ============================================
-let comparisonChartInst;
+let compFcChartInst, compClChartInst;
 function renderComparison() {
-  const type = document.getElementById('comparisonTypeFilter')?.value || 'forecasting';
-  const filtered = MODELS.filter(m => m.type === type);
-  const ctx = document.getElementById('comparisonChart');
-  if (!ctx) return;
   const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
   const textColor = isDark ? '#94a3b8' : '#64748b';
   const gridColor = isDark ? 'rgba(255,255,255,.06)' : 'rgba(0,0,0,.06)';
-  if (comparisonChartInst) comparisonChartInst.destroy();
 
-  if (type === 'forecasting') {
-    const labels = filtered.map(m => m.name);
-    const mapeData = filtered.map(m => parseFloat(m.metrics.mape));
-    const r2Data = filtered.map(m => parseFloat(m.metrics.r2) * 100);
-    comparisonChartInst = new Chart(ctx, { type:'bar', data:{ labels,
+  // === Forecasting comparison: MAPE (lower=better, sorted asc) ===
+  const fcModels = MODELS.filter(m => m.type === 'forecasting')
+    .map(m => ({name:m.name, mape:parseFloat(m.metrics.mape), r2:parseFloat(m.metrics.r2)}))
+    .sort((a,b) => a.mape - b.mape); // best MAPE first
+  const ctxFc = document.getElementById('comparisonChart');
+  if (ctxFc) {
+    if (compFcChartInst) compFcChartInst.destroy();
+    const fcColors = ['#f59e0b','#22c55e','#a855f7','#06b6d4','#ef4444','#3b82f6'];
+    compFcChartInst = new Chart(ctxFc, { type:'bar', data:{
+      labels: fcModels.map(m => m.name),
       datasets:[
-        { label:'MAPE %', data:mapeData, backgroundColor:'rgba(239,68,68,.5)', borderColor:'#ef4444', borderWidth:1, borderRadius:4, yAxisID:'y' },
-        { label:'R² (×100)', data:r2Data, backgroundColor:'rgba(34,197,94,.5)', borderColor:'#22c55e', borderWidth:1, borderRadius:4, yAxisID:'y1' }
+        { label:'MAPE % (menor=mejor)', data: fcModels.map(m => m.mape), backgroundColor: fcModels.map((_,i) => fcColors[i%fcColors.length]+'88'), borderColor: fcModels.map((_,i) => fcColors[i%fcColors.length]), borderWidth:1, borderRadius:4, yAxisID:'y' },
+        { label:'R² ×100 (mayor=mejor)', data: fcModels.map(m => m.r2*100), backgroundColor: fcModels.map((_,i) => fcColors[i%fcColors.length]+'44'), borderColor: fcModels.map((_,i) => fcColors[i%fcColors.length]), borderWidth:1, borderRadius:4, yAxisID:'y1' }
       ] }, options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{labels:{color:textColor,font:{size:11}}}},
-        scales:{ y:{position:'left',grid:{color:gridColor},ticks:{color:textColor,font:{size:10},callback:v=>v+'%'},title:{display:true,text:'MAPE %',color:textColor}},
-                 y1:{position:'right',grid:{display:false},ticks:{color:textColor,font:{size:10}},title:{display:true,text:'R² ×100',color:textColor}},
+        scales:{ y:{position:'left',grid:{color:gridColor},ticks:{color:textColor,font:{size:10},callback:v=>v+'%'},title:{display:true,text:'MAPE % (menor es mejor)',color:textColor,font:{size:10}}},
+                 y1:{position:'right',grid:{display:false},ticks:{color:textColor,font:{size:10}},title:{display:true,text:'R² ×100 (mayor es mejor)',color:textColor,font:{size:10}}},
                  x:{grid:{display:false},ticks:{color:textColor,font:{size:10}}} } } });
-  } else {
-    const labels = filtered.map(m => m.name);
-    const silData = filtered.map(m => parseFloat(m.metrics.silhouette));
-    comparisonChartInst = new Chart(ctx, { type:'bar', data:{ labels,
-      datasets:[{ label:'Silhouette', data:silData, backgroundColor:filtered.map((_,i)=>`hsla(${270+i*15},60%,60%,.5)`), borderColor:filtered.map((_,i)=>`hsl(${270+i*15},60%,50%)`), borderWidth:1, borderRadius:4 }]
+  }
+
+  // === Clustering comparison: Silhouette (higher=better, sorted desc) ===
+  const clModels = MODELS.filter(m => m.type === 'clustering')
+    .map(m => ({name:m.name, silhouette:parseFloat(m.metrics.silhouette)}))
+    .sort((a,b) => b.silhouette - a.silhouette); // best silhouette first
+  const ctxCl = document.getElementById('clusteringCompChart');
+  if (ctxCl) {
+    if (compClChartInst) compClChartInst.destroy();
+    const clColors = clModels.map((_,i) => `hsla(${160+i*25},55%,50%,1)`);
+    compClChartInst = new Chart(ctxCl, { type:'bar', data:{
+      labels: clModels.map(m => m.name),
+      datasets:[{ label:'Silhouette Score (mayor=mejor)', data: clModels.map(m => m.silhouette), backgroundColor: clModels.map((_,i) => `hsla(${160+i*25},55%,50%,0.55)`), borderColor: clModels.map((_,i) => `hsl(${160+i*25},55%,50%)`), borderWidth:1, borderRadius:4 }]
     }, options:{ responsive:true, maintainAspectRatio:false, indexAxis:'y',
         plugins:{legend:{display:false}},
-        scales:{ x:{grid:{color:gridColor},ticks:{color:textColor,font:{size:10}},min:0,max:0.6}, y:{grid:{display:false},ticks:{color:textColor,font:{size:10}}} } } });
+        scales:{ x:{grid:{color:gridColor},ticks:{color:textColor,font:{size:10}},min:0,max:0.6,title:{display:true,text:'Silhouette Score (mayor es mejor)',color:textColor,font:{size:10}}}, y:{grid:{display:false},ticks:{color:textColor,font:{size:10}}} } } });
   }
 }
 

@@ -192,15 +192,13 @@
           <div class="filter-group"><select class="select-filter" id="modelTypeFilter" onchange="filterModels()"><option value="all" data-i18n="models.all">Todos</option><option value="clustering">Clustering</option><option value="forecasting">Forecasting</option><option value="eda">EDA</option></select></div>
         </div>
         <div class="models-grid" id="modelsGrid"></div>
-        <!-- Model Comparison -->
+        <!-- Model Comparison: Forecasting + Clustering side by side -->
         <div class="comparison-section">
-          <div class="comparison-header">
-            <h3 class="card-title" style="margin:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span data-i18n="models.comparison">Comparativa de Modelos</span></h3>
-            <div class="filter-group"><select class="select-filter" id="comparisonTypeFilter" onchange="renderComparison()">
-              <option value="forecasting">Forecasting</option><option value="clustering">Clustering</option>
-            </select></div>
+          <h3 class="card-title" style="margin:0 0 .8rem 0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span data-i18n="models.comparison">Comparativa de Modelos</span></h3>
+          <div class="grid-2col">
+            <div class="card"><h4 style="font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:.5rem">Forecasting — MAPE % + R² (ordenado mejor→peor)</h4><div class="chart-wrap" style="height:220px"><canvas id="comparisonChart"></canvas></div></div>
+            <div class="card"><h4 style="font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:.5rem">Clustering — Silhouette Score (ordenado mejor→peor)</h4><div class="chart-wrap" style="height:220px"><canvas id="clusteringCompChart"></canvas></div></div>
           </div>
-          <div class="card"><div class="chart-wrap" style="height:260px"><canvas id="comparisonChart"></canvas></div></div>
         </div>
       </div>
 
@@ -341,6 +339,6 @@
   </footer>
 
   <script src="session-guard.js"></script>
-  <script src="admin.js?v=20260306b"></script>
+  <script src="admin.js?v=20260307a"></script>
 </body>
 </html>
