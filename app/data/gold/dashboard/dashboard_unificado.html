@@ -290,7 +290,126 @@
       .section.active {
         display: block;
       }
-      #sec-inicio {
+      #sec-crossval {
+        height: 100%;
+        overflow: hidden;
+        display: none;
+        padding: 30px;
+        box-sizing: border-box;
+      }
+      #sec-crossval.active {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+      #sec-crossval .chart-card {
+        min-height: 0;
+      }
+      #sec-crossval .exec-table {
+        width: 100%;
+      }
+      #sec-crossval .exec-table th {
+        padding: 16px 14px;
+        font-size: 12px;
+      }
+      #sec-crossval .exec-table td {
+        padding: 28px 14px;
+        font-size: 14px;
+        vertical-align: middle;
+      }
+      #sec-particiones {
+        height: 100%;
+        overflow: hidden;
+        display: none;
+        padding: 30px;
+        box-sizing: border-box;
+      }
+      #sec-particiones.active {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+      #sec-particiones .chart-card {
+        min-height: 0;
+      }
+      #sec-particiones .exec-table {
+        width: 100%;
+      }
+      #sec-particiones .exec-table th {
+        padding: 16px 14px;
+        font-size: 12px;
+      }
+      #sec-particiones .exec-table td {
+        padding: 18px 14px;
+        font-size: 13px;
+        vertical-align: middle;
+      }
+      #sec-decision {
+        height: 100%;
+        overflow: hidden;
+        display: none;
+        padding: 30px;
+        box-sizing: border-box;
+      }
+      #sec-decision.active {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+      #sec-decision .chart-card {
+        min-height: 0;
+      }
+      #sec-decision #dec-clustering-view,
+      #sec-decision #dec-forecasting-view {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        overflow: hidden;
+      }
+
+      /* Decision panel table stretching */
+      #sec-decision .table-wrapper {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+      #sec-decision .exec-table {
+        width: 100%;
+        flex: 1;
+      }
+      #sec-decision .exec-table td {
+        padding: 16px 14px;
+        vertical-align: middle;
+      }
+      #sec-decision .exec-table th {
+        padding: 14px 14px;
+      }
+      /* Center content in model cards */
+      #dec-forecasting-view .chart-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      /* Ranking card also stretches */
+      #dec-forecasting-view > div:first-child > .chart-card,
+      #dec-clustering-view > div:first-child > .chart-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 100%;
+      }
+      /* Narrative two-column grid fills space */
+      #dec-clustering-view .chart-card > div[style*="display:grid"] {
+        flex: 1;
+      }
+      #dec-clustering-view .chart-card > div[style*="display:grid"] > div {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+      }
+            #sec-inicio {
         height: 100%;
         overflow: hidden;
       }
@@ -487,14 +606,15 @@
       }
       .fc-layout {
         display: grid;
-        grid-template-columns: 220px 1fr;
+        grid-template-columns: 308px 1fr;
         gap: 20px;
         width: 100%;
       }
       .fc-sidebar {
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: 8px;
+        height: 100%;
       }
       .fc-main {
         display: flex;
@@ -507,55 +627,64 @@
         background: var(--bg-card);
         border: 1px solid var(--border);
         border-radius: var(--radius);
-        padding: 16px;
+        padding: 18px;
         text-align: center;
+        min-height: 110px;
+        display: flex; flex-direction: column; justify-content: center;
       }
       .kpi-value-sm {
-        font-size: 22px;
+        font-size: 28px;
         font-weight: 800;
         color: var(--text-dark);
+        letter-spacing: -0.5px;
       }
       .kpi-delta {
-        font-size: 14px;
+        font-size: 16px;
         font-weight: 600;
         margin-top: 4px;
       }
       .traj-title {
-        font-size: 12px;
+        font-size: 14px;
         font-weight: 700;
         color: var(--primary);
-        margin-top: 8px;
+        margin-top: 4px;
       }
       .traj-container {
         display: flex;
         flex-direction: column;
-        gap: 8px;
-        overflow-y: hidden;
+        gap: 6px;
+        flex: 1;
+        min-height: 0;
       }
       .traj-card {
         background: var(--bg-card-alt);
         border: 1px solid var(--border);
         border-radius: 8px;
-        padding: 10px 12px;
+        padding: 8px 14px;
         transition: all 0.2s;
         cursor: default;
+        text-align: center;
+        flex: 1;
+        display: flex; flex-direction: column; justify-content: center;
       }
       .traj-card:hover {
         border-color: var(--primary);
         transform: translateX(3px);
       }
       .traj-year {
-        font-size: 12px;
+        font-size: 13px;
         font-weight: 700;
         color: var(--text-light);
       }
       .traj-val {
-        font-size: 16px;
+        font-size: 20px;
         font-weight: 800;
         color: var(--text-dark);
+        letter-spacing: -0.3px;
+        white-space: nowrap;
       }
       .traj-growth {
-        font-size: 12px;
+        font-size: 13px;
         font-weight: 600;
       }
 
@@ -592,18 +721,18 @@
       .cl-metrics {
         display: flex;
         gap: 20px;
-        margin-bottom: 20px;
+        margin-bottom: 16px;
       }
       .cl-metric {
         background: var(--bg-card);
         border: 1px solid var(--border);
         border-radius: 8px;
-        padding: 12px 20px;
+        padding: 28px 24px;
         text-align: center;
         flex: 1;
       }
       .cl-metric-val {
-        font-size: 24px;
+        font-size: 36px;
         font-weight: 800;
         color: var(--accent);
         display: block;
@@ -1142,10 +1271,64 @@
         <div class="section" id="sec-forecasting">
           <div
             class="section-title"
-            style="font-size: 16px; margin-bottom: 12px"
+            style="font-size: 16px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between"
           >
-            Análisis de Proyección de Aprobaciones del BCIE
+            <span>Análisis de Proyección de Aprobaciones del BCIE</span>
+            <div style="display:flex;gap:6px">
+              <button id="btn-fc-individual" class="fc-tab active" onclick="toggleFcView('individual')" style="font-size:11px;padding:4px 12px">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg> Individual
+              </button>
+              <button id="btn-fc-lab" class="fc-tab" onclick="toggleFcView('lab')" style="font-size:11px;padding:4px 12px">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M9 3h6v11l4 4H5l4-4z"/><line x1="12" y1="3" x2="12" y2="7"/><line x1="5" y1="21" x2="19" y2="21"/></svg> Lab View
+              </button>
+            </div>
           </div>
+
+          <!-- ─── LAB VIEW: All forecast models combined ─── -->
+          <div id="fc-lab-view" style="display:none;padding:0 30px 30px 30px">
+            <!-- Row 1: Line chart -->
+            <div class="chart-card" style="padding:14px 16px;margin-bottom:20px">
+              <div style="font-weight:700;font-size:13px;margin-bottom:8px;color:var(--text-main)">Tendencia Histórica y Proyección Comparativa</div>
+              <div id="chart-forecast-lab" style="width:100%;height:330px"></div>
+            </div>
+            <!-- Row 2: Table (left) + Uncertainty (right) -->
+            <div style="display:grid;grid-template-columns:3fr 2fr;gap:20px;margin-bottom:20px;align-items:stretch">
+              <!-- Table card with disclaimer -->
+              <div class="chart-card" style="padding:14px 16px;display:flex;flex-direction:column;justify-content:center">
+                <table class="exec-table" id="fc-lab-table" style="margin-bottom:6px;font-size:11px">
+                  <thead>
+                    <tr>
+                      <th>Modelo</th>
+                      <th style="text-align:right">2026</th>
+                      <th style="text-align:right">2027</th>
+                      <th style="text-align:right">2028</th>
+                      <th style="text-align:right">2029</th>
+                      <th style="text-align:right">2030</th>
+                      <th style="text-align:right">Var.</th>
+                    </tr>
+                  </thead>
+                  <tbody id="fc-lab-tbody"></tbody>
+                </table>
+                <div style="font-size:8px;color:var(--text-muted);border-top:1px solid var(--border);padding:4px 0 0;line-height:1.3">
+                  <strong>Var. (%):</strong> Variación porcentual calculada como ((Valor₂₀₃₀ − Valor₂₀₂₆) / |Valor₂₀₂₆|) × 100. Mide el cambio acumulado entre la primera y última proyección de cada modelo.
+                </div>
+              </div>
+              <!-- Uncertainty card (reference-style) -->
+              <div class="chart-card" style="padding:14px 16px;display:flex;flex-direction:column">
+                <div style="font-weight:700;font-size:12px;color:var(--text-main);margin-bottom:12px;display:flex;align-items:center;gap:6px">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M9 17V9"/><path d="M13 17V5"/><path d="M17 17v-3"/><path d="M21 17v-7"/></svg>
+                  Incertidumbre (Intervalo 95%)
+                </div>
+                <div id="fc-lab-uncertainty" style="display:flex;flex-direction:column;gap:14px;flex:1;justify-content:center"></div>
+              </div>
+            </div>
+            <!-- Row 3: Mini bar charts per country (full width, 2x5, gap=20) -->
+            <div id="fc-lab-minichart-grid" style="display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(2,auto);gap:20px">
+            </div>
+          </div>
+
+          <!-- ─── INDIVIDUAL VIEW: Model-by-model tabs ─── -->
+          <div id="fc-individual-view">
           <div class="fc-tabs">
             <button
               class="fc-tab active"
@@ -2013,6 +2196,7 @@
               </div>
             </div>
           </div>
+          </div><!-- end fc-individual-view -->
         </div>
 
         <!-- ═══════════ CLUSTERING ═══════════ -->
@@ -2033,80 +2217,80 @@
           </div>
 
           <!-- ─── LAB VIEW: All models side-by-side ─── -->
-          <div id="cl-lab-view" style="display:none">
-            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:16px">
-              <div class="chart-card" style="padding:10px" data-lab-model="dbscan">
+          <div id="cl-lab-view" style="display:none;padding:30px">
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px;height:calc(100vh - 260px);grid-template-rows:1fr 1fr">
+              <div class="chart-card" style="padding:10px;display:flex;flex-direction:column;min-height:0" data-lab-model="dbscan">
                 <div style="font-weight:700;font-size:12px;color:#06b6d4;margin-bottom:4px">DBSCAN</div>
                 <div style="display:flex;gap:8px;font-size:10px;color:var(--text-muted);margin-bottom:6px">
                   <span>Sil: <strong style="color:var(--text-light)">0.591</strong></span>
                   <span>K: <strong style="color:#22c55e">3</strong></span>
                   <span>DBI: <strong style="color:var(--text-light)">0.701</strong></span>
                 </div>
-                <div id="lab-scatter-dbscan" style="width:100%;height:220px"></div>
+                <div id="lab-scatter-dbscan" style="width:100%;flex:1;min-height:0"></div>
               </div>
-              <div class="chart-card" style="padding:10px" data-lab-model="gmm">
+              <div class="chart-card" style="padding:10px;display:flex;flex-direction:column;min-height:0" data-lab-model="gmm">
                 <div style="font-weight:700;font-size:12px;color:#a855f7;margin-bottom:4px">GMM</div>
                 <div style="display:flex;gap:8px;font-size:10px;color:var(--text-muted);margin-bottom:6px">
                   <span>Sil: <strong style="color:var(--text-light)">0.560</strong></span>
                   <span>K: <strong style="color:#22c55e">3</strong></span>
                   <span>DBI: <strong style="color:var(--text-light)">0.792</strong></span>
                 </div>
-                <div id="lab-scatter-gmm" style="width:100%;height:220px"></div>
+                <div id="lab-scatter-gmm" style="width:100%;flex:1;min-height:0"></div>
               </div>
-              <div class="chart-card" style="padding:10px" data-lab-model="hdbscan">
+              <div class="chart-card" style="padding:10px;display:flex;flex-direction:column;min-height:0" data-lab-model="hdbscan">
                 <div style="font-weight:700;font-size:12px;color:#f59e0b;margin-bottom:4px">HDBSCAN</div>
                 <div style="display:flex;gap:8px;font-size:10px;color:var(--text-muted);margin-bottom:6px">
                   <span>Sil: <strong style="color:var(--text-light)">0.565</strong></span>
                   <span>K: <strong style="color:#f59e0b">14</strong></span>
                   <span>DBI: <strong style="color:var(--text-light)">1.943</strong></span>
                 </div>
-                <div id="lab-scatter-hdbscan" style="width:100%;height:220px"></div>
+                <div id="lab-scatter-hdbscan" style="width:100%;flex:1;min-height:0"></div>
               </div>
-              <div class="chart-card" style="padding:10px" data-lab-model="hierarchical">
+              <div class="chart-card" style="padding:10px;display:flex;flex-direction:column;min-height:0" data-lab-model="hierarchical">
                 <div style="font-weight:700;font-size:12px;color:#14b8a6;margin-bottom:4px">Hierarchical</div>
                 <div style="display:flex;gap:8px;font-size:10px;color:var(--text-muted);margin-bottom:6px">
                   <span>Sil: <strong style="color:var(--text-light)">0.532</strong></span>
                   <span>K: <strong style="color:#22c55e">4</strong></span>
                   <span>DBI: <strong style="color:var(--text-light)">0.777</strong></span>
                 </div>
-                <div id="lab-scatter-hierarchical" style="width:100%;height:220px"></div>
+                <div id="lab-scatter-hierarchical" style="width:100%;flex:1;min-height:0"></div>
               </div>
-              <div class="chart-card" style="padding:10px" data-lab-model="kmeans">
+              <div class="chart-card" style="padding:10px;display:flex;flex-direction:column;min-height:0" data-lab-model="kmeans">
                 <div style="font-weight:700;font-size:12px;color:#22c55e;margin-bottom:4px">KMeans <svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:1px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
                 <div style="display:flex;gap:8px;font-size:10px;color:var(--text-muted);margin-bottom:6px">
                   <span>Sil: <strong style="color:var(--text-light)">0.565</strong></span>
                   <span>K: <strong style="color:#22c55e">4</strong></span>
                   <span>DBI: <strong style="color:var(--text-light)">0.587</strong></span>
                 </div>
-                <div id="lab-scatter-kmeans" style="width:100%;height:220px"></div>
+                <div id="lab-scatter-kmeans" style="width:100%;flex:1;min-height:0"></div>
               </div>
-              <div class="chart-card" style="padding:10px" data-lab-model="kmedoids">
+              <div class="chart-card" style="padding:10px;display:flex;flex-direction:column;min-height:0" data-lab-model="kmedoids">
                 <div style="font-weight:700;font-size:12px;color:#ec4899;margin-bottom:4px">KMedoids</div>
                 <div style="display:flex;gap:8px;font-size:10px;color:var(--text-muted);margin-bottom:6px">
                   <span>Sil: <strong style="color:var(--text-light)">0.565</strong></span>
                   <span>K: <strong style="color:#22c55e">4</strong></span>
                   <span>DBI: <strong style="color:var(--text-light)">0.587</strong></span>
                 </div>
-                <div id="lab-scatter-kmedoids" style="width:100%;height:220px"></div>
+                <div id="lab-scatter-kmedoids" style="width:100%;flex:1;min-height:0"></div>
               </div>
-              <div class="chart-card" style="padding:10px" data-lab-model="mixed">
+              <div class="chart-card" style="padding:10px;display:flex;flex-direction:column;min-height:0" data-lab-model="mixed">
                 <div style="font-weight:700;font-size:12px;color:#eab308;margin-bottom:4px">Mixed (Composite)</div>
                 <div style="display:flex;gap:8px;font-size:10px;color:var(--text-muted);margin-bottom:6px">
                   <span>Sil: <strong style="color:#22c55e">0.830</strong></span>
                   <span>K: <strong style="color:#22c55e">3</strong></span>
                   <span>DBI: <strong style="color:#22c55e">0.230</strong></span>
                 </div>
-                <div id="lab-scatter-mixed" style="width:100%;height:220px"></div>
+                <div id="lab-scatter-mixed" style="width:100%;flex:1;min-height:0"></div>
               </div>
-              <!-- Summary card -->
-              <div class="chart-card" style="padding:14px;display:flex;flex-direction:column;justify-content:center">
-                <div style="font-weight:700;font-size:13px;color:var(--accent);margin-bottom:10px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> Resumen Lab</div>
-                <div style="font-size:11px;color:var(--text-light);line-height:1.7">
-                  <div><svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/><text x="12" y="11" text-anchor="middle" fill="#f59e0b" stroke="none" font-size="8" font-weight="bold">1</text></svg> <strong style="color:#22c55e">Mixed</strong> — Mejor Sil (0.830) & DBI (0.230)</div>
-                  <div><svg viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/><text x="12" y="11" text-anchor="middle" fill="#94a3b8" stroke="none" font-size="8" font-weight="bold">2</text></svg> <strong style="color:#06b6d4">DBSCAN</strong> — Mejor Sil unitario (0.591)</div>
-                  <div><svg viewBox="0 0 24 24" fill="none" stroke="#cd7f32" stroke-width="2" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/><text x="12" y="11" text-anchor="middle" fill="#cd7f32" stroke="none" font-size="8" font-weight="bold">3</text></svg> <strong style="color:#14b8a6">KMeans</strong> — Más estable (0.998)</div>
-                  <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);color:var(--text-muted);font-size:10px">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Recomendación: <strong style="color:#22c55e">KMeans K=4</strong> para segmentación operativa. Mixed para validación.
+              <!-- Summary card - PROMINENT -->
+              <div class="chart-card" style="padding:20px;display:flex;flex-direction:column;justify-content:center;background:linear-gradient(135deg, var(--bg-card), rgba(6,182,212,0.08));border:2px solid var(--accent);min-height:0">
+                <div style="font-weight:800;font-size:18px;color:var(--accent);margin-bottom:14px;letter-spacing:0.3px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" style="display:inline-block;vertical-align:middle;margin-right:4px"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> Resumen Lab</div>
+                <div style="font-size:14px;color:var(--text-light);line-height:2">
+                  <div><svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" width="16" height="16" style="display:inline-block;vertical-align:middle;margin-right:4px"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/><text x="12" y="11" text-anchor="middle" fill="#f59e0b" stroke="none" font-size="8" font-weight="bold">1</text></svg> <strong style="color:#22c55e">Mixed</strong> — Mejor Sil (0.830) &amp; DBI (0.230)</div>
+                  <div><svg viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" width="16" height="16" style="display:inline-block;vertical-align:middle;margin-right:4px"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/><text x="12" y="11" text-anchor="middle" fill="#94a3b8" stroke="none" font-size="8" font-weight="bold">2</text></svg> <strong style="color:#06b6d4">DBSCAN</strong> — Mejor Sil unitario (0.591)</div>
+                  <div><svg viewBox="0 0 24 24" fill="none" stroke="#cd7f32" stroke-width="2" width="16" height="16" style="display:inline-block;vertical-align:middle;margin-right:4px"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/><text x="12" y="11" text-anchor="middle" fill="#cd7f32" stroke="none" font-size="8" font-weight="bold">3</text></svg> <strong style="color:#14b8a6">KMeans</strong> — Más estable (0.998)</div>
+                  <div style="margin-top:10px;padding-top:10px;border-top:2px solid var(--border);color:var(--text-muted);font-size:13px">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" style="display:inline-block;vertical-align:middle;margin-right:4px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Recomendación: <strong style="color:#22c55e">KMeans K=4</strong> para segmentación operativa. Mixed para validación.
                   </div>
                 </div>
               </div>
@@ -2135,7 +2319,7 @@
             <button class="cl-tab" onclick="showClModel('mixed')">MIXED</button>
           </div>
 
-          <div class="cl-panel" id="cl-dbscan" style="display: block">
+          <div class="cl-panel" style="display:flex;flex-direction:column;height:calc(100vh - 275px)" id="cl-dbscan">
             <div class="cl-metrics">
               <div class="cl-metric">
                 <span class="cl-metric-val">0.591</span
@@ -2154,13 +2338,13 @@
                 ><span class="cl-metric-label">Estabilidad ARI</span>
               </div>
             </div>
-            <div class="chart-card" style="height: 350px">
+            <div class="chart-card" style="flex:1;min-height:0">
               <div
                 id="chart-scatter-dbscan"
                 style="width: 100%; height: 100%"
               ></div>
             </div>
-            <div class="chart-card" style="margin-top: 12px; padding: 16px">
+            <div class="chart-card" style="margin-top: 16px; padding: 24px; min-height: 150px; flex-shrink: 0">
               <div
                 class="section-title"
                 style="font-size: 13px; margin-bottom: 8px"
@@ -2180,7 +2364,7 @@
                     background: var(--bg-card-alt);
                     border: 1px solid var(--border);
                     border-radius: 8px;
-                    padding: 12px;
+                    padding: 18px;
                   "
                 >
                   <div
@@ -2206,7 +2390,7 @@
                     background: var(--bg-card-alt);
                     border: 1px solid var(--border);
                     border-radius: 8px;
-                    padding: 12px;
+                    padding: 18px;
                   "
                 >
                   <div
@@ -2233,7 +2417,7 @@
                     background: var(--bg-card-alt);
                     border: 1px solid var(--border);
                     border-radius: 8px;
-                    padding: 12px;
+                    padding: 18px;
                   "
                 >
                   <div
@@ -2258,7 +2442,7 @@
             </div>
           </div>
 
-          <div class="cl-panel" id="cl-gmm" style="display: none">
+          <div class="cl-panel" style="display:none;flex-direction:column;height:calc(100vh - 275px)" id="cl-gmm">
             <div class="cl-metrics">
               <div class="cl-metric">
                 <span class="cl-metric-val">0.560</span
@@ -2277,13 +2461,13 @@
                 ><span class="cl-metric-label">Estabilidad ARI</span>
               </div>
             </div>
-            <div class="chart-card" style="height: 350px">
+            <div class="chart-card" style="flex:1;min-height:0">
               <div
                 id="chart-scatter-gmm"
                 style="width: 100%; height: 100%"
               ></div>
             </div>
-            <div class="chart-card" style="margin-top: 12px; padding: 16px">
+            <div class="chart-card" style="margin-top: 16px; padding: 24px; min-height: 150px; flex-shrink: 0">
               <div
                 class="section-title"
                 style="font-size: 13px; margin-bottom: 8px"
@@ -2307,7 +2491,7 @@
             </div>
           </div>
 
-          <div class="cl-panel" id="cl-hdbscan" style="display: none">
+          <div class="cl-panel" style="display:none;flex-direction:column;height:calc(100vh - 275px)" id="cl-hdbscan">
             <div class="cl-metrics">
               <div class="cl-metric">
                 <span class="cl-metric-val">0.565</span
@@ -2326,13 +2510,13 @@
                 ><span class="cl-metric-label">Estabilidad ARI</span>
               </div>
             </div>
-            <div class="chart-card" style="height: 350px">
+            <div class="chart-card" style="flex:1;min-height:0">
               <div
                 id="chart-scatter-hdbscan"
                 style="width: 100%; height: 100%"
               ></div>
             </div>
-            <div class="chart-card" style="margin-top: 12px; padding: 16px">
+            <div class="chart-card" style="margin-top: 16px; padding: 24px; min-height: 150px; flex-shrink: 0">
               <div
                 class="section-title"
                 style="font-size: 13px; margin-bottom: 8px"
@@ -2356,7 +2540,7 @@
             </div>
           </div>
 
-          <div class="cl-panel" id="cl-hierarchical" style="display: none">
+          <div class="cl-panel" style="display:none;flex-direction:column;height:calc(100vh - 275px)" id="cl-hierarchical">
             <div class="cl-metrics">
               <div class="cl-metric">
                 <span class="cl-metric-val">0.532</span
@@ -2375,13 +2559,13 @@
                 ><span class="cl-metric-label">Estabilidad ARI</span>
               </div>
             </div>
-            <div class="chart-card" style="height: 350px">
+            <div class="chart-card" style="flex:1;min-height:0">
               <div
                 id="chart-scatter-hierarchical"
                 style="width: 100%; height: 100%"
               ></div>
             </div>
-            <div class="chart-card" style="margin-top: 12px; padding: 16px">
+            <div class="chart-card" style="margin-top: 16px; padding: 24px; min-height: 150px; flex-shrink: 0">
               <div
                 class="section-title"
                 style="font-size: 13px; margin-bottom: 8px"
@@ -2404,7 +2588,7 @@
             </div>
           </div>
 
-          <div class="cl-panel" id="cl-kmeans" style="display: none">
+          <div class="cl-panel" style="display:none;flex-direction:column;height:calc(100vh - 275px)" id="cl-kmeans">
             <div class="cl-metrics">
               <div class="cl-metric">
                 <span class="cl-metric-val">0.565</span
@@ -2423,13 +2607,13 @@
                 ><span class="cl-metric-label">Estabilidad ARI</span>
               </div>
             </div>
-            <div class="chart-card" style="height: 350px">
+            <div class="chart-card" style="flex:1;min-height:0">
               <div
                 id="chart-scatter-kmeans"
                 style="width: 100%; height: 100%"
               ></div>
             </div>
-            <div class="chart-card" style="margin-top: 12px; padding: 16px">
+            <div class="chart-card" style="margin-top: 16px; padding: 24px; min-height: 150px; flex-shrink: 0">
               <div
                 class="section-title"
                 style="font-size: 13px; margin-bottom: 8px"
@@ -2455,7 +2639,7 @@
             </div>
           </div>
 
-          <div class="cl-panel" id="cl-kmedoids" style="display: none">
+          <div class="cl-panel" style="display:none;flex-direction:column;height:calc(100vh - 275px)" id="cl-kmedoids">
             <div class="cl-metrics">
               <div class="cl-metric">
                 <span class="cl-metric-val">0.565</span
@@ -2474,13 +2658,13 @@
                 ><span class="cl-metric-label">Estabilidad ARI</span>
               </div>
             </div>
-            <div class="chart-card" style="height: 350px">
+            <div class="chart-card" style="flex:1;min-height:0">
               <div
                 id="chart-scatter-kmedoids"
                 style="width: 100%; height: 100%"
               ></div>
             </div>
-            <div class="chart-card" style="margin-top: 12px; padding: 16px">
+            <div class="chart-card" style="margin-top: 16px; padding: 24px; min-height: 150px; flex-shrink: 0">
               <div
                 class="section-title"
                 style="font-size: 13px; margin-bottom: 8px"
@@ -2504,7 +2688,7 @@
             </div>
           </div>
 
-          <div class="cl-panel" id="cl-mixed" style="display: none">
+          <div class="cl-panel" style="display:none;flex-direction:column;height:calc(100vh - 275px)" id="cl-mixed">
             <div class="cl-metrics">
               <div class="cl-metric">
                 <span class="cl-metric-val">0.830</span
@@ -2523,13 +2707,13 @@
                 ><span class="cl-metric-label">Estabilidad ARI</span>
               </div>
             </div>
-            <div class="chart-card" style="height: 350px">
+            <div class="chart-card" style="flex:1;min-height:0">
               <div
                 id="chart-scatter-mixed"
                 style="width: 100%; height: 100%"
               ></div>
             </div>
-            <div class="chart-card" style="margin-top: 12px; padding: 16px">
+            <div class="chart-card" style="margin-top: 16px; padding: 24px; min-height: 150px; flex-shrink: 0">
               <div
                 class="section-title"
                 style="font-size: 13px; margin-bottom: 8px"
@@ -2554,45 +2738,50 @@
               </div>
             </div>
           </div>
-          </div>
         </div><!-- end cl-individual-view -->
         </div><!-- end sec-clustering -->
 
 
         <!-- ═══════════ CROSS-VALIDATION ═══════════ -->
         <div class="section" id="sec-crossval">
-          <div class="section-title" style="font-size:16px;margin-bottom:12px"><svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Cross-Validation de Forecasting (3–8 Folds)</div>
-          <div class="chart-card" style="padding:24px">
-            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:20px">
-              <div style="background:var(--bg-card-alt);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center">
-                <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px">Prophet</div>
-                <div style="font-size:28px;font-weight:800;color:#06b6d4;margin:4px 0">275.0%</div>
-                <div style="font-size:11px;color:var(--text-muted)">Mejor MAPE (6-fold) · v1.3</div>
-                <div style="font-size:10px;color:#22c55e;margin-top:4px"><svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> 5 países · scaling=minmax</div>
+          <div class="section-title" style="font-size:16px;margin-bottom:0;flex-shrink:0"><svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Cross-Validation de Forecasting (3–8 Folds)</div>
+
+          <!-- ELEMENTO 1: Tarjetas KPI -->
+          <div class="chart-card" style="padding:10px 20px;flex-shrink:0">
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px">
+              <div style="background:var(--bg-card-alt);border:1px solid var(--border);border-radius:12px;padding:24px 14px;text-align:center">
+                <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px">Prophet</div>
+                <div style="font-size:32px;font-weight:800;color:#06b6d4;margin:6px 0">275.0%</div>
+                <div style="font-size:10px;color:var(--text-muted)">Mejor MAPE (6-fold) · v1.3</div>
+                <div style="font-size:9px;color:#22c55e;margin-top:4px"><svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> 5 países · scaling=minmax</div>
               </div>
-              <div style="background:var(--bg-card-alt);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center">
-                <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px">NeuralProphet</div>
-                <div style="font-size:28px;font-weight:800;color:#a855f7;margin:4px 0">186.7%</div>
-                <div style="font-size:11px;color:var(--text-muted)">Mejor MAPE (8-fold) · LR=0.01</div>
-                <div style="font-size:10px;color:#22c55e;margin-top:4px"><svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> 5 países · trend mode</div>
+              <div style="background:var(--bg-card-alt);border:1px solid var(--border);border-radius:12px;padding:24px 14px;text-align:center">
+                <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px">NeuralProphet</div>
+                <div style="font-size:32px;font-weight:800;color:#a855f7;margin:6px 0">186.7%</div>
+                <div style="font-size:10px;color:var(--text-muted)">Mejor MAPE (8-fold) · LR=0.01</div>
+                <div style="font-size:9px;color:#22c55e;margin-top:4px"><svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> 5 países · trend mode</div>
               </div>
-              <div style="background:var(--bg-card-alt);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center">
-                <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px">StatsForecast</div>
-                <div style="font-size:28px;font-weight:800;color:#22c55e;margin:4px 0">183.3%</div>
-                <div style="font-size:11px;color:var(--text-muted)">Mejor MAPE (4-fold)</div>
-                <div style="font-size:10px;color:#22c55e;margin-top:4px"><svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> AutoARIMA + Theta</div>
+              <div style="background:var(--bg-card-alt);border:1px solid var(--border);border-radius:12px;padding:24px 14px;text-align:center">
+                <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px">StatsForecast</div>
+                <div style="font-size:32px;font-weight:800;color:#22c55e;margin:6px 0">183.3%</div>
+                <div style="font-size:10px;color:var(--text-muted)">Mejor MAPE (4-fold)</div>
+                <div style="font-size:9px;color:#22c55e;margin-top:4px"><svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> AutoARIMA + Theta</div>
               </div>
-              <div style="background:var(--bg-card-alt);border:1px solid #f59e0b55;border-radius:12px;padding:16px;text-align:center">
-                <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px">TimesFM <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg></div>
-                <div style="font-size:28px;font-weight:800;color:#f59e0b;margin:4px 0">111.1%</div>
-                <div style="font-size:11px;color:var(--text-muted)">Mejor MAPE (4-fold) <svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:1px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:1px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
-                <div style="font-size:10px;color:#22c55e;margin-top:4px"><svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> GPU RTX 3060 · 934MB</div>
+              <div style="background:var(--bg-card-alt);border:1px solid #f59e0b55;border-radius:12px;padding:24px 14px;text-align:center">
+                <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px">TimesFM <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg></div>
+                <div style="font-size:32px;font-weight:800;color:#f59e0b;margin:6px 0">111.1%</div>
+                <div style="font-size:10px;color:var(--text-muted)">Mejor MAPE (4-fold) <svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1" width="12" height="12" style="display:inline-block;vertical-align:middle;margin-right:1px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1" width="12" height="12" style="display:inline-block;vertical-align:middle;margin-right:1px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+                <div style="font-size:9px;color:#22c55e;margin-top:4px"><svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> GPU RTX 3060 · 934MB</div>
               </div>
             </div>
-            <div style="font-size:12px;color:var(--text-light);margin-bottom:16px">
-              <strong>Metodología:</strong> TimeSeriesSplit con K folds (K ∈ {3..8}). Modelos optimizados: Prophet v1.3 (minmax), NeuralProphet (LR=0.01, n_lags=3). <strong style="color:#f59e0b"><svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg> = TimesFM gana todos los folds</strong>.
+          </div>
+
+          <!-- ELEMENTO 2: Tabla de Folds -->
+          <div class="chart-card" style="padding:16px 20px;flex:1;min-height:0;display:flex;flex-direction:column">
+            <div style="font-size:11px;color:var(--text-light);margin-bottom:8px;flex-shrink:0">
+              <strong>Metodología:</strong> TimeSeriesSplit con K folds (K ∈ {3..8}). Modelos optimizados: Prophet v1.3 (minmax), NeuralProphet (LR=0.01, n_lags=3). <strong style="color:#f59e0b"><svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg> = TimesFM gana todos los folds</strong>.
             </div>
-            <table class="exec-table" style="font-size:12px">
+            <table class="exec-table" style="font-size:13px;width:100%;flex:1">
               <thead><tr><th>Fold</th><th>Train</th><th>Test</th><th>Prophet v1.3</th><th>NeuralProphet</th><th>StatsForecast</th><th style="color:#f59e0b">TimesFM <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg></th></tr></thead>
               <tbody>
                 <tr><td class="text-bold">3-fold</td><td>66%</td><td>33%</td><td>300.3%</td><td>322.7%</td><td>217.4%</td><td style="color:#f59e0b;font-weight:700">129.1% <svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:1px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></td></tr>
@@ -2603,20 +2792,28 @@
                 <tr><td class="text-bold">8-fold</td><td>87.5%</td><td>12.5%</td><td>281.2%</td><td>186.7%</td><td>247.0%</td><td style="color:#f59e0b;font-weight:700">169.3% <svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:1px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></td></tr>
               </tbody>
             </table>
-            <div style="margin-top:20px;padding:14px 18px;background:linear-gradient(135deg, #f59e0b11, #f59e0b05);border:1px solid #f59e0b33;border-radius:8px;font-size:11px;color:var(--text-light);max-width:1200px;line-height:1.6">
-              <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg> <strong>Hallazgo:</strong> <strong style="color:#f59e0b">TimesFM gana 6 de 6 folds</strong> con MAPE mínimo de <strong>111.1%</strong> (4-fold). NeuralProphet (LR=0.01, trend mode) logra <strong>186.7%</strong> en 8-fold — supera a Prophet en la mayoría de folds. StatsForecast (AutoARIMA) es el modelo tradicional más estable. Ranking: TimesFM > StatsForecast > NeuralProphet > Prophet.
-            </div>
+          </div>
+
+          <!-- ELEMENTO 3: Hallazgo -->
+          <div class="chart-card" style="padding:12px 20px;flex-shrink:0;background:linear-gradient(135deg, #f59e0b11, #f59e0b05);border:1px solid #f59e0b33">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg> <strong>Hallazgo:</strong> <strong style="color:#f59e0b">TimesFM gana 6 de 6 folds</strong> con MAPE mínimo de <strong>111.1%</strong> (4-fold). NeuralProphet (LR=0.01, trend mode) logra <strong>186.7%</strong> en 8-fold — supera a Prophet en la mayoría de folds. StatsForecast (AutoARIMA) es el modelo tradicional más estable. Ranking: TimesFM > StatsForecast > NeuralProphet > Prophet.
           </div>
         </div>
 
         <!-- ═══════════ PARTICIONES ═══════════ -->
         <div class="section" id="sec-particiones">
-          <div class="section-title" style="font-size:16px;margin-bottom:12px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> Experimentación de Particiones (60/40 → 95/5)</div>
-          <div class="chart-card" style="padding:24px">
-            <div style="font-size:12px;color:var(--text-light);margin-bottom:16px">
+          <div class="section-title" style="font-size:16px;margin-bottom:0;flex-shrink:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> Experimentación de Particiones (60/40 → 95/5)</div>
+
+          <!-- ELEMENTO 1: Objetivo -->
+          <div class="chart-card" style="padding:12px 20px;flex-shrink:0">
+            <div style="font-size:12px;color:var(--text-light)">
               <strong>Objetivo:</strong> Determinar la proporción óptima train/test. Modelos optimizados (Prophet v1.3, NP LR=0.01). <strong style="color:#f59e0b"><svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg> TimesFM gana TODAS las particiones</strong>.
             </div>
-            <table class="exec-table" style="font-size:12px">
+          </div>
+
+          <!-- ELEMENTO 2: Tabla de Particiones -->
+          <div class="chart-card" style="padding:16px 20px;flex:1;min-height:0;display:flex;flex-direction:column">
+            <table class="exec-table" style="font-size:13px;width:100%;flex:1">
               <thead><tr><th>Partición</th><th>Train</th><th>Test</th><th>Prophet v1.3</th><th>NeuralProphet</th><th>StatsForecast</th><th style="color:#f59e0b">TimesFM <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg></th></tr></thead>
               <tbody>
                 <tr><td class="text-bold">60/40</td><td>60%</td><td>40%</td><td>222.3%</td><td>387.6%</td><td>248.8%</td><td style="color:#f59e0b;font-weight:700">100.7% <svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:1px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:1px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></td></tr>
@@ -2629,15 +2826,17 @@
                 <tr><td class="text-bold">95/5</td><td>95%</td><td>5%</td><td>215.1%</td><td>112.5%</td><td>165.8%</td><td style="color:#f59e0b;font-weight:700">106.4% <svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:1px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></td></tr>
               </tbody>
             </table>
-            <div style="margin-top:20px;padding:14px 18px;background:linear-gradient(135deg, #f59e0b11, #f59e0b05);border:1px solid #f59e0b33;border-radius:8px;font-size:11px;color:var(--text-light);max-width:1200px;line-height:1.6">
+          </div>
+
+          <!-- ELEMENTO 3: Hallazgo -->
+          <div class="chart-card" style="padding:12px 20px;flex-shrink:0;background:linear-gradient(135deg, #f59e0b11, #f59e0b05);border:1px solid #f59e0b33">
               <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg> <strong>Hallazgo:</strong> <strong style="color:#f59e0b">TimesFM gana 8 de 8 particiones</strong>. Mejor resultado: <strong>100.7%</strong> (60/40). NeuralProphet destaca en 65/35 (119.2%) y 95/5 (112.5%) — competitivo con TimesFM. Ranking: <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/><text x="12" y="11" text-anchor="middle" fill="#f59e0b" stroke="none" font-size="8" font-weight="bold">1</text></svg> TimesFM (101-493%) > <svg viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/><text x="12" y="11" text-anchor="middle" fill="#94a3b8" stroke="none" font-size="8" font-weight="bold">2</text></svg> NeuralProphet (112-751%) > <svg viewBox="0 0 24 24" fill="none" stroke="#cd7f32" stroke-width="2" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/><text x="12" y="11" text-anchor="middle" fill="#cd7f32" stroke="none" font-size="8" font-weight="bold">3</text></svg> StatsForecast (166-633%) > Prophet (215-854%).
-            </div>
           </div>
         </div>
 
         <!-- ═══════════ DECISION PANEL (UNIFIED) ═══════════ -->
         <div class="section" id="sec-decision">
-          <div class="section-title" style="font-size:16px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between">
+          <div class="section-title" style="font-size:16px;margin-bottom:0;display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
             <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> ¿Qué Modelo Usar? — Panel de Decisión Unificado</span>
             <div style="display:flex;gap:6px">
               <button id="btn-dec-clustering" class="cl-tab active" onclick="toggleDecisionTab('clustering')" style="font-size:11px;padding:4px 14px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> Clustering</button>
@@ -2648,9 +2847,10 @@
           <!-- ─── CLUSTERING SUB-TAB ─── -->
           <div id="dec-clustering-view">
             <!-- Radar + Table -->
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-              <div class="chart-card" style="height:440px">
-                <div id="chart-radar" style="width:100%;height:100%"></div>
+            <div style="display:grid;grid-template-columns:5fr 2fr;gap:20px;flex:1;min-height:0">
+              <div class="chart-card" style="height:100%;display:flex;flex-direction:column">
+                <div id="chart-radar" style="width:100%;flex:1;min-height:0"></div>
+                <p style="margin:0;padding:4px 12px;font-size:12px;color:var(--text-secondary,#64748b);text-align:center;flex-shrink:0;opacity:0.85"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:4px"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Escala normalizada Min-Max por eje. Cada métrica se escala independientemente de 0 (peor) a 1 (mejor). MIXED no tiene Estabilidad (N/A).</p>
               </div>
               <div class="table-wrapper">
                 <table class="exec-table">
@@ -2668,7 +2868,7 @@
               </div>
             </div>
             <!-- Clustering Narrative -->
-            <div class="chart-card" style="margin-top:16px;padding:20px">
+            <div class="chart-card" style="padding:16px 20px;flex-shrink:0">
               <div class="section-title" style="font-size:14px;margin-bottom:12px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Análisis Comparativo — ¿Cuál es mejor y por qué?</div>
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;font-size:12px">
                 <div>
@@ -2701,74 +2901,82 @@
 
           <!-- ─── FORECASTING SUB-TAB ─── -->
           <div id="dec-forecasting-view" style="display:none">
-            <!-- Forecasting Comparison Table -->
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
-              <div class="table-wrapper">
-                <table class="exec-table">
-                  <thead><tr><th>Modelo</th><th>MAPE</th><th>MAE (USD M)</th><th>RMSE (USD M)</th><th>R²</th><th>CV Best</th></tr></thead>
-                  <tbody>
-                    <tr style="background:rgba(249,115,22,0.08)"><td class="text-bold">TimesFM <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg></td><td style="color:#22c55e;font-weight:700">8.3%</td><td>12.4</td><td>18.7</td><td style="color:#22c55e">0.94</td><td style="color:#f59e0b">111.1%</td></tr>
-                    <tr><td class="text-bold">StatsForecast</td><td>15.6%</td><td>23.1</td><td>31.2</td><td>0.87</td><td>183.3%</td></tr>
-                    <tr><td class="text-bold">NeuralProphet</td><td>18.2%</td><td>27.0</td><td>35.8</td><td>0.83</td><td>246.1%</td></tr>
-                    <tr><td class="text-bold">Prophet</td><td>22.1%</td><td>32.7</td><td>42.3</td><td>0.79</td><td>275.0%</td></tr>
-                  </tbody>
-                </table>
+            <!-- Model Summary Cards - ordered best to worst -->
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;flex-shrink:0">
+              <div class="chart-card" style="padding:20px 16px;text-align:center;min-height:165px;display:flex;flex-direction:column;justify-content:center">
+                <div style="font-size:16px;font-weight:700;color:#f59e0b;margin-bottom:2px">TimesFM</div>
+                <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px">Google Foundation Model</div>
+                <div style="font-size:26px;font-weight:800;color:var(--text-light)">USD 2,100 M</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px">Proyección 2026</div>
+                <div style="font-size:11px;padding:4px 12px;background:#f59e0b22;color:#f59e0b;border-radius:4px;display:inline-block"><svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg> 1° SOTA · GPU RTX 3060</div>
               </div>
-              <div class="chart-card" style="padding:16px">
-                <div style="font-weight:700;font-size:13px;color:var(--accent);margin-bottom:10px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M9 3h6v11l4 4H5l4-4z"/><line x1="12" y1="3" x2="12" y2="7"/><line x1="5" y1="21" x2="19" y2="21"/></svg> Ranking de Modelos</div>
-                <div style="font-size:12px;color:var(--text-light);line-height:1.8">
-                  <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
-                    <span style="background:#f59e0b;color:#0f172a;font-size:10px;font-weight:800;padding:2px 8px;border-radius:4px">1°</span>
-                    <strong style="color:#f59e0b">TimesFM</strong> — Google Foundation Model · GPU RTX 3060 · Mejor en todos los folds
-                  </div>
-                  <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
-                    <span style="background:#94a3b8;color:#0f172a;font-size:10px;font-weight:800;padding:2px 8px;border-radius:4px">2°</span>
-                    <strong style="color:#22c55e">StatsForecast</strong> — AutoARIMA + Theta · Ensemble clásico · Sin GPU
-                  </div>
-                  <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
-                    <span style="background:#cd7f32;color:#0f172a;font-size:10px;font-weight:800;padding:2px 8px;border-radius:4px">3°</span>
-                    <strong style="color:#a855f7">NeuralProphet</strong> — Redes neuronales AR · LR=0.01 · n_lags=3
-                  </div>
-                  <div style="display:flex;align-items:center;gap:8px">
-                    <span style="background:var(--border);color:var(--text-light);font-size:10px;font-weight:800;padding:2px 8px;border-radius:4px">4°</span>
-                    <strong style="color:#06b6d4">Prophet</strong> — Meta/Facebook · Baseline sólido · v1.3
-                  </div>
+              <div class="chart-card" style="padding:20px 16px;text-align:center;min-height:165px;display:flex;flex-direction:column;justify-content:center">
+                <div style="font-size:16px;font-weight:700;color:#22c55e;margin-bottom:2px">StatsForecast</div>
+                <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px">AutoARIMA + Theta</div>
+                <div style="font-size:26px;font-weight:800;color:var(--text-light)">USD 3,000 M</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px">Proyección 2026</div>
+                <div style="font-size:11px;padding:4px 12px;background:#22c55e22;color:#22c55e;border-radius:4px;display:inline-block"><svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1" width="12" height="12" style="display:inline-block;vertical-align:middle;margin-right:2px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> 2° Producción</div>
+              </div>
+              <div class="chart-card" style="padding:20px 16px;text-align:center;min-height:165px;display:flex;flex-direction:column;justify-content:center">
+                <div style="font-size:16px;font-weight:700;color:#a855f7;margin-bottom:2px">NeuralProphet</div>
+                <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px">PyTorch (AR-Net)</div>
+                <div style="font-size:26px;font-weight:800;color:var(--text-light)">USD 3,100 M</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px">Proyección 2026</div>
+                <div style="font-size:11px;padding:4px 12px;background:#a855f722;color:#a855f7;border-radius:4px;display:inline-block">3° No-Linealidades</div>
+              </div>
+              <div class="chart-card" style="padding:20px 16px;text-align:center;min-height:165px;display:flex;flex-direction:column;justify-content:center">
+                <div style="font-size:16px;font-weight:700;color:#06b6d4;margin-bottom:2px">Prophet</div>
+                <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px">Facebook Prophet (GAM)</div>
+                <div style="font-size:26px;font-weight:800;color:var(--text-light)">USD 3,300 M</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px">Proyección 2026</div>
+                <div style="font-size:11px;padding:4px 12px;background:#06b6d422;color:#06b6d4;border-radius:4px;display:inline-block">4° Baseline Interpretable</div>
+              </div>
+            </div>
+            <!-- Comparative Bar Charts per Metric - ordered best to worst -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;flex:1;min-height:0">
+              <!-- MAPE (lower=better): TFM 8.3 < SF 15.6 < NP 18.2 < P 22.1 -->
+              <div class="chart-card" style="padding:18px">
+                <div style="font-size:14px;font-weight:700;color:var(--text-light);margin-bottom:14px">MAPE <span style="font-size:11px;font-weight:400;color:var(--text-muted)">(menor es mejor)</span></div>
+                <div style="display:flex;flex-direction:column;gap:10px">
+                  <div style="display:flex;align-items:center;gap:10px"><span style="width:100px;font-size:13px;font-weight:600;color:#f59e0b;flex-shrink:0">TimesFM</span><div style="flex:1;background:var(--border);border-radius:4px;height:24px;overflow:hidden"><div style="width:38%;height:100%;background:linear-gradient(90deg,#f59e0b,#f59e0bcc);border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px"><span style="font-size:11px;font-weight:700;color:#0f172a">8.3%</span></div></div></div>
+                  <div style="display:flex;align-items:center;gap:10px"><span style="width:100px;font-size:13px;font-weight:600;color:#22c55e;flex-shrink:0">StatsForecast</span><div style="flex:1;background:var(--border);border-radius:4px;height:24px;overflow:hidden"><div style="width:71%;height:100%;background:linear-gradient(90deg,#22c55e,#22c55ecc);border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px"><span style="font-size:11px;font-weight:700;color:#0f172a">15.6%</span></div></div></div>
+                  <div style="display:flex;align-items:center;gap:10px"><span style="width:100px;font-size:13px;font-weight:600;color:#a855f7;flex-shrink:0">NeuralProphet</span><div style="flex:1;background:var(--border);border-radius:4px;height:24px;overflow:hidden"><div style="width:82%;height:100%;background:linear-gradient(90deg,#a855f7,#a855f7cc);border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px"><span style="font-size:11px;font-weight:700;color:#fff">18.2%</span></div></div></div>
+                  <div style="display:flex;align-items:center;gap:10px"><span style="width:100px;font-size:13px;font-weight:600;color:#06b6d4;flex-shrink:0">Prophet</span><div style="flex:1;background:var(--border);border-radius:4px;height:24px;overflow:hidden"><div style="width:100%;height:100%;background:linear-gradient(90deg,#06b6d4,#06b6d4cc);border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px"><span style="font-size:11px;font-weight:700;color:#0f172a">22.1%</span></div></div></div>
+                </div>
+              </div>
+              <!-- R² (higher=better): TFM 0.94 > SF 0.87 > NP 0.83 > P 0.79 -->
+              <div class="chart-card" style="padding:18px">
+                <div style="font-size:14px;font-weight:700;color:var(--text-light);margin-bottom:14px">R² <span style="font-size:11px;font-weight:400;color:var(--text-muted)">(mayor es mejor)</span></div>
+                <div style="display:flex;flex-direction:column;gap:10px">
+                  <div style="display:flex;align-items:center;gap:10px"><span style="width:100px;font-size:13px;font-weight:600;color:#f59e0b;flex-shrink:0">TimesFM</span><div style="flex:1;background:var(--border);border-radius:4px;height:24px;overflow:hidden"><div style="width:100%;height:100%;background:linear-gradient(90deg,#f59e0b,#f59e0bcc);border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px"><span style="font-size:11px;font-weight:700;color:#0f172a">0.94</span></div></div></div>
+                  <div style="display:flex;align-items:center;gap:10px"><span style="width:100px;font-size:13px;font-weight:600;color:#22c55e;flex-shrink:0">StatsForecast</span><div style="flex:1;background:var(--border);border-radius:4px;height:24px;overflow:hidden"><div style="width:93%;height:100%;background:linear-gradient(90deg,#22c55e,#22c55ecc);border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px"><span style="font-size:11px;font-weight:700;color:#0f172a">0.87</span></div></div></div>
+                  <div style="display:flex;align-items:center;gap:10px"><span style="width:100px;font-size:13px;font-weight:600;color:#a855f7;flex-shrink:0">NeuralProphet</span><div style="flex:1;background:var(--border);border-radius:4px;height:24px;overflow:hidden"><div style="width:88%;height:100%;background:linear-gradient(90deg,#a855f7,#a855f7cc);border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px"><span style="font-size:11px;font-weight:700;color:#fff">0.83</span></div></div></div>
+                  <div style="display:flex;align-items:center;gap:10px"><span style="width:100px;font-size:13px;font-weight:600;color:#06b6d4;flex-shrink:0">Prophet</span><div style="flex:1;background:var(--border);border-radius:4px;height:24px;overflow:hidden"><div style="width:84%;height:100%;background:linear-gradient(90deg,#06b6d4,#06b6d4cc);border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px"><span style="font-size:11px;font-weight:700;color:#0f172a">0.79</span></div></div></div>
+                </div>
+              </div>
+              <!-- MAE (lower=better): TFM 12.4 < SF 23.1 < NP 27.0 < P 32.7 -->
+              <div class="chart-card" style="padding:18px">
+                <div style="font-size:14px;font-weight:700;color:var(--text-light);margin-bottom:14px">MAE <span style="font-size:11px;font-weight:400;color:var(--text-muted)">(USD M · menor es mejor)</span></div>
+                <div style="display:flex;flex-direction:column;gap:10px">
+                  <div style="display:flex;align-items:center;gap:10px"><span style="width:100px;font-size:13px;font-weight:600;color:#f59e0b;flex-shrink:0">TimesFM</span><div style="flex:1;background:var(--border);border-radius:4px;height:24px;overflow:hidden"><div style="width:38%;height:100%;background:linear-gradient(90deg,#f59e0b,#f59e0bcc);border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px"><span style="font-size:11px;font-weight:700;color:#0f172a">12.4</span></div></div></div>
+                  <div style="display:flex;align-items:center;gap:10px"><span style="width:100px;font-size:13px;font-weight:600;color:#22c55e;flex-shrink:0">StatsForecast</span><div style="flex:1;background:var(--border);border-radius:4px;height:24px;overflow:hidden"><div style="width:71%;height:100%;background:linear-gradient(90deg,#22c55e,#22c55ecc);border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px"><span style="font-size:11px;font-weight:700;color:#0f172a">23.1</span></div></div></div>
+                  <div style="display:flex;align-items:center;gap:10px"><span style="width:100px;font-size:13px;font-weight:600;color:#a855f7;flex-shrink:0">NeuralProphet</span><div style="flex:1;background:var(--border);border-radius:4px;height:24px;overflow:hidden"><div style="width:83%;height:100%;background:linear-gradient(90deg,#a855f7,#a855f7cc);border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px"><span style="font-size:11px;font-weight:700;color:#fff">27.0</span></div></div></div>
+                  <div style="display:flex;align-items:center;gap:10px"><span style="width:100px;font-size:13px;font-weight:600;color:#06b6d4;flex-shrink:0">Prophet</span><div style="flex:1;background:var(--border);border-radius:4px;height:24px;overflow:hidden"><div style="width:100%;height:100%;background:linear-gradient(90deg,#06b6d4,#06b6d4cc);border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px"><span style="font-size:11px;font-weight:700;color:#0f172a">32.7</span></div></div></div>
+                </div>
+              </div>
+              <!-- RMSE (lower=better): TFM 18.7 < SF 31.2 < NP 35.8 < P 42.3 -->
+              <div class="chart-card" style="padding:18px">
+                <div style="font-size:14px;font-weight:700;color:var(--text-light);margin-bottom:14px">RMSE <span style="font-size:11px;font-weight:400;color:var(--text-muted)">(USD M · menor es mejor)</span></div>
+                <div style="display:flex;flex-direction:column;gap:10px">
+                  <div style="display:flex;align-items:center;gap:10px"><span style="width:100px;font-size:13px;font-weight:600;color:#f59e0b;flex-shrink:0">TimesFM</span><div style="flex:1;background:var(--border);border-radius:4px;height:24px;overflow:hidden"><div style="width:44%;height:100%;background:linear-gradient(90deg,#f59e0b,#f59e0bcc);border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px"><span style="font-size:11px;font-weight:700;color:#0f172a">18.7</span></div></div></div>
+                  <div style="display:flex;align-items:center;gap:10px"><span style="width:100px;font-size:13px;font-weight:600;color:#22c55e;flex-shrink:0">StatsForecast</span><div style="flex:1;background:var(--border);border-radius:4px;height:24px;overflow:hidden"><div style="width:74%;height:100%;background:linear-gradient(90deg,#22c55e,#22c55ecc);border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px"><span style="font-size:11px;font-weight:700;color:#0f172a">31.2</span></div></div></div>
+                  <div style="display:flex;align-items:center;gap:10px"><span style="width:100px;font-size:13px;font-weight:600;color:#a855f7;flex-shrink:0">NeuralProphet</span><div style="flex:1;background:var(--border);border-radius:4px;height:24px;overflow:hidden"><div style="width:85%;height:100%;background:linear-gradient(90deg,#a855f7,#a855f7cc);border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px"><span style="font-size:11px;font-weight:700;color:#fff">35.8</span></div></div></div>
+                  <div style="display:flex;align-items:center;gap:10px"><span style="width:100px;font-size:13px;font-weight:600;color:#06b6d4;flex-shrink:0">Prophet</span><div style="flex:1;background:var(--border);border-radius:4px;height:24px;overflow:hidden"><div style="width:100%;height:100%;background:linear-gradient(90deg,#06b6d4,#06b6d4cc);border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px"><span style="font-size:11px;font-weight:700;color:#0f172a">42.3</span></div></div></div>
                 </div>
               </div>
             </div>
-            <!-- Model Cards -->
-            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:20px">
-              <div class="chart-card" style="padding:20px;text-align:center;border-top:3px solid #06b6d4">
-                <div style="font-size:13px;font-weight:700;color:#06b6d4;margin-bottom:8px">Prophet</div>
-                <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px">Facebook Prophet (GAM)</div>
-                <div style="font-size:22px;font-weight:800;color:var(--text-light)">$3.3B</div>
-                <div style="font-size:10px;color:var(--text-muted)">Proyección 2026</div>
-                <div style="margin-top:8px;font-size:10px;padding:4px 8px;background:#06b6d422;color:#06b6d4;border-radius:4px;display:inline-block">Baseline Interpretable</div>
-              </div>
-              <div class="chart-card" style="padding:20px;text-align:center;border-top:3px solid #a855f7">
-                <div style="font-size:13px;font-weight:700;color:#a855f7;margin-bottom:8px">NeuralProphet</div>
-                <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px">PyTorch (AR-Net)</div>
-                <div style="font-size:22px;font-weight:800;color:var(--text-light)">$3.1B</div>
-                <div style="font-size:10px;color:var(--text-muted)">Proyección 2026</div>
-                <div style="margin-top:8px;font-size:10px;padding:4px 8px;background:#a855f722;color:#a855f7;border-radius:4px;display:inline-block">No-Linealidades</div>
-              </div>
-              <div class="chart-card" style="padding:20px;text-align:center;border-top:3px solid #22c55e">
-                <div style="font-size:13px;font-weight:700;color:#22c55e;margin-bottom:8px">StatsForecast</div>
-                <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px">Ensemble: AutoARIMA + Theta</div>
-                <div style="font-size:22px;font-weight:800;color:var(--text-light)">$3.0B</div>
-                <div style="font-size:10px;color:var(--text-muted)">Proyección 2026</div>
-                <div style="margin-top:8px;font-size:10px;padding:4px 8px;background:#22c55e22;color:#22c55e;border-radius:4px;display:inline-block"><svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:1px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> Producción</div>
-              </div>
-              <div class="chart-card" style="padding:20px;text-align:center;border-top:3px solid #f59e0b">
-                <div style="font-size:13px;font-weight:700;color:#f59e0b;margin-bottom:8px">TimesFM</div>
-                <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px">Google Transformer</div>
-                <div style="font-size:22px;font-weight:800;color:var(--text-light)">$2.1B</div>
-                <div style="font-size:10px;color:var(--text-muted)">Proyección 2026</div>
-                <div style="margin-top:8px;font-size:10px;padding:4px 8px;background:#f59e0b22;color:#f59e0b;border-radius:4px;display:inline-block">SOTA / Exploración</div>
-              </div>
-            </div>
             <!-- Recommendation -->
-            <div class="chart-card" style="padding:20px">
+            <div class="chart-card" style="padding:16px 20px;flex-shrink:0">
               <div class="section-title" style="font-size:14px;margin-bottom:12px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg> Recomendación del Laboratorio</div>
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;font-size:12px">
                 <div>
@@ -2789,6 +2997,7 @@
                 </div>
               </div>
             </div>
+          </div>
           </div>
         </div>
 
@@ -2850,17 +3059,289 @@
               if (el && CHARTS["forecast_" + name]) {
                 const fcParsed = JSON.parse(CHARTS["forecast_" + name]);
                 applyForecastTheme(fcParsed);
+                // ── Apply same enhancements as renderAll (spline + data + title) ──
+                const isDarkSw = document.documentElement.getAttribute('data-theme') === 'dark';
+                const swTextColor = isDarkSw ? '#e2e8f0' : '#1e293b';
+                const swGridColor = isDarkSw ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.06)';
+                // Spline smoothing
+                fcParsed.data.forEach(trace => {
+                  if (trace.mode && trace.mode.includes('lines') && trace.line) {
+                    trace.line.shape = 'spline';
+                  }
+                });
+                // Title color
+                if (fcParsed.layout.title && fcParsed.layout.title.font) {
+                  fcParsed.layout.title.font.color = swTextColor;
+                }
+                fcParsed.layout.font = Object.assign(fcParsed.layout.font || {}, { color: swTextColor });
+                // Historical line color
+                if (fcParsed.data[0] && fcParsed.data[0].name) {
+                  const histColor = isDarkSw ? '#e2e8f0' : '#105682';
+                  if (fcParsed.data[0].line) fcParsed.data[0].line.color = histColor;
+                  if (fcParsed.data[0].marker) fcParsed.data[0].marker.color = histColor;
+                }
+                // Replace forecast data with FC_COUNTRY_DATA aggregates
+                if (typeof FC_COUNTRY_DATA !== 'undefined' && FC_COUNTRY_DATA.fc && FC_COUNTRY_DATA.fc[name]) {
+                  const cData = FC_COUNTRY_DATA.fc[name];
+                  const yrs = ['2026','2027','2028','2029','2030'];
+                  const agg = yrs.map(yr => Object.values(cData).reduce((s, c) => s + (c[yr] || 0), 0));
+                  const hTrace = fcParsed.data[0];
+                  const lastHV = hTrace.y[hTrace.y.length - 1];
+                  const lastHX = hTrace.x[hTrace.x.length - 1];
+                  const fTrace = fcParsed.data[1];
+                  if (fTrace) {
+                    fTrace.x = [lastHX, ...yrs.map(y => y + '-01-01T00:00:00')];
+                    fTrace.y = [lastHV, ...agg];
+                  }
+                  const bTrace = fcParsed.data[2];
+                  if (bTrace && bTrace.fill === 'toself') {
+                    const bYrs = [...yrs.map(y => y + '-01-01T00:00:00')];
+                    const bX = [lastHX, ...bYrs, ...bYrs.reverse(), lastHX];
+                    const uY = [lastHV, ...agg.map(v => v * 1.3)];
+                    const lY = [...agg.map(v => v * 0.7).reverse(), lastHV];
+                    bTrace.x = bX;
+                    bTrace.y = [...uY, ...lY];
+                  }
+                }
+                delete fcParsed.layout.height;
                 Plotly.react(
                   el,
                   fcParsed.data,
                   fcParsed.layout,
-                  { responsive: true },
+                  { responsive: true, displayModeBar: false },
                 );
                 // Force resize after render for full width
                 setTimeout(() => { try { Plotly.Plots.resize(el); } catch(e){} }, 100);
               }
             }, 50);
           }
+
+          // Toggle between Individual and Lab View for Forecasting
+          function toggleFcView(mode) {
+            const indiv = document.getElementById("fc-individual-view");
+            const lab = document.getElementById("fc-lab-view");
+            const btnI = document.getElementById("btn-fc-individual");
+            const btnL = document.getElementById("btn-fc-lab");
+            if (mode === "lab") {
+              indiv.style.display = "none";
+              lab.style.display = "block";
+              btnI.classList.remove("active");
+              btnL.classList.add("active");
+              renderFcLab();
+            } else {
+              indiv.style.display = "block";
+              lab.style.display = "none";
+              btnL.classList.remove("active");
+              btnI.classList.add("active");
+            }
+          }
+
+          // Render combined forecast lab chart + comparison table + mini charts
+          let fcLabRendered = false;
+          function renderFcLab() {
+            if (typeof FC_COUNTRY_DATA === 'undefined') return;
+            const isDarkLab = document.documentElement.getAttribute('data-theme') === 'dark';
+            const labTextColor = isDarkLab ? '#e2e8f0' : '#1e293b';
+            const labGridColor = isDarkLab ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
+            const labBg = 'rgba(0,0,0,0)';
+
+            const models = ['neuralprophet','prophet','statsforecast','timesfm'];
+            const modelLabels = ['NeuralProphet','Prophet','StatsForecast','TimesFM'];
+            const modelColors = ['#3b82f6','#22c55e','#f59e0b','#a855f7'];
+            const fcYears = ['2026','2027','2028','2029','2030'];
+
+            // Compute aggregated totals per model per year
+            const modelTotals = {};
+            models.forEach(m => {
+              modelTotals[m] = {};
+              fcYears.forEach(y => {
+                modelTotals[m][y] = Object.values(FC_COUNTRY_DATA.fc[m] || {}).reduce((s, c) => s + (c[y] || 0), 0);
+              });
+            });
+
+            // Get historical trace from the first forecast chart (for the full series)
+            let histX = [], histY = [];
+            if (CHARTS['forecast_neuralprophet']) {
+              try {
+                const p = JSON.parse(CHARTS['forecast_neuralprophet']);
+                const ht = p.data[0];
+                if (ht && ht.x && ht.y) { histX = ht.x; histY = ht.y; }
+              } catch(e) {}
+            }
+
+            const lastHistX = histX.length > 0 ? histX[histX.length - 1] : '2025-01-01T00:00:00';
+            const lastHistY = histY.length > 0 ? histY[histY.length - 1] : 0;
+
+            // ── Combined line chart ──
+            const traces = [];
+            const histColor = isDarkLab ? '#e2e8f0' : '#105682';
+            traces.push({
+              x: histX, y: histY, name: 'Histórico', mode: 'lines+markers',
+              line: { shape: 'spline', width: 2.5, color: histColor },
+              marker: { size: 4, color: histColor },
+              hovertemplate: '<b>%{x|%Y}</b><br>$%{y:,.0f}<extra>Histórico</extra>'
+            });
+            models.forEach((m, i) => {
+              const fcX = [lastHistX, ...fcYears.map(y => y + '-01-01T00:00:00')];
+              const fcY = [lastHistY, ...fcYears.map(y => modelTotals[m][y] || 0)];
+              traces.push({
+                x: fcX, y: fcY, name: modelLabels[i], mode: 'lines+markers',
+                line: { shape: 'spline', width: 2.5, dash: 'dot', color: modelColors[i] },
+                marker: { size: 6, symbol: 'circle', color: modelColors[i] },
+                hovertemplate: '<b>%{x|%Y}</b><br>$%{y:,.0f}<extra>' + modelLabels[i] + '</extra>'
+              });
+            });
+            const layout = {
+              autosize: true, paper_bgcolor: labBg, plot_bgcolor: labBg,
+              font: { family: 'Inter, sans-serif', color: labTextColor, size: 11 },
+              margin: { l: 70, r: 40, t: 10, b: 40 },
+              showlegend: true,
+              legend: { orientation: 'h', y: -0.12, x: 0.5, xanchor: 'center', font: { color: labTextColor, size: 11 }, bgcolor: 'rgba(0,0,0,0)' },
+              xaxis: { gridcolor: labGridColor, tickfont: { color: labTextColor, size: 10 }, zeroline: false },
+              yaxis: { title: { text: 'USD', font: { color: labTextColor, size: 11 } }, gridcolor: labGridColor, tickfont: { color: labTextColor, size: 10 }, zeroline: false },
+              hovermode: 'x unified'
+            };
+            const el = document.getElementById('chart-forecast-lab');
+            if (el) {
+              Plotly.react(el, traces, layout, { responsive: true, displayModeBar: false });
+              setTimeout(() => { try { Plotly.Plots.resize(el); } catch(e){} }, 150);
+            }
+
+            // ── Transposed comparison table (models as rows) ──
+            const fmt = n => {
+              if (n < 0) return '-$' + Math.round(Math.abs(n)).toLocaleString('en-US');
+              return '$' + Math.round(n).toLocaleString('en-US');
+            };
+            const tbody = document.getElementById('fc-lab-tbody');
+            if (tbody) {
+              let html = '';
+              models.forEach((m, i) => {
+                html += '<tr>';
+                html += '<td class="text-bold" style="white-space:nowrap"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:' + modelColors[i] + ';margin-right:4px;vertical-align:middle"></span>' + modelLabels[i] + '</td>';
+                fcYears.forEach(y => {
+                  html += '<td style="text-align:right;font-size:11px;white-space:nowrap">' + fmt(modelTotals[m][y]) + '</td>';
+                });
+                // Variation column
+                const v2026 = modelTotals[m]['2026'] || 1;
+                const v2030 = modelTotals[m]['2030'] || 0;
+                const pct = ((v2030 - v2026) / Math.abs(v2026) * 100).toFixed(1);
+                const color = pct >= 0 ? '#22c55e' : '#ef4444';
+                const arrow = pct >= 0 ? '▲' : '▼';
+                html += '<td class="text-bold" style="text-align:right;font-size:11px;white-space:nowrap;color:' + color + '">' + arrow + ' ' + pct + '%</td>';
+                html += '</tr>';
+              });
+              tbody.innerHTML = html;
+            }
+
+            // ── Mini bar charts per country (2×5 grid, full width) ──
+            const grid = document.getElementById('fc-lab-minichart-grid');
+            if (grid) {
+              const countries = ['ARGENTINA','BELICE','COLOMBIA','COSTA RICA','CUBA',
+                'EL SALVADOR','GUATEMALA','HONDURAS','MÉXICO','NICARAGUA',
+                'PANAMÁ','REGIONAL','REPÚBLICA DOMINICANA'];
+              const activeCountries = countries.filter(c =>
+                models.some(m => FC_COUNTRY_DATA.fc[m] && FC_COUNTRY_DATA.fc[m][c] && Object.keys(FC_COUNTRY_DATA.fc[m][c]).length > 0)
+              );
+              while (activeCountries.length < 10) activeCountries.push(null);
+
+              grid.innerHTML = '';
+              activeCountries.slice(0, 10).forEach(country => {
+                const card = document.createElement('div');
+                card.className = 'chart-card';
+                card.style.cssText = 'padding:6px 8px;display:flex;flex-direction:column';
+                if (!country) { card.style.visibility = 'hidden'; grid.appendChild(card); return; }
+
+                const title = document.createElement('div');
+                title.style.cssText = 'font-weight:700;font-size:9px;color:var(--text-main);margin-bottom:2px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis';
+                title.textContent = country;
+                card.appendChild(title);
+
+                const chartDiv = document.createElement('div');
+                chartDiv.style.cssText = 'width:100%;height:165px';
+                card.appendChild(chartDiv);
+                grid.appendChild(card);
+
+                const barTraces = models.map((m, i) => {
+                  const countryModel = (FC_COUNTRY_DATA.fc[m] && FC_COUNTRY_DATA.fc[m][country]) || {};
+                  return {
+                    x: fcYears.map(y => "'" + y.slice(2)),
+                    y: fcYears.map(y => countryModel[y] || 0),
+                    name: modelLabels[i], type: 'bar',
+                    marker: { color: modelColors[i] }, showlegend: false,
+                    hovertemplate: '<b>' + country + '</b><br>' + modelLabels[i] + '<br>%{x}: $%{y:,.0f}<extra></extra>'
+                  };
+                });
+
+                const barLayout = {
+                  autosize: true, paper_bgcolor: labBg, plot_bgcolor: labBg,
+                  margin: { l: 36, r: 5, t: 2, b: 22 },
+                  barmode: 'group', bargap: 0.15, bargroupgap: 0.05,
+                  font: { family: 'Inter, sans-serif', color: labTextColor, size: 8 },
+                  xaxis: { gridcolor: 'rgba(0,0,0,0)', tickfont: { color: labTextColor, size: 8 }, zeroline: false },
+                  yaxis: { gridcolor: labGridColor, tickfont: { color: labTextColor, size: 7 }, zeroline: false, tickformat: '.2s' },
+                  showlegend: false
+                };
+                Plotly.react(chartDiv, barTraces, barLayout, { responsive: true, displayModeBar: false });
+              });
+            }
+
+            // ── Uncertainty gauge (per MODEL: deviation from consensus) ──
+            const uncDiv = document.getElementById('fc-lab-uncertainty');
+            if (uncDiv) {
+              // For each year, compute the mean across all 4 models (consensus)
+              const yearMeans = {};
+              fcYears.forEach(y => {
+                const vals = models.map(m => modelTotals[m][y] || 0);
+                yearMeans[y] = vals.reduce((a, b) => a + b, 0) / vals.length;
+              });
+
+              // For each model: avg absolute deviation from consensus across years
+              const modelDevs = models.map(m => {
+                let totalDev = 0;
+                fcYears.forEach(y => {
+                  totalDev += Math.abs((modelTotals[m][y] || 0) - yearMeans[y]);
+                });
+                return totalDev / fcYears.length;
+              });
+              const maxDev = Math.max(...modelDevs);
+              const trackBg = isDarkLab ? '#1e293b' : '#e2e8f0';
+
+              let html = '';
+              models.forEach((m, i) => {
+                const dev = modelDevs[i];
+                // Width of colored bar: proportional to deviation, max ~90%
+                const widthPct = maxDev > 0 ? (dev / maxDev) * 90 : 5;
+                // Center the bar: left = (100 - width) / 2
+                const leftPct = (100 - widthPct) / 2;
+                const fmtVal = (dev / 1e6).toFixed(1);
+
+                html += '<div>';
+                // Label row
+                html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">';
+                html += '<span style="font-weight:600;font-size:11px;color:' + modelColors[i] + '">' + modelLabels[i] + '</span>';
+                html += '<span style="font-size:10px;color:var(--text-muted)">± $' + fmtVal + 'M</span>';
+                html += '</div>';
+                // Bar track
+                html += '<div style="position:relative;height:8px;background:' + trackBg + ';border-radius:9999px;overflow:hidden">';
+                // Colored interval centered
+                html += '<div style="position:absolute;left:' + leftPct + '%;width:' + widthPct + '%;top:0;bottom:0;background:' + modelColors[i] + ';border-radius:9999px;opacity:0.8"></div>';
+                // White median line
+                html += '<div style="position:absolute;left:50%;top:0;width:2px;height:100%;background:#fff;transform:translateX(-50%);z-index:1"></div>';
+                html += '</div>';
+                // Bajo/Alto Riesgo only on first
+                if (i === 0) {
+                  html += '<div style="display:flex;justify-content:space-between;font-size:8px;color:var(--text-muted);margin-top:3px">';
+                  html += '<span>Bajo Riesgo</span><span>Alto Riesgo</span>';
+                  html += '</div>';
+                }
+                html += '</div>';
+              });
+              uncDiv.innerHTML = html;
+            }
+
+            fcLabRendered = true;
+          }
+
 
           // Clustering model tabs
           function showClModel(name) {
@@ -2870,14 +3351,16 @@
             document
               .querySelectorAll(".cl-tab")
               .forEach((t) => t.classList.remove("active"));
-            document.getElementById("cl-" + name).style.display = "block";
+            document.getElementById("cl-" + name).style.display = "flex";
             event.target.classList.add("active");
             setTimeout(() => {
               const el = document.getElementById("chart-scatter-" + name);
               if (el && CHARTS["scatter_" + name]) {
                 const parsed = JSON.parse(CHARTS["scatter_" + name]);
                 applyPCA2D(parsed);
+                parsed.layout.height = el.parentElement.offsetHeight;
                 Plotly.react(el, parsed.data, parsed.layout, { responsive: true, displayModeBar: false });
+                setTimeout(function(){ Plotly.Plots.resize(el); }, 100);
               }
             }, 50);
           }
@@ -2905,7 +3388,7 @@
           // Render all 7 mini scatter plots in lab view
           let labRendered = false;
           function renderLabScatters() {
-            if (labRendered) return;
+            labRendered = false; // Allow re-render for dynamic sizing
             const models = ["dbscan","gmm","hdbscan","hierarchical","kmeans","kmedoids","mixed"];
             models.forEach(m => {
               const el = document.getElementById("lab-scatter-" + m);
@@ -2921,11 +3404,16 @@
                 parsed.layout.xaxis.tickfont = { size: 8 };
                 parsed.layout.yaxis.tickfont = { size: 8 };
                 parsed.layout.annotations = []; // No PCA badge in mini
+                delete parsed.layout.height;
+                delete parsed.layout.width;
                 // Ensure Y-axis minimum is at least -2 so points aren't clipped
                 if (parsed.layout.yaxis && parsed.layout.yaxis.range) {
                   parsed.layout.yaxis.range[0] = Math.min(parsed.layout.yaxis.range[0], -2);
                 }
+                // Set height from container
+                if (el.offsetHeight > 0) parsed.layout.height = el.offsetHeight;
                 Plotly.react(el, parsed.data, parsed.layout, { responsive: true, displayModeBar: false });
+                setTimeout(function(){ try { Plotly.Plots.resize(el); } catch(e){} }, 200);
               }
             });
             labRendered = true;
@@ -3059,29 +3547,43 @@
               trace.marker = Object.assign(trace.marker||{}, { size: 7, opacity: 0.75, line: { color: "rgba(255,255,255,0.4)", width: 0.8 } });
               trace.cliponaxis = false;
             });
+            // Theme-aware colors for scatter plots
+            const isDarkSc = document.documentElement.getAttribute('data-theme') === 'dark';
+            const scTextColor = isDarkSc ? '#e2e8f0' : '#334155';
+            const scAxisColor = isDarkSc ? '#94a3b8' : '#475569';
+            const scGridColor = isDarkSc ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.08)';
+            const scZeroColor = isDarkSc ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.12)';
+            const scBadgeBg   = isDarkSc ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0.06)';
+            const scBadgeFont = isDarkSc ? '#64748b' : '#475569';
             // Calculate axis padding so points aren't clipped at edges
             const allPX = [], allPY = [];
             parsed.data.forEach(tr => { (tr.x||[]).forEach(v => allPX.push(v)); (tr.y||[]).forEach(v => allPY.push(v)); });
-            const padFrac = 0.15;
+            const padFrac = 0.05;
             const xMin = Math.min(...allPX), xMax = Math.max(...allPX);
             const yMin = Math.min(...allPY), yMax = Math.max(...allPY);
             const xPad = (xMax - xMin) * padFrac || 0.5;
             const yPad = (yMax - yMin) * padFrac || 0.5;
-            // Ensure Y-axis minimum is at least -2 so bottom points aren't clipped
-            const yRangeMin = Math.min(yMin - yPad, -2);
-            parsed.layout.margin = { l: 45, r: 25, t: 25, b: 35 };
+            const yRangeMin = yMin - yPad;
+            parsed.layout.margin = { l: 45, r: 20, t: 20, b: 35 };
+            parsed.layout.autosize = true;
+            parsed.layout.paper_bgcolor = 'rgba(0,0,0,0)';
+            parsed.layout.plot_bgcolor = 'rgba(0,0,0,0)';
+            parsed.layout.font = Object.assign(parsed.layout.font || {}, { color: scTextColor, family: 'Inter, sans-serif' });
+            parsed.layout.legend = Object.assign(parsed.layout.legend || {}, { font: { color: scTextColor, size: 13, family: 'Inter, sans-serif' }, bgcolor: 'rgba(0,0,0,0)' });
             parsed.layout.xaxis = Object.assign(parsed.layout.xaxis||{}, {
-              title: { text: "PC1 (Componente Principal 1)", font: { size: 11, color: "#94a3b8" } },
-              gridcolor: "rgba(255,255,255,0.05)", zeroline: true, zerolinecolor: "rgba(255,255,255,0.1)",
+              title: { text: "PC1 (Componente Principal 1)", font: { size: 11, color: scAxisColor } },
+              gridcolor: scGridColor, zeroline: true, zerolinecolor: scZeroColor,
+              tickfont: { color: scAxisColor, size: 10 },
               range: [xMin - xPad, xMax + xPad]
             });
             parsed.layout.yaxis = Object.assign(parsed.layout.yaxis||{}, {
-              title: { text: "PC2 (Componente Principal 2)", font: { size: 11, color: "#94a3b8" } },
-              gridcolor: "rgba(255,255,255,0.05)", zeroline: true, zerolinecolor: "rgba(255,255,255,0.1)",
+              title: { text: "PC2 (Componente Principal 2)", font: { size: 11, color: scAxisColor } },
+              gridcolor: scGridColor, zeroline: true, zerolinecolor: scZeroColor,
+              tickfont: { color: scAxisColor, size: 10 },
               range: [yRangeMin, yMax + yPad]
             });
             parsed.layout.annotations = [{ text: "PCA 2D", x: 0.98, y: 0.98, xref: "paper", yref: "paper",
-              showarrow: false, font: { size: 9, color: "#64748b" }, bgcolor: "rgba(0,0,0,0.3)", borderpad: 3 }];
+              showarrow: false, font: { size: 9, color: scBadgeFont }, bgcolor: scBadgeBg, borderpad: 3 }];
           }
 
           // Normalize radar chart data (min-max per metric axis)
@@ -3097,6 +3599,8 @@
               data.forEach(d => {
                 if (d.r[axis] !== null && d.r[axis] !== undefined) {
                   d.r[axis] = 0.1 + 0.85 * ((d.r[axis] - mn) / range); // scale to 0.1–0.95
+                } else {
+                  d.r[axis] = 0; // null → center of chart (N/A)
                 }
               });
               // Update the closing point to match the first
@@ -3293,9 +3797,24 @@
                   // Normalize radar chart data
                   if (key === "radar") {
                     parsed = normalizeRadarData(parsed);
+                    var isDkR = document.documentElement.getAttribute('data-theme') === 'dark';
+                    var rTxt = isDkR ? '#e2e8f0' : '#334155';
+                    var rGrid = isDkR ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
+                    var rTick = isDkR ? '#94a3b8' : '#64748b';
+                    parsed.layout.legend = {orientation:'h',x:0.5,xanchor:'center',y:1.02,yanchor:'bottom',font:{color:rTxt,size:11},bgcolor:'rgba(0,0,0,0)'};
+                    parsed.layout.showlegend = true;
+                    parsed.layout.margin = {l:30,r:30,t:50,b:20};
                     parsed.layout.polar.radialaxis.tickvals = [0.1, 0.3, 0.5, 0.7, 0.95];
                     parsed.layout.polar.radialaxis.ticktext = ["Min", "", "Med", "", "Max"];
-                    parsed.layout.polar.radialaxis.tickfont = { size: 9, color: "#64748b" };
+                    parsed.layout.polar.radialaxis.tickfont = {size:9,color:rTick};
+                    parsed.layout.polar.radialaxis.gridcolor = rGrid;
+                    parsed.layout.polar.angularaxis.gridcolor = rGrid;
+                    parsed.layout.polar.angularaxis.tickfont = {size:11,color:rTxt};
+                    parsed.layout.polar.bgcolor = 'rgba(0,0,0,0)';
+                    parsed.layout.font = {family:'Inter,sans-serif',color:rTxt};
+                    parsed.layout.paper_bgcolor = 'rgba(0,0,0,0)';
+                    parsed.layout.plot_bgcolor = 'rgba(0,0,0,0)';
+                    delete parsed.layout.height;
                   }
                   // Style evolucion chart to match preview dashboard
                   if (key === "evolucion") {
@@ -3350,6 +3869,7 @@
                   // ── PCA 2D Transform for clustering scatter plots ──
                   if (key.startsWith("scatter_")) {
                     applyPCA2D(parsed);
+                    if (el.parentElement) parsed.layout.height = el.parentElement.offsetHeight;
                   }
                   // Style donut charts to match preview (purple + red) with CORRECT data
                   if (key === "donut_monto" || key === "donut_cant") {
@@ -3426,13 +3946,78 @@
                     parsed.layout.font = { family: 'Inter, sans-serif', color: paisTextColor, size: 10 };
                     delete parsed.layout.height;
                   }
+                  // ── Forecast chart enhancements ──
+                  if (key.startsWith("forecast_")) {
+                    const isDarkFC = document.documentElement.getAttribute('data-theme') === 'dark';
+                    const fcTextColor = isDarkFC ? '#e2e8f0' : '#1e293b';
+                    const fcGridColor = isDarkFC ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.06)';
+                    // 1) Smooth all line traces (spline)
+                    parsed.data.forEach(trace => {
+                      if (trace.mode && trace.mode.includes('lines') && trace.line) {
+                        trace.line.shape = 'spline';
+                      }
+                    });
+                    // 2) Fix title color for light mode readability
+                    if (parsed.layout.title && parsed.layout.title.font) {
+                      parsed.layout.title.font.color = fcTextColor;
+                    }
+                    // 3) Fix axis/legend/font colors
+                    parsed.layout.font = Object.assign(parsed.layout.font || {}, { color: fcTextColor });
+                    if (parsed.layout.legend) parsed.layout.legend.font = { color: fcTextColor };
+                    if (parsed.layout.yaxis) {
+                      parsed.layout.yaxis.gridcolor = fcGridColor;
+                      if (parsed.layout.yaxis.title) parsed.layout.yaxis.title.font = { color: fcTextColor };
+                    }
+                    if (parsed.layout.xaxis) parsed.layout.xaxis.gridcolor = fcGridColor;
+                    // Fix Histórico line color for light mode
+                    if (parsed.data[0] && parsed.data[0].name) {
+                      const histTrace = parsed.data[0];
+                      const histColor = isDarkFC ? '#e2e8f0' : '#105682';
+                      if (histTrace.line) histTrace.line.color = histColor;
+                      if (histTrace.marker) histTrace.marker.color = histColor;
+                    }
+                    // 4) Replace forecast trace (index 1) y-values with FC_COUNTRY_DATA aggregates
+                    const modelSlug = key.replace('forecast_', '');
+                    if (typeof FC_COUNTRY_DATA !== 'undefined' && FC_COUNTRY_DATA.fc && FC_COUNTRY_DATA.fc[modelSlug]) {
+                      const countryData = FC_COUNTRY_DATA.fc[modelSlug];
+                      const years = ['2026','2027','2028','2029','2030'];
+                      const aggTotals = years.map(yr =>
+                        Object.values(countryData).reduce((s, c) => s + (c[yr] || 0), 0)
+                      );
+                      // Also get the last historical value (2025) for continuity
+                      const histTrace = parsed.data[0];
+                      const lastHistVal = histTrace.y[histTrace.y.length - 1];
+                      const lastHistX = histTrace.x[histTrace.x.length - 1];
+                      // Replace forecast trace y-values
+                      const fcTrace = parsed.data[1];
+                      if (fcTrace) {
+                        // Historical 2024 & 2025 from existing data + aggregated forecast
+                        const hist2024 = FC_COUNTRY_DATA.hist || {};
+                        fcTrace.x = [lastHistX, ...years.map(y => y + '-01-01T00:00:00')];
+                        fcTrace.y = [lastHistVal, ...aggTotals];
+                      }
+                      // Update confidence band (trace index 2)
+                      const bandTrace = parsed.data[2];
+                      if (bandTrace && bandTrace.fill === 'toself') {
+                        const bandYears = [...years.map(y => y + '-01-01T00:00:00')];
+                        const bandX = [lastHistX, ...bandYears, ...bandYears.reverse(), lastHistX];
+                        const upperScale = 1.3;
+                        const lowerScale = 0.7;
+                        const upperY = [lastHistVal, ...aggTotals.map(v => v * upperScale)];
+                        const lowerY = [...aggTotals.map(v => v * lowerScale).reverse(), lastHistVal];
+                        bandTrace.x = bandX;
+                        bandTrace.y = [...upperY, ...lowerY];
+                      }
+                    }
+                    delete parsed.layout.height;
+                  }
                   Plotly.react(el, parsed.data, parsed.layout, {
                     responsive: true,
                     displayModeBar: false,
                   });
-                  // Force resize for forecast charts
-                  if (key.startsWith("forecast_")) {
-                    setTimeout(() => { try { Plotly.Plots.resize(el); } catch(e){} }, 150);
+                  // Force resize for forecast and scatter charts
+                  if (key.startsWith("forecast_") || key.startsWith("scatter_")) {
+                    setTimeout(function(){ try { Plotly.Plots.resize(el); } catch(e){} }, 150);
                   }
                 } catch (e) {
                   console.warn("Chart error:", key, e);
@@ -3515,12 +4100,154 @@
             legEl.innerHTML = html;
           }
 
+          // Exact per-country forecast data from parquet files (real model output, no rounding)
+          const FC_COUNTRY_DATA = {"hist":{"ARGENTINA":{"2024":230000000.0,"2025":127500000.0},"COSTA RICA":{"2024":770000000.0,"2025":815000000.0},"EL SALVADOR":{"2024":263900000.0,"2025":350000000.0},"GUATEMALA":{"2024":19000000.0,"2025":175000000.0},"HONDURAS":{"2024":476300000.0,"2025":465000000.0},"NICARAGUA":{"2024":130000000.0,"2025":235000000.0},"PANAMÁ":{"2024":240000000.0,"2025":108200000.0},"REPÚBLICA DOMINICANA":{"2024":100000000.0,"2025":180900000.0},"COLOMBIA":{"2025":75000000.0},"REGIONAL":{"2025":37187480.0},"BELICE":{"2024":0,"2025":0},"CUBA":{"2024":0,"2025":0},"MÉXICO":{"2024":0,"2025":0}},"fc":{"neuralprophet":{"GUATEMALA":{"2026":-103496664.0,"2027":101759632.0,"2028":124923296.0,"2029":80368736.0,"2030":35029956.0},"EL SALVADOR":{"2026":168649984.0,"2027":46359164.0,"2028":385028384.0,"2029":98102432.0,"2030":23836860.0},"HONDURAS":{"2026":11453729.0,"2027":-28091206.0,"2028":467430880.0,"2029":671694976.0,"2030":948223232.0},"NICARAGUA":{"2026":189961984.0,"2027":101911440.0,"2028":258825696.0,"2029":243129344.0,"2030":168002224.0},"COSTA RICA":{"2026":-40952948.0,"2027":463993728.0,"2028":-2476909.5,"2029":746824128.0,"2030":805018240.0},"COLOMBIA":{"2026":99700728.0,"2027":-495102.0,"2028":165706784.0,"2029":168986896.0,"2030":98025928.0},"PANAMÁ":{"2026":346269536.0,"2027":195054832.0,"2028":308795264.0,"2029":172992992.0,"2030":143083488.0},"REPÚBLICA DOMINICANA":{"2026":674062592.0,"2027":-550453056.0,"2028":1161338240.0,"2029":1067735936.0,"2030":343200416.0},"ARGENTINA":{"2026":434701504.0,"2027":286246048.0,"2028":33923440.0,"2029":232050976.0,"2030":390201760.0}},"prophet":{"GUATEMALA":{"2026":263059631.72,"2027":267461675.38,"2028":271863719.04,"2029":276277823.09,"2030":280679866.75},"EL SALVADOR":{"2026":449526696.49,"2027":458258900.91,"2028":466991105.33,"2029":475747233.59,"2030":484479438.01},"HONDURAS":{"2026":399969709.37,"2027":407840514.65,"2028":415711319.94,"2029":423603689.07,"2030":431474494.36},"NICARAGUA":{"2026":357275204.93,"2027":364187251.04,"2028":371099297.15,"2029":378030280.37,"2030":384942326.48},"COSTA RICA":{"2026":619064743.47,"2027":631554939.14,"2028":644045134.81,"2029":656569550.2,"2030":669059745.87},"COLOMBIA":{"2026":175014638.06,"2027":180947846.76,"2028":186881055.46,"2029":192830519.53,"2030":198763728.23},"PANAMÁ":{"2026":326563652.66,"2027":341265181.33,"2028":355966710.01,"2029":370708516.85,"2030":385410045.52},"REPÚBLICA DOMINICANA":{"2026":416901613.51,"2027":437804866.27,"2028":458708119.02,"2029":479668640.95,"2030":500571893.71},"BELICE":{"2024":16318421.24,"2025":16618315.48,"2026":16917390.33,"2027":17216465.18,"2028":17515540.03},"ARGENTINA":{"2026":305612015.24,"2027":332737963.46,"2028":359863911.67,"2029":387064177.56,"2030":414190125.77}},"statsforecast":{"GUATEMALA":{"2026":117205488.98,"2027":117205488.98,"2028":117205488.98,"2029":117205488.98,"2030":117205488.98},"EL SALVADOR":{"2026":444941930.87,"2027":435871758.28,"2028":438727938.6,"2029":441584118.92,"2030":444440299.24},"HONDURAS":{"2026":533907305.16,"2027":543333247.34,"2028":551335180.45,"2029":559411740.77,"2030":567556928.74},"NICARAGUA":{"2026":247234825.63,"2027":258231483.08,"2028":264715807.85,"2029":268539375.86,"2030":270793993.4},"COSTA RICA":{"2026":845971042.98,"2027":852537534.4,"2028":859248584.52,"2029":866091827.17,"2030":873056112.2},"COLOMBIA":{"2026":128712947.89,"2027":130250516.17,"2028":131630019.07,"2029":132887419.51,"2030":134048389.12},"PANAMÁ":{"2026":196794569.89,"2027":169913657.37,"2028":187081799.66,"2029":176116952.04,"2030":183119916.09},"REPÚBLICA DOMINICANA":{"2026":286339719.28,"2027":286463063.98,"2028":286605157.78,"2029":286759386.32,"2030":286921035.28},"BELICE":{"2024":6595314.25,"2025":6595314.25,"2026":6595314.25,"2027":6595314.25,"2028":6595314.25},"ARGENTINA":{"2026":183811972.32,"2027":184987504.85,"2028":186058988.21,"2029":187052221.22,"2030":187984110.71}},"timesfm":{"GUATEMALA":{"2026":107001128.0,"2027":100398272.0,"2028":98190408.0,"2029":95492864.0,"2030":92710400.0},"EL SALVADOR":{"2026":376203648.0,"2027":394402624.0,"2028":399066560.0,"2029":392332704.0,"2030":396713856.0},"HONDURAS":{"2026":401946720.0,"2027":366412864.0,"2028":351084896.0,"2029":331404320.0,"2030":332551488.0},"NICARAGUA":{"2026":247751520.0,"2027":271263936.0,"2028":277740896.0,"2029":276737152.0,"2030":268126272.0},"COSTA RICA":{"2026":790534528.0,"2027":752509312.0,"2028":726298752.0,"2029":683660608.0,"2030":651445632.0},"COLOMBIA":{"2026":120395296.0,"2027":110234528.0,"2028":130001120.0,"2029":123155384.0,"2030":119914480.0},"PANAMÁ":{"2026":122172096.0,"2027":113640832.0,"2028":112566800.0,"2029":125493704.0,"2030":115995072.0},"REPÚBLICA DOMINICANA":{"2026":146828000.0,"2027":149733056.0,"2028":150659616.0,"2029":154731936.0,"2030":154298976.0},"BELICE":{"2024":7813210.0,"2025":24503236.0,"2026":21717364.0,"2027":5181730.0,"2028":10008311.0},"ARGENTINA":{"2026":107588704.0,"2027":90238624.0,"2028":92716432.0,"2029":83923376.0,"2030":80303184.0}}}};
+
+          // Expand forecast figures using exact per-country data from parquet
+          function expandForecastFigures() {
+            const fmt = n => {
+              if (n < 0) return '-$' + Math.round(Math.abs(n)).toLocaleString('en-US');
+              return '$' + Math.round(n).toLocaleString('en-US');
+            };
+            const models = ['neuralprophet', 'prophet', 'statsforecast', 'timesfm'];
+            const years = ['2024','2025','2026','2027','2028','2029','2030'];
+
+            models.forEach(model => {
+              const key = 'forecast_' + model;
+              if (!CHARTS[key]) return;
+              try {
+                const parsed = JSON.parse(CHARTS[key]);
+                const fcTrace = parsed.data[1];
+                if (!fcTrace || !fcTrace.y || !fcTrace.x) return;
+                const fcDates = fcTrace.x.map(d => new Date(d).getFullYear());
+                const fcVals = fcTrace.y;
+
+                const panel = document.getElementById('fc-' + model);
+                if (!panel) return;
+
+                // --- Compute per-year totals from FC_COUNTRY_DATA (real per-country sums) ---
+                const modelData = FC_COUNTRY_DATA.fc[model] || {};
+                const forecastYears = ['2026','2027','2028','2029','2030'];
+                const yearTotals = {};
+                forecastYears.forEach(y => {
+                  let total = 0;
+                  Object.keys(modelData).forEach(country => {
+                    if (modelData[country][y] !== undefined) {
+                      total += modelData[country][y];
+                    }
+                  });
+                  yearTotals[y] = total;
+                });
+
+                // --- KPI cards: use REAL per-country totals ---
+                const kpiValues = panel.querySelectorAll('.kpi-value-sm');
+                const firstFcTotal = yearTotals['2026'];
+                const lastFcTotal = yearTotals['2030'];
+                if (kpiValues.length >= 1) kpiValues[0].textContent = fmt(firstFcTotal);
+                if (kpiValues.length >= 2) kpiValues[1].textContent = fmt(lastFcTotal);
+                const kpiDelta = panel.querySelector('.kpi-delta');
+                if (kpiDelta && firstFcTotal > 0) {
+                  const ratio = lastFcTotal / firstFcTotal;
+                  if (ratio >= 2) kpiDelta.textContent = '×' + ratio.toFixed(0);
+                  else {
+                    const pct = ((ratio - 1) * 100).toFixed(1);
+                    kpiDelta.textContent = (pct >= 0 ? '+' : '') + pct + '%';
+                  }
+                }
+
+                // --- Trajectory cards: use per-country totals per year ---
+                const trajCards = panel.querySelectorAll('.traj-card');
+                forecastYears.forEach((y, i) => {
+                  if (i >= trajCards.length) return;
+                  const card = trajCards[i];
+                  const yearEl = card.querySelector('.traj-year');
+                  const valEl = card.querySelector('.traj-val');
+                  const growthEl = card.querySelector('.traj-growth');
+                  if (yearEl) yearEl.textContent = y;
+                  if (valEl) valEl.textContent = fmt(yearTotals[y]);
+                  if (growthEl && i > 0) {
+                    const prev = yearTotals[forecastYears[i - 1]];
+                    if (prev > 0) {
+                      const chg = ((yearTotals[y] - prev) / prev * 100).toFixed(1);
+                      const isPos = chg >= 0;
+                      growthEl.innerHTML = '<span class="' + (isPos ? 'text-green' : 'text-red') + '">' +
+                        (isPos ? '+' : '') + chg + '%</span>';
+                    }
+                  }
+                });
+                // Hide extra trajectory cards beyond forecast years
+                for (let i = forecastYears.length; i < trajCards.length; i++) {
+                  trajCards[i].style.display = 'none';
+                }
+
+                // --- Rebuild table with EXACT per-country data ---
+                const table = panel.querySelector('.exec-table');
+                if (!table) return;
+                const tbody = table.querySelector('tbody');
+                if (!tbody) return;
+                // modelData already declared above for KPI
+                const histData = FC_COUNTRY_DATA.hist || {};
+                // Determine which years this model covers
+                const modelYears = fcDates.map(String);
+                // Fill in historical years that precede forecast
+                const allYears = [];
+                years.forEach(y => {
+                  if (parseInt(y) < Math.min(...fcDates) || modelYears.includes(y)) allYears.push(y);
+                });
+                // Collect all countries from both hist and model
+                const countryOrder = ['ARGENTINA','BELICE','COLOMBIA','COSTA RICA','CUBA',
+                  'EL SALVADOR','GUATEMALA','HONDURAS','MÉXICO','NICARAGUA',
+                  'PANAMÁ','REGIONAL','REPÚBLICA DOMINICANA'];
+                const activeCountries = countryOrder.filter(c =>
+                  (modelData[c] && Object.keys(modelData[c]).length > 0) ||
+                  (histData[c] && Object.keys(histData[c]).length > 0)
+                );
+
+                let html = '';
+                const totals = {};
+                allYears.forEach(y => totals[y] = 0);
+
+                activeCountries.forEach(country => {
+                  html += '<tr>';
+                  html += '<td class="text-bold">' + country + '</td>';
+                  allYears.forEach(y => {
+                    let val = 0;
+                    const yi = parseInt(y);
+                    // For historical years (<=2025), ALWAYS use real historical data
+                    // For forecast years (>=2026), use model data
+                    if (yi <= 2025) {
+                      if (histData[country] && histData[country][y] !== undefined) {
+                        val = histData[country][y];
+                      }
+                    } else {
+                      if (modelData[country] && modelData[country][y] !== undefined) {
+                        val = modelData[country][y];
+                      }
+                    }
+                    totals[y] += val;
+                    html += '<td style="font-size:11px;white-space:nowrap;text-align:right">' + fmt(val) + '</td>';
+                  });
+                  html += '</tr>';
+                });
+                // Total row
+                html += '<tr class="row-total">';
+                html += '<td class="text-bold">Total General</td>';
+                allYears.forEach(y => {
+                  html += '<td class="text-bold text-accent" style="font-size:11px;white-space:nowrap;text-align:right">' + fmt(totals[y]) + '</td>';
+                });
+                html += '</tr>';
+                tbody.innerHTML = html;
+              } catch(e) { console.warn('expandForecastFigures error for', model, e); }
+            });
+          }
+
           // Initial render
           window.addEventListener("load", () => {
             populateAnnualTable();
             populateSectorLegend();
             renderAll();
             applyForecastHeatmap();
+            expandForecastFigures();
           });
           window.addEventListener("resize", () => {
             renderAll();
@@ -3547,7 +4274,7 @@
             // Close mobile sidebar
             document.querySelector(".dash-sidebar")?.classList.remove("open");
             setTimeout(() => renderAll(), 50);
-          }
+            }
 
           // === Decision panel sub-tab toggle ===
           function toggleDecisionTab(tab) {
