@@ -1,7 +1,7 @@
 # 🔬 Plan de Mejoras — Dashboard Unificado BCIE ML Lab
 
 **Fecha de Auditoría:** 2 de Marzo, 2026 — 05:57 CST  
-**Auditor:** Norman Sabillón (asistido por Antigravity AI)  
+**Auditor:** Norman Sabillón  
 **Archivo:** `app/data/gold/dashboard/dashboard_unificado.html`  
 **Versión Actual:** v2.0.0
 
@@ -344,5 +344,5 @@ gantt
 
 ---
 
-*Documento generado como parte de la auditoría técnica del Dashboard Unificado BCIE ML Lab v2.0.0*  
+*Auditoría técnica del Dashboard Unificado BCIE ML Lab v2.0.0*  
 *© 2026 Norman Sabillón — Laboratorio de Machine Learning BCIE*
