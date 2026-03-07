@@ -174,27 +174,27 @@ const MODELS = [
 ];
 const DASHBOARDS = [
   // ── Unificado ──
-  { name:'Dashboard Ejecutivo Unificado', url:'../data/gold/dashboard/dashboard_unificado.html', status:'online', views:47, lastAccess:'02/03/2026 11:20', type:'unificado', sections:['Inicio','Forecasting','Clustering','Comparativa','Cross-Validation','Particiones']},
+  { name:'Dashboard Ejecutivo Unificado', url:'../dashboard_unificado.html', status:'online', views:47, lastAccess:'02/03/2026 11:20', type:'unificado', sections:['Inicio','Forecasting','Clustering','Comparativa','Cross-Validation','Particiones']},
   // ── Forecasting Labs ──
-  { name:'Prophet — Ejecutivo', url:'../../models/aprobaciones_prophet_2026/src/dashboard/Ejecutivo/dashboard_ejecutivo.html', status:'online', views:23, lastAccess:'25/02/2026 20:30', type:'forecasting', sections:['Predicciones','KPIs','Tabla Detalle']},
-  { name:'Prophet — Estratégico', url:'../../models/aprobaciones_prophet_2026/src/dashboard/Estrategico/dashboard_estrategico.html', status:'online', views:18, lastAccess:'25/02/2026 20:30', type:'forecasting', sections:['Escenarios','Filtros','Proyección']},
-  { name:'NeuralProphet — Ejecutivo', url:'../../models/aprobaciones_neu_prophet_2026/src/dashboard/Ejecutivo/dashboard_ejecutivo.html', status:'online', views:19, lastAccess:'25/02/2026 19:15', type:'forecasting', sections:['Forecast','Tendencia','Métricas']},
-  { name:'NeuralProphet — Estratégico', url:'../../models/aprobaciones_neu_prophet_2026/src/dashboard/Estrategico/dashboard_estrategico.html', status:'online', views:14, lastAccess:'25/02/2026 19:15', type:'forecasting', sections:['Escenarios','Filtros','Proyección']},
-  { name:'StatsForecast — Ejecutivo', url:'../../models/aprobaciones_StatsForecast_2026/src/dashboard/dashboard_ejecutivo.html', status:'online', views:21, lastAccess:'02/03/2026 11:22', type:'forecasting', sections:['AutoARIMA','KPIs','Tabla']},
-  { name:'StatsForecast — Estratégico', url:'../../models/aprobaciones_StatsForecast_2026/src/dashboard/Estrategico/dashboard_estrategico.html', status:'online', views:16, lastAccess:'02/03/2026 11:22', type:'forecasting', sections:['Ensemble','Escenarios','Filtros']},
-  { name:'TimesFM — Ejecutivo', url:'../../models/aprobaciones_TimesFM_2026/data/05-reporting/dashboard_ejecutivo_bcie.html', status:'online', views:35, lastAccess:'02/03/2026 10:55', type:'forecasting', sections:['GPU','Predicciones','KPIs']},
-  { name:'TimesFM — Proyecciones', url:'../../models/aprobaciones_TimesFM_2026/data/05-reporting/dashboard_proyecciones_2026.html', status:'online', views:28, lastAccess:'02/03/2026 10:55', type:'forecasting', sections:['2026-2030','Escenarios','País']},
+  { name:'Prophet — Ejecutivo', url:'../labs/prophet/dashboard_ejecutivo.html', status:'online', views:23, lastAccess:'25/02/2026 20:30', type:'forecasting', sections:['Predicciones','KPIs','Tabla Detalle']},
+  { name:'Prophet — Estratégico', url:'../labs/prophet/dashboard_estrategico.html', status:'online', views:18, lastAccess:'25/02/2026 20:30', type:'forecasting', sections:['Escenarios','Filtros','Proyección']},
+  { name:'NeuralProphet — Ejecutivo', url:'../labs/neuralprophet/dashboard_ejecutivo.html', status:'online', views:19, lastAccess:'25/02/2026 19:15', type:'forecasting', sections:['Forecast','Tendencia','Métricas']},
+  { name:'NeuralProphet — Estratégico', url:'../labs/neuralprophet/dashboard_estrategico.html', status:'online', views:14, lastAccess:'25/02/2026 19:15', type:'forecasting', sections:['Escenarios','Filtros','Proyección']},
+  { name:'StatsForecast — Ejecutivo', url:'../labs/statsforecast/dashboard_ejecutivo.html', status:'online', views:21, lastAccess:'02/03/2026 11:22', type:'forecasting', sections:['AutoARIMA','KPIs','Tabla']},
+  { name:'StatsForecast — Estratégico', url:'../labs/statsforecast/dashboard_estrategico.html', status:'online', views:16, lastAccess:'02/03/2026 11:22', type:'forecasting', sections:['Ensemble','Escenarios','Filtros']},
+  { name:'TimesFM — Ejecutivo', url:'../labs/timesfm/dashboard_ejecutivo.html', status:'online', views:35, lastAccess:'02/03/2026 10:55', type:'forecasting', sections:['GPU','Predicciones','KPIs']},
+  { name:'TimesFM — Proyecciones', url:'../labs/timesfm/dashboard_proyecciones.html', status:'online', views:28, lastAccess:'02/03/2026 10:55', type:'forecasting', sections:['2026-2030','Escenarios','País']},
   // ── Clustering Labs ──
-  { name:'DBSCAN — Dashboard', url:'../../models/aprobaciones_dbscan_2026/src/dashboard/dashboard_template.html', status:'online', views:12, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Clusters','Noise','DBSCAN']},
-  { name:'HDBSCAN — Dashboard', url:'../../models/aprobaciones_hdbscan_2026/data/04-predictions/dashboard_clustering.html', status:'online', views:14, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Clusters','Jerárquico','Noise']},
-  { name:'GMM — Dashboard', url:'../../models/aprobaciones_gmm_2026/src/dashboard/dashboard_gmm.html', status:'online', views:11, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Gaussian','BIC','Clusters']},
-  { name:'K-Means — Dashboard', url:'../../models/aprobaciones_kmeans_2026/src/dashboard/dashboard_kmeans.html', status:'online', views:13, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Elbow','Silhouette','Clusters']},
-  { name:'K-Medoids — Dashboard', url:'../../models/aprobaciones_kmedoids_2026/src/dashboard/dashboard_kmedoids.html', status:'online', views:10, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['PAM','Medoids','Clusters']},
-  { name:'Hierarchical — Dashboard', url:'../../models/aprobaciones_hierarchical_2026/src/dashboard/dashboard_hierarchical.html', status:'online', views:9, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Dendrograma','Ward','Clusters']},
-  { name:'Mixed Clustering — Dashboard', url:'../../models/aprobaciones_mixed_2026/src/dashboard/dashboard_mixed.html', status:'online', views:8, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Ensemble','Comparativa','Clusters']},
+  { name:'DBSCAN — Dashboard', url:'../labs/dbscan/dashboard_dbscan.html', status:'online', views:12, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Clusters','Noise','DBSCAN']},
+  { name:'HDBSCAN — Dashboard', url:'../labs/hdbscan/dashboard_hdbscan.html', status:'online', views:14, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Clusters','Jerárquico','Noise']},
+  { name:'GMM — Dashboard', url:'../labs/gmm/dashboard_gmm.html', status:'online', views:11, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Gaussian','BIC','Clusters']},
+  { name:'K-Means — Dashboard', url:'../labs/kmeans/dashboard_kmeans.html', status:'online', views:13, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Elbow','Silhouette','Clusters']},
+  { name:'K-Medoids — Dashboard', url:'../labs/kmedoids/dashboard_kmedoids.html', status:'online', views:10, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['PAM','Medoids','Clusters']},
+  { name:'Hierarchical — Dashboard', url:'../labs/hierarchical/dashboard_hierarchical.html', status:'online', views:9, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Dendrograma','Ward','Clusters']},
+  { name:'Mixed Clustering — Dashboard', url:'../labs/mixed/dashboard_mixed.html', status:'online', views:8, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Ensemble','Comparativa','Clusters']},
   // ── EDA ──
-  { name:'EDA — Dashboard Exploratorio', url:'../../models/aprobaciones_eda_2026/src/dashboard/dashboard_eda.html', status:'online', views:31, lastAccess:'23/02/2026 14:20', type:'eda', sections:['Distribución','Correlaciones','Outliers']},
-  { name:'EDA — Reporte Completo', url:'../../models/aprobaciones_eda_2026/src/dashboard/dashboard_eda_report.html', status:'online', views:22, lastAccess:'23/02/2026 14:20', type:'eda', sections:['Variables','Estadísticos','Reporte']},
+  { name:'EDA — Dashboard Exploratorio', url:'../labs/eda/dashboard_eda.html', status:'online', views:31, lastAccess:'23/02/2026 14:20', type:'eda', sections:['Distribución','Correlaciones','Outliers']},
+  { name:'EDA — Reporte Completo', url:'../labs/eda/dashboard_eda_report.html', status:'online', views:22, lastAccess:'23/02/2026 14:20', type:'eda', sections:['Variables','Estadísticos','Reporte']},
 ];
 const AUDIT_LOG = [
   { ts:'2026-02-26T19:49:00', level:'success', event:'Login exitoso', user:'waguilar', details:'Rol: Administrador' },
