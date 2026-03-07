@@ -9,7 +9,7 @@
 
 Repositorio oficial de experimentos y pipelines de Machine Learning aplicados a los datos abiertos del Banco Centroamericano de Integración Económica (BCIE). Este proyecto demuestra cómo transformar datos públicos en inteligencia predictiva y segmentación estratégica a través de un **ecosistema completo**: pipelines de entrenamiento, dashboards interactivos, panel de administración con seguridad ISO 27001, y despliegue continuo.
 
-### 🌐 Demo en Vivo
+### <img src="https://img.shields.io/badge/-Demo%20en%20Vivo-00C853?style=flat-square&logo=googlechrome&logoColor=white" height="22"/>
 
 > **Accede al laboratorio desplegado:** [https://unir03d2026-alt.github.io/BCIE_ML_Lab/](https://unir03d2026-alt.github.io/BCIE_ML_Lab/login/index.html)
 >
@@ -17,7 +17,7 @@ Repositorio oficial de experimentos y pipelines de Machine Learning aplicados a 
 
 ---
 
-## 🚀 Modelos Implementados y Resultados
+## <img src="https://img.shields.io/badge/-Modelos%20Implementados-105682?style=flat-square&logo=tensorflow&logoColor=white" height="24"/> Modelos Implementados y Resultados
 
 El laboratorio ha operacionalizado **12 modelos avanzados**, divididos en dos grandes áreas de estudio: Segmentación de Cartera (Clustering) y Proyección de Aprobaciones (Forecasting).
 
@@ -50,7 +50,7 @@ _Objetivo: Predecir volúmenes de aprobación por país y sector._
 
 ---
 
-## 📊 Dashboards Interactivos (18)
+## <img src="https://img.shields.io/badge/-Dashboards-FF6D00?style=flat-square&logo=grafana&logoColor=white" height="24"/> Dashboards Interactivos (18)
 
 El laboratorio genera automáticamente **18 Dashboards Interactivos** (HTML/Plotly/Chart.js) organizados en tres niveles:
 
@@ -82,7 +82,7 @@ Cada dashboard incluye:
 
 ---
 
-## 🔐 Capa de Seguridad (ISO 27001:2022)
+## <img src="https://img.shields.io/badge/-Seguridad-6A1B9A?style=flat-square&logo=letsencrypt&logoColor=white" height="24"/> Capa de Seguridad (ISO 27001:2022)
 
 El ecosistema implementa una capa de seguridad robusta alineada con los controles del **Anexo A de ISO 27001:2022**:
 
@@ -107,7 +107,7 @@ El administrador dispone de un panel completo para:
 
 ---
 
-## 🛠️ Arquitectura Técnica
+## <img src="https://img.shields.io/badge/-Arquitectura-0277BD?style=flat-square&logo=diagramsdotnet&logoColor=white" height="24"/> Arquitectura Técnica
 
 Cada modelo sigue una arquitectura modular estandarizada de **3 fases** para garantizar reproducibilidad y mantenibilidad:
 
@@ -176,7 +176,7 @@ BCIE_ML_Lab/
 
 ---
 
-## 🚀 Despliegue
+## <img src="https://img.shields.io/badge/-Despliegue-00C853?style=flat-square&logo=githubactions&logoColor=white" height="24"/> Despliegue
 
 El proyecto utiliza **GitHub Actions** para despliegue continuo:
 
@@ -202,15 +202,15 @@ python -m http.server 8888
 
 ---
 
-## 📚 Documentación Adicional
+## <img src="https://img.shields.io/badge/-Documentación-FF7043?style=flat-square&logo=readthedocs&logoColor=white" height="24"/> Documentación Adicional
 
 Para un desglose técnico profundo, metodologías de optimización detalladas y auditoría de estado de cada componente, consulta el documento maestro:
 
-👉 **[AUDITORIA_MODELOS.md](models/AUDITORIA_MODELOS.md)**
+➤ **[AUDITORIA_MODELOS.md](models/AUDITORIA_MODELOS.md)**
 
 ---
 
-## 🏛️ Contexto Académico
+## <img src="https://img.shields.io/badge/-Contexto%20Académico-37474F?style=flat-square&logo=googlescholar&logoColor=white" height="24"/> Contexto Académico
 
 _Proyecto Final de Máster · Equipo 03-D_
 _UNIR — Universidad Internacional de La Rioja_
@@ -218,7 +218,7 @@ _Trabajo de Colaboración Académica · 2026_
 
 ---
 
-## 👥 Autores y Contacto
+## <img src="https://img.shields.io/badge/-Autores-1565C0?style=flat-square&logo=github&logoColor=white" height="24"/> Autores y Contacto
 
 Este proyecto es desarrollado y mantenido por:
 
@@ -251,6 +251,6 @@ _Equipo 03-D · UNIR_
 
 ---
 
-## 📄 Licencia
+## <img src="https://img.shields.io/badge/-Licencia-546E7A?style=flat-square&logo=opensourceinitiative&logoColor=white" height="24"/> Licencia
 
 Este proyecto se encuentra bajo la licencia incluida en el archivo [LICENSE](LICENSE).
