@@ -466,7 +466,8 @@ body {
 .main-content {
   flex: 1;
   padding: 1.4rem 1.8rem;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   transition: padding 0.3s;
 }
 .page-title {
@@ -492,6 +493,10 @@ body {
 }
 .tab-content.active {
   display: block;
+}
+#tab-config.active {
+  overflow-y: auto;
+  max-height: 100%;
 }
 @keyframes fadeIn {
   from {
