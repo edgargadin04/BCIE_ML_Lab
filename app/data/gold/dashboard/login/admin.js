@@ -160,11 +160,22 @@ const BASE_USERS = [
   { id:6, username:'testviewer', displayName:'Test Viewer User', role:'Viewer', status:'active', lastAccess:'—', created:'23/03/2026' },
 ];
 
-// Fusionar: base + usuarios creados dinámicamente desde la UI
+// Fusionar: base + usuarios creados dinámicamente + lastAccess real
 const baseUsernames = BASE_USERS.map(u => u.username);
 const localUsers = JSON.parse(localStorage.getItem('bcie_users')) || [];
+
+// Para usuarios base: usar lastAccess del localStorage si existe (dato real)
+let USERS = BASE_USERS.map(bu => {
+  const lu = localUsers.find(u => u.username === bu.username);
+  if (lu && lu.lastAccess && lu.lastAccess !== '—') {
+    return { ...bu, lastAccess: lu.lastAccess };
+  }
+  return bu;
+});
+
+// Agregar usuarios dinámicos (creados desde la UI)
 const dynamicUsers = localUsers.filter(u => !baseUsernames.includes(u.username));
-let USERS = [...BASE_USERS, ...dynamicUsers];
+USERS = [...USERS, ...dynamicUsers];
 
 // Sincronizar siempre
 localStorage.setItem('bcie_users', JSON.stringify(USERS));
@@ -237,11 +248,27 @@ const NOTIFICATIONS = [
   { id:2, type:'success', text:'Pipeline ETL completado exitosamente', time:'Hace 4h', read:false },
   { id:3, type:'info', text:'Nuevo usuario waguilar creado', time:'Hace 1h', read:false },
 ];
-const SESSIONS = [
-  { user:'Norman Sabillon', username:'admin', role:'Administrador', ip:'192.168.1.10', started:'18:10', duration:'1h 44m', browser:'Chrome 122', online:true },
-  { user:'Willson Aguilar', username:'waguilar', role:'Administrador', ip:'192.168.1.22', started:'19:49', duration:'5m', browser:'Firefox 124', online:true },
-  { user:'Analista BCIE', username:'bcie', role:'Analista BCIE', ip:'10.0.0.45', started:'18:05', duration:'Sesión cerrada', browser:'Edge 122', online:false },
-];
+// Sesiones activas: dinámicas desde localStorage (registradas por auth.js)
+const SESSIONS = (() => {
+  const stored = JSON.parse(localStorage.getItem('bcie_active_sessions'));
+  if (stored && stored.length > 0) {
+    // Calcular duración para sesiones online
+    return stored.map(s => {
+      if (s.online && s.loginTime) {
+        const elapsed = Date.now() - new Date(s.loginTime).getTime();
+        const mins = Math.floor(elapsed / 60000);
+        s.duration = mins < 60 ? `${mins}m` : `${Math.floor(mins/60)}h ${mins%60}m`;
+      }
+      return s;
+    });
+  }
+  // Fallback: datos demo iniciales
+  return [
+    { user:'Norman Sabillon', username:'admin', role:'Administrador', ip:'192.168.1.10', started:'18:10', duration:'1h 44m', browser:'Chrome 122', online:true },
+    { user:'Willson Aguilar', username:'waguilar', role:'Administrador', ip:'192.168.1.22', started:'19:49', duration:'5m', browser:'Firefox 124', online:true },
+    { user:'Analista BCIE', username:'bcie', role:'Analista BCIE', ip:'10.0.0.45', started:'18:05', duration:'Sesión cerrada', browser:'Edge 122', online:false },
+  ];
+})();
 const HEALTH = [
   { name:'API Datos Abiertos', status:'healthy', latency:'42ms', uptime:'99.97%', icon:'globe' },
   { name:'Auth Service', status:'healthy', latency:'12ms', uptime:'100%', icon:'lock' },

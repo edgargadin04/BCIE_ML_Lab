@@ -52,6 +52,16 @@ const DASHBOARD_ROUTES = Object.freeze({
   'Viewer':        '../dashboard_unificado.html',   // Viewer → dashboard unificado (solo lectura)
 });
 
+// Detectar navegador del usuario
+function detectBrowser() {
+  const ua = navigator.userAgent;
+  if (ua.includes('Edg/'))    return 'Edge '    + (ua.match(/Edg\/(\d+)/) || ['','?'])[1];
+  if (ua.includes('Chrome/')) return 'Chrome '  + (ua.match(/Chrome\/(\d+)/) || ['','?'])[1];
+  if (ua.includes('Firefox/'))return 'Firefox ' + (ua.match(/Firefox\/(\d+)/) || ['','?'])[1];
+  if (ua.includes('Safari/') && !ua.includes('Chrome')) return 'Safari ' + (ua.match(/Version\/(\d+)/) || ['','?'])[1];
+  return 'Otro';
+}
+
 // ============================================
 // Estado de la aplicación
 // ============================================
@@ -223,6 +233,18 @@ function resetIdleTimer() {
 function destroySession(expired = false) {
   const username = state.currentSession?.username || 'unknown';
   clearTimeout(state.sessionTimer);
+
+  // Marcar sesión como offline en bcie_active_sessions
+  try {
+    const activeSessions = JSON.parse(localStorage.getItem('bcie_active_sessions')) || [];
+    const sess = activeSessions.find(s => s.username === username);
+    if (sess) {
+      sess.online = false;
+      sess.duration = expired ? 'Expirada' : 'Sesión cerrada';
+      localStorage.setItem('bcie_active_sessions', JSON.stringify(activeSessions));
+    }
+  } catch (e) { /* silenciar */ }
+
   sessionStorage.removeItem('bcie_session');
   state.currentSession = null;
 
@@ -301,6 +323,36 @@ async function authenticate(username, password) {
   // Autenticación exitosa
   state.failedAttempts = 0;
   const session = createSession(user.username, user.role);
+
+  // Actualizar último acceso en bcie_users
+  const now = new Date();
+  const nowStr = now.toLocaleDateString('es-HN') + ' ' + now.toLocaleTimeString('es-HN', { hour: '2-digit', minute: '2-digit', hour12: false });
+  try {
+    const usersArr = JSON.parse(localStorage.getItem('bcie_users')) || [];
+    const idx = usersArr.findIndex(u => u.username === user.username);
+    if (idx !== -1) {
+      usersArr[idx].lastAccess = nowStr;
+      localStorage.setItem('bcie_users', JSON.stringify(usersArr));
+    }
+  } catch (e) { /* silenciar */ }
+
+  // Registrar sesión activa para panel admin
+  try {
+    const activeSessions = JSON.parse(localStorage.getItem('bcie_active_sessions')) || [];
+    // Remover sesión previa del mismo usuario
+    const filtered = activeSessions.filter(s => s.username !== user.username);
+    filtered.push({
+      user: user.displayName,
+      username: user.username,
+      role: user.role,
+      ip: '—',
+      started: now.toLocaleTimeString('es-HN', { hour: '2-digit', minute: '2-digit', hour12: false }),
+      loginTime: now.toISOString(),
+      browser: detectBrowser(),
+      online: true,
+    });
+    localStorage.setItem('bcie_active_sessions', JSON.stringify(filtered));
+  } catch (e) { /* silenciar */ }
 
   return {
     success: true,
