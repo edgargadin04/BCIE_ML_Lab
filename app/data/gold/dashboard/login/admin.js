@@ -150,18 +150,24 @@ function toggleLanguage() {
 
 // ============================================
 // Almacén de datos
-// ============================================
-let USERS = JSON.parse(localStorage.getItem('bcie_users')) || [
+// Usuarios base (siempre disponibles en cualquier navegador/dominio)
+const BASE_USERS = [
   { id:1, username:'admin', displayName:'Administrador BCIE', role:'Administrador', status:'active', lastAccess:'26/02/2026 18:10', created:'01/01/2026' },
   { id:2, username:'nsabillon', displayName:'Norman Sabillon', role:'Administrador', status:'active', lastAccess:'26/02/2026 19:49', created:'26/02/2026' },
   { id:3, username:'waguilar', displayName:'Willson Aguilar', role:'Administrador', status:'active', lastAccess:'26/02/2026 19:49', created:'26/02/2026' },
   { id:4, username:'egarcia', displayName:'Edgar Garcia', role:'Administrador', status:'active', lastAccess:'26/02/2026 19:49', created:'26/02/2026' },
   { id:5, username:'bcie', displayName:'Analista BCIE', role:'Analista BCIE', status:'active', lastAccess:'26/02/2026 18:05', created:'26/02/2026' },
+  { id:6, username:'testviewer', displayName:'Test Viewer User', role:'Viewer', status:'active', lastAccess:'—', created:'23/03/2026' },
 ];
 
-if (!localStorage.getItem('bcie_users')) {
-  localStorage.setItem('bcie_users', JSON.stringify(USERS));
-}
+// Fusionar: base + usuarios creados dinámicamente desde la UI
+const baseUsernames = BASE_USERS.map(u => u.username);
+const localUsers = JSON.parse(localStorage.getItem('bcie_users')) || [];
+const dynamicUsers = localUsers.filter(u => !baseUsernames.includes(u.username));
+let USERS = [...BASE_USERS, ...dynamicUsers];
+
+// Sincronizar siempre
+localStorage.setItem('bcie_users', JSON.stringify(USERS));
 
 function saveUsersData() {
   localStorage.setItem('bcie_users', JSON.stringify(USERS));

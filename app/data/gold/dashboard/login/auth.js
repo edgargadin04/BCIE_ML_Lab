@@ -456,7 +456,9 @@ async function initializeAuth() {
   // Pre-calcular hashes de contraseñas
   const adminHash = await hashPassword('UNIR03d');
   const bcieHash = await hashPassword('2026ML');
+  const viewerHash = await hashPassword('Test1234');
 
+  // Usuarios base (siempre disponibles en cualquier navegador/dominio)
   USER_STORE = {
     'admin': {
       username: 'admin',
@@ -488,14 +490,26 @@ async function initializeAuth() {
       role: 'Analista BCIE',
       displayName: 'Analista BCIE',
     },
+    'testviewer': {
+      username: 'testviewer',
+      passwordHash: viewerHash,
+      role: 'Viewer',
+      displayName: 'Test Viewer User',
+    },
   };
 
-  let localAuthStore = JSON.parse(localStorage.getItem('bcie_auth_store'));
+  // Fusionar usuarios creados dinámicamente desde la UI (localStorage)
+  // Los hardcodeados SIEMPRE prevalecen; localStorage solo AGREGA nuevos
+  const localAuthStore = JSON.parse(localStorage.getItem('bcie_auth_store'));
   if (localAuthStore) {
-    Object.assign(USER_STORE, localAuthStore);
-  } else {
-    localStorage.setItem('bcie_auth_store', JSON.stringify(USER_STORE));
+    for (const [key, value] of Object.entries(localAuthStore)) {
+      if (!USER_STORE[key]) {
+        USER_STORE[key] = value;  // Solo agregar usuarios que no existen en base
+      }
+    }
   }
+  // Sincronizar el store completo a localStorage
+  localStorage.setItem('bcie_auth_store', JSON.stringify(USER_STORE));
 
   auditLog('info', `User store loaded (${Object.keys(USER_STORE).length} users registered)`);
   generateCSRFToken();
