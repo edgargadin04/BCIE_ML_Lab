@@ -300,7 +300,7 @@ function showTab(id, btn) {
   document.getElementById('sidebarOverlay').classList.remove('visible');
   if (id === 'overview') renderCharts();
   if (id === 'health') renderUptimeChart();
-  if (id === 'models') renderComparison();
+  if (id === 'models') { renderComparison(); renderClusteringComp(); }
 }
 function toggleSidebar() {
   document.getElementById('sidebar').classList.toggle('open');
@@ -532,6 +532,27 @@ function renderComparison() {
         plugins:{legend:{display:false}},
         scales:{ x:{grid:{color:gridColor},ticks:{color:textColor,font:{size:10}},min:0,max:0.6}, y:{grid:{display:false},ticks:{color:textColor,font:{size:10}}} } } });
   }
+}
+
+// ============================================
+// Gráfico comparativo de clustering (Silhouette)
+// ============================================
+let clusteringCompInst;
+function renderClusteringComp() {
+  const ctx = document.getElementById('clusteringCompChart');
+  if (!ctx) return;
+  const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+  const textColor = isDark ? '#94a3b8' : '#64748b';
+  const gridColor = isDark ? 'rgba(255,255,255,.06)' : 'rgba(0,0,0,.06)';
+  if (clusteringCompInst) clusteringCompInst.destroy();
+  const clustering = MODELS.filter(m => m.type === 'clustering').sort((a,b) => parseFloat(b.metrics.silhouette) - parseFloat(a.metrics.silhouette));
+  const labels = clustering.map(m => m.name);
+  const silData = clustering.map(m => parseFloat(m.metrics.silhouette));
+  clusteringCompInst = new Chart(ctx, { type:'bar', data:{ labels,
+    datasets:[{ label:'Silhouette', data:silData, backgroundColor:clustering.map((_,i)=>`hsla(${270+i*15},60%,60%,.5)`), borderColor:clustering.map((_,i)=>`hsl(${270+i*15},60%,50%)`), borderWidth:1, borderRadius:4 }]
+  }, options:{ responsive:true, maintainAspectRatio:false, indexAxis:'y',
+      plugins:{legend:{display:false}},
+      scales:{ x:{grid:{color:gridColor},ticks:{color:textColor,font:{size:10}},min:0,max:0.6}, y:{grid:{display:false},ticks:{color:textColor,font:{size:10}}} } } });
 }
 
 // ============================================
