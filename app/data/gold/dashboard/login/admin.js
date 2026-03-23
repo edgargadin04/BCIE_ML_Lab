@@ -151,13 +151,28 @@ function toggleLanguage() {
 // ============================================
 // Data Store
 // ============================================
-const USERS = [
+let USERS = JSON.parse(localStorage.getItem('bcie_users')) || [
   { id:1, username:'admin', displayName:'Administrador BCIE', role:'Administrador', status:'active', lastAccess:'26/02/2026 18:10', created:'01/01/2026' },
   { id:2, username:'nsabillon', displayName:'Norman Sabillon', role:'Administrador', status:'active', lastAccess:'26/02/2026 19:49', created:'26/02/2026' },
   { id:3, username:'waguilar', displayName:'Willson Aguilar', role:'Administrador', status:'active', lastAccess:'26/02/2026 19:49', created:'26/02/2026' },
   { id:4, username:'egarcia', displayName:'Edgar Garcia', role:'Administrador', status:'active', lastAccess:'26/02/2026 19:49', created:'26/02/2026' },
   { id:5, username:'bcie', displayName:'Analista BCIE', role:'Analista BCIE', status:'active', lastAccess:'26/02/2026 18:05', created:'26/02/2026' },
 ];
+
+if (!localStorage.getItem('bcie_users')) {
+  localStorage.setItem('bcie_users', JSON.stringify(USERS));
+}
+
+function saveUsersData() {
+  localStorage.setItem('bcie_users', JSON.stringify(USERS));
+}
+
+async function hashBciePassword(password) {
+  const msgBuffer = new TextEncoder().encode('BCIE_ML_LAB_2026_SALT_v1' + password);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
 const MODELS = [
   { name:'Prophet', folder:'aprobaciones_prophet_2026', type:'forecasting', status:'Finalizado', metrics:{mape:'8.2%',rmse:'$245M',r2:'0.87'}, trained:'25/02/2026', dashUrl:'/data/gold/dashboard/dashboard_unificado.html#forecasting'},
   { name:'NeuralProphet', folder:'aprobaciones_neu_prophet_2026', type:'forecasting', status:'Finalizado', metrics:{mape:'7.1%',rmse:'$198M',r2:'0.91'}, trained:'25/02/2026', dashUrl:'/data/gold/dashboard/dashboard_unificado.html#forecasting'},
@@ -174,27 +189,27 @@ const MODELS = [
 ];
 const DASHBOARDS = [
   // ── Unificado ──
-  { name:'Dashboard Ejecutivo Unificado', url:'../dashboard_unificado.html', status:'online', views:47, lastAccess:'02/03/2026 11:20', type:'unificado', sections:['Inicio','Forecasting','Clustering','Comparativa','Cross-Validation','Particiones']},
+  { name:'Dashboard Ejecutivo Unificado', url:'../data/gold/dashboard/dashboard_unificado.html', status:'online', views:47, lastAccess:'02/03/2026 11:20', type:'unificado', sections:['Inicio','Forecasting','Clustering','Comparativa','Cross-Validation','Particiones']},
   // ── Forecasting Labs ──
-  { name:'Prophet — Ejecutivo', url:'../labs/prophet/dashboard_ejecutivo.html', status:'online', views:23, lastAccess:'25/02/2026 20:30', type:'forecasting', sections:['Predicciones','KPIs','Tabla Detalle']},
-  { name:'Prophet — Estratégico', url:'../labs/prophet/dashboard_estrategico.html', status:'online', views:18, lastAccess:'25/02/2026 20:30', type:'forecasting', sections:['Escenarios','Filtros','Proyección']},
-  { name:'NeuralProphet — Ejecutivo', url:'../labs/neuralprophet/dashboard_ejecutivo.html', status:'online', views:19, lastAccess:'25/02/2026 19:15', type:'forecasting', sections:['Forecast','Tendencia','Métricas']},
-  { name:'NeuralProphet — Estratégico', url:'../labs/neuralprophet/dashboard_estrategico.html', status:'online', views:14, lastAccess:'25/02/2026 19:15', type:'forecasting', sections:['Escenarios','Filtros','Proyección']},
-  { name:'StatsForecast — Ejecutivo', url:'../labs/statsforecast/dashboard_ejecutivo.html', status:'online', views:21, lastAccess:'02/03/2026 11:22', type:'forecasting', sections:['AutoARIMA','KPIs','Tabla']},
-  { name:'StatsForecast — Estratégico', url:'../labs/statsforecast/dashboard_estrategico.html', status:'online', views:16, lastAccess:'02/03/2026 11:22', type:'forecasting', sections:['Ensemble','Escenarios','Filtros']},
-  { name:'TimesFM — Ejecutivo', url:'../labs/timesfm/dashboard_ejecutivo.html', status:'online', views:35, lastAccess:'02/03/2026 10:55', type:'forecasting', sections:['GPU','Predicciones','KPIs']},
-  { name:'TimesFM — Proyecciones', url:'../labs/timesfm/dashboard_proyecciones.html', status:'online', views:28, lastAccess:'02/03/2026 10:55', type:'forecasting', sections:['2026-2030','Escenarios','País']},
+  { name:'Prophet — Ejecutivo', url:'../../models/aprobaciones_prophet_2026/src/dashboard/Ejecutivo/dashboard_ejecutivo.html', status:'online', views:23, lastAccess:'25/02/2026 20:30', type:'forecasting', sections:['Predicciones','KPIs','Tabla Detalle']},
+  { name:'Prophet — Estratégico', url:'../../models/aprobaciones_prophet_2026/src/dashboard/Estrategico/dashboard_estrategico.html', status:'online', views:18, lastAccess:'25/02/2026 20:30', type:'forecasting', sections:['Escenarios','Filtros','Proyección']},
+  { name:'NeuralProphet — Ejecutivo', url:'../../models/aprobaciones_neu_prophet_2026/src/dashboard/Ejecutivo/dashboard_ejecutivo.html', status:'online', views:19, lastAccess:'25/02/2026 19:15', type:'forecasting', sections:['Forecast','Tendencia','Métricas']},
+  { name:'NeuralProphet — Estratégico', url:'../../models/aprobaciones_neu_prophet_2026/src/dashboard/Estrategico/dashboard_estrategico.html', status:'online', views:14, lastAccess:'25/02/2026 19:15', type:'forecasting', sections:['Escenarios','Filtros','Proyección']},
+  { name:'StatsForecast — Ejecutivo', url:'../../models/aprobaciones_StatsForecast_2026/src/dashboard/dashboard_ejecutivo.html', status:'online', views:21, lastAccess:'02/03/2026 11:22', type:'forecasting', sections:['AutoARIMA','KPIs','Tabla']},
+  { name:'StatsForecast — Estratégico', url:'../../models/aprobaciones_StatsForecast_2026/src/dashboard/Estrategico/dashboard_estrategico.html', status:'online', views:16, lastAccess:'02/03/2026 11:22', type:'forecasting', sections:['Ensemble','Escenarios','Filtros']},
+  { name:'TimesFM — Ejecutivo', url:'../../models/aprobaciones_TimesFM_2026/data/05-reporting/dashboard_ejecutivo_bcie.html', status:'online', views:35, lastAccess:'02/03/2026 10:55', type:'forecasting', sections:['GPU','Predicciones','KPIs']},
+  { name:'TimesFM — Proyecciones', url:'../../models/aprobaciones_TimesFM_2026/data/05-reporting/dashboard_proyecciones_2026.html', status:'online', views:28, lastAccess:'02/03/2026 10:55', type:'forecasting', sections:['2026-2030','Escenarios','País']},
   // ── Clustering Labs ──
-  { name:'DBSCAN — Dashboard', url:'../labs/dbscan/dashboard_dbscan.html', status:'online', views:12, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Clusters','Noise','DBSCAN']},
-  { name:'HDBSCAN — Dashboard', url:'../labs/hdbscan/dashboard_hdbscan.html', status:'online', views:14, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Clusters','Jerárquico','Noise']},
-  { name:'GMM — Dashboard', url:'../labs/gmm/dashboard_gmm.html', status:'online', views:11, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Gaussian','BIC','Clusters']},
-  { name:'K-Means — Dashboard', url:'../labs/kmeans/dashboard_kmeans.html', status:'online', views:13, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Elbow','Silhouette','Clusters']},
-  { name:'K-Medoids — Dashboard', url:'../labs/kmedoids/dashboard_kmedoids.html', status:'online', views:10, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['PAM','Medoids','Clusters']},
-  { name:'Hierarchical — Dashboard', url:'../labs/hierarchical/dashboard_hierarchical.html', status:'online', views:9, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Dendrograma','Ward','Clusters']},
-  { name:'Mixed Clustering — Dashboard', url:'../labs/mixed/dashboard_mixed.html', status:'online', views:8, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Ensemble','Comparativa','Clusters']},
+  { name:'DBSCAN — Dashboard', url:'../../models/aprobaciones_dbscan_2026/src/dashboard/dashboard_template.html', status:'online', views:12, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Clusters','Noise','DBSCAN']},
+  { name:'HDBSCAN — Dashboard', url:'../../models/aprobaciones_hdbscan_2026/data/04-predictions/dashboard_clustering.html', status:'online', views:14, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Clusters','Jerárquico','Noise']},
+  { name:'GMM — Dashboard', url:'../../models/aprobaciones_gmm_2026/src/dashboard/dashboard_gmm.html', status:'online', views:11, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Gaussian','BIC','Clusters']},
+  { name:'K-Means — Dashboard', url:'../../models/aprobaciones_kmeans_2026/src/dashboard/dashboard_kmeans.html', status:'online', views:13, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Elbow','Silhouette','Clusters']},
+  { name:'K-Medoids — Dashboard', url:'../../models/aprobaciones_kmedoids_2026/src/dashboard/dashboard_kmedoids.html', status:'online', views:10, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['PAM','Medoids','Clusters']},
+  { name:'Hierarchical — Dashboard', url:'../../models/aprobaciones_hierarchical_2026/src/dashboard/dashboard_hierarchical.html', status:'online', views:9, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Dendrograma','Ward','Clusters']},
+  { name:'Mixed Clustering — Dashboard', url:'../../models/aprobaciones_mixed_2026/src/dashboard/dashboard_mixed.html', status:'online', views:8, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Ensemble','Comparativa','Clusters']},
   // ── EDA ──
-  { name:'EDA — Dashboard Exploratorio', url:'../labs/eda/dashboard_eda.html', status:'online', views:31, lastAccess:'23/02/2026 14:20', type:'eda', sections:['Distribución','Correlaciones','Outliers']},
-  { name:'EDA — Reporte Completo', url:'../labs/eda/dashboard_eda_report.html', status:'online', views:22, lastAccess:'23/02/2026 14:20', type:'eda', sections:['Variables','Estadísticos','Reporte']},
+  { name:'EDA — Dashboard Exploratorio', url:'../../models/aprobaciones_eda_2026/src/dashboard/dashboard_eda.html', status:'online', views:31, lastAccess:'23/02/2026 14:20', type:'eda', sections:['Distribución','Correlaciones','Outliers']},
+  { name:'EDA — Reporte Completo', url:'../../models/aprobaciones_eda_2026/src/dashboard/dashboard_eda_report.html', status:'online', views:22, lastAccess:'23/02/2026 14:20', type:'eda', sections:['Variables','Estadísticos','Reporte']},
 ];
 const AUDIT_LOG = [
   { ts:'2026-02-26T19:49:00', level:'success', event:'Login exitoso', user:'waguilar', details:'Rol: Administrador' },
@@ -460,7 +475,7 @@ function renderModels(filter='all') {
       const tip = METRIC_TOOLTIPS[k] ? ` class="tooltip-trigger" data-tooltip="${t(METRIC_TOOLTIPS[k])}"` : '';
       return `<div class="metric-row"><span${tip}>${k}</span><span>${v}</span></div>`;
     }).join('');
-    return `<div class="model-card"><div class="model-name">${m.name}</div><div class="model-type" style="color:${c}">${m.type}</div><div class="model-metrics">${metricsHtml}</div><div class="model-footer"><span class="status-badge ok">${m.status}</span><div style="display:flex;gap:5px"><button class="btn-sm" onclick="event.stopPropagation();openModelDetail(${MODELS.indexOf(m)})">${t('models.detail')}</button></div></div></div>`;
+    return `<div class="model-card"><div class="model-name">${m.name}</div><div class="model-type" style="color:${c}">${m.type}</div><div class="model-metrics">${metricsHtml}</div><div class="model-footer"><span class="status-badge ok">${m.status}</span><div style="display:flex;gap:5px"><button class="btn-sm" onclick="event.stopPropagation();openModelDetail(${MODELS.indexOf(m)})">${t('models.detail')}</button><button class="btn-sm" onclick="event.stopPropagation();window.open('${m.dashUrl}','_blank')" style="border-color:var(--accent);color:var(--accent)">${t('models.viewdash')}</button></div></div></div>`;
   }).join('');
 }
 function filterModels() { renderModels(document.getElementById('modelTypeFilter').value); }
@@ -475,53 +490,47 @@ function openModelDetail(idx) {
     <h4 style="font-size:.8rem;color:var(--text-muted);margin-bottom:.5rem">${t('modal.metrics')}</h4>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-bottom:1rem">${Object.entries(m.metrics).map(([k,v])=>`<div style="background:var(--bg-input);padding:.5rem;border-radius:6px;text-align:center"><div style="font-size:.65rem;color:var(--text-muted);text-transform:uppercase">${k}</div><div style="font-size:1.1rem;font-weight:800;color:var(--text)">${v}</div></div>`).join('')}</div>
     <h4 style="font-size:.8rem;color:var(--text-muted);margin-bottom:.5rem">${t('modal.details')}</h4>
-    <div style="font-size:.78rem"><div class="data-row"><span>${t('modal.folder')}</span><span>${m.folder}</span></div><div class="data-row"><span>${t('modal.trained')}</span><span>${m.trained}</span></div><div class="data-row"><span>${t('modal.dataset')}</span><span>3,139 aprobaciones BCIE</span></div></div>`;
-
+    <div style="font-size:.78rem"><div class="data-row"><span>${t('modal.folder')}</span><span>${m.folder}</span></div><div class="data-row"><span>${t('modal.trained')}</span><span>${m.trained}</span></div><div class="data-row"><span>${t('modal.dataset')}</span><span>3,139 aprobaciones BCIE</span></div></div>
+    <div style="margin-top:1rem;display:flex;justify-content:flex-end"><button class="btn-primary" onclick="window.open('${m.dashUrl}','_blank')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      ${t('models.viewdash')}</button></div>`;
   document.getElementById('modalOverlay').classList.add('visible');
 }
 
 // ============================================
 // Model Comparison Chart (Feature 4)
 // ============================================
-let compFcChartInst, compClChartInst;
+let comparisonChartInst;
 function renderComparison() {
+  const type = document.getElementById('comparisonTypeFilter')?.value || 'forecasting';
+  const filtered = MODELS.filter(m => m.type === type);
+  const ctx = document.getElementById('comparisonChart');
+  if (!ctx) return;
   const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
   const textColor = isDark ? '#94a3b8' : '#64748b';
   const gridColor = isDark ? 'rgba(255,255,255,.06)' : 'rgba(0,0,0,.06)';
+  if (comparisonChartInst) comparisonChartInst.destroy();
 
-  // === Forecasting comparison: MAPE (lower=better, sorted asc) ===
-  const fcModels = MODELS.filter(m => m.type === 'forecasting')
-    .map(m => ({name:m.name, mape:parseFloat(m.metrics.mape), r2:parseFloat(m.metrics.r2)}))
-    .sort((a,b) => a.mape - b.mape); // best MAPE first
-  const ctxFc = document.getElementById('comparisonChart');
-  if (ctxFc) {
-    if (compFcChartInst) compFcChartInst.destroy();
-    const fcColors = ['#f59e0b','#22c55e','#a855f7','#06b6d4','#ef4444','#3b82f6'];
-    compFcChartInst = new Chart(ctxFc, { type:'bar', data:{
-      labels: fcModels.map(m => m.name),
+  if (type === 'forecasting') {
+    const labels = filtered.map(m => m.name);
+    const mapeData = filtered.map(m => parseFloat(m.metrics.mape));
+    const r2Data = filtered.map(m => parseFloat(m.metrics.r2) * 100);
+    comparisonChartInst = new Chart(ctx, { type:'bar', data:{ labels,
       datasets:[
-        { label:'MAPE % (menor=mejor)', data: fcModels.map(m => m.mape), backgroundColor: fcModels.map((_,i) => fcColors[i%fcColors.length]+'88'), borderColor: fcModels.map((_,i) => fcColors[i%fcColors.length]), borderWidth:1, borderRadius:4, yAxisID:'y' },
-        { label:'R² ×100 (mayor=mejor)', data: fcModels.map(m => m.r2*100), backgroundColor: fcModels.map((_,i) => fcColors[i%fcColors.length]+'44'), borderColor: fcModels.map((_,i) => fcColors[i%fcColors.length]), borderWidth:1, borderRadius:4, yAxisID:'y1' }
+        { label:'MAPE %', data:mapeData, backgroundColor:'rgba(239,68,68,.5)', borderColor:'#ef4444', borderWidth:1, borderRadius:4, yAxisID:'y' },
+        { label:'R² (×100)', data:r2Data, backgroundColor:'rgba(34,197,94,.5)', borderColor:'#22c55e', borderWidth:1, borderRadius:4, yAxisID:'y1' }
       ] }, options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{labels:{color:textColor,font:{size:11}}}},
-        scales:{ y:{position:'left',grid:{color:gridColor},ticks:{color:textColor,font:{size:10},callback:v=>v+'%'},title:{display:true,text:'MAPE % (menor es mejor)',color:textColor,font:{size:10}}},
-                 y1:{position:'right',grid:{display:false},ticks:{color:textColor,font:{size:10}},title:{display:true,text:'R² ×100 (mayor es mejor)',color:textColor,font:{size:10}}},
+        scales:{ y:{position:'left',grid:{color:gridColor},ticks:{color:textColor,font:{size:10},callback:v=>v+'%'},title:{display:true,text:'MAPE %',color:textColor}},
+                 y1:{position:'right',grid:{display:false},ticks:{color:textColor,font:{size:10}},title:{display:true,text:'R² ×100',color:textColor}},
                  x:{grid:{display:false},ticks:{color:textColor,font:{size:10}}} } } });
-  }
-
-  // === Clustering comparison: Silhouette (higher=better, sorted desc) ===
-  const clModels = MODELS.filter(m => m.type === 'clustering')
-    .map(m => ({name:m.name, silhouette:parseFloat(m.metrics.silhouette)}))
-    .sort((a,b) => b.silhouette - a.silhouette); // best silhouette first
-  const ctxCl = document.getElementById('clusteringCompChart');
-  if (ctxCl) {
-    if (compClChartInst) compClChartInst.destroy();
-    const clColors = clModels.map((_,i) => `hsla(${160+i*25},55%,50%,1)`);
-    compClChartInst = new Chart(ctxCl, { type:'bar', data:{
-      labels: clModels.map(m => m.name),
-      datasets:[{ label:'Silhouette Score (mayor=mejor)', data: clModels.map(m => m.silhouette), backgroundColor: clModels.map((_,i) => `hsla(${160+i*25},55%,50%,0.55)`), borderColor: clModels.map((_,i) => `hsl(${160+i*25},55%,50%)`), borderWidth:1, borderRadius:4 }]
+  } else {
+    const labels = filtered.map(m => m.name);
+    const silData = filtered.map(m => parseFloat(m.metrics.silhouette));
+    comparisonChartInst = new Chart(ctx, { type:'bar', data:{ labels,
+      datasets:[{ label:'Silhouette', data:silData, backgroundColor:filtered.map((_,i)=>`hsla(${270+i*15},60%,60%,.5)`), borderColor:filtered.map((_,i)=>`hsl(${270+i*15},60%,50%)`), borderWidth:1, borderRadius:4 }]
     }, options:{ responsive:true, maintainAspectRatio:false, indexAxis:'y',
         plugins:{legend:{display:false}},
-        scales:{ x:{grid:{color:gridColor},ticks:{color:textColor,font:{size:10}},min:0,max:0.6,title:{display:true,text:'Silhouette Score (mayor es mejor)',color:textColor,font:{size:10}}}, y:{grid:{display:false},ticks:{color:textColor,font:{size:10}}} } } });
+        scales:{ x:{grid:{color:gridColor},ticks:{color:textColor,font:{size:10}},min:0,max:0.6}, y:{grid:{display:false},ticks:{color:textColor,font:{size:10}}} } } });
   }
 }
 
@@ -678,10 +687,20 @@ function openModal(type) {
   document.getElementById('modalOverlay').classList.add('visible');
 }
 function closeModal() { document.getElementById('modalOverlay').classList.remove('visible'); }
-function addUser() {
+async function addUser() {
   const u=document.getElementById('newUsername').value.trim(), n=document.getElementById('newDisplayName').value.trim(), r=document.getElementById('newRole').value;
-  if (!u||!n) return alert('Completa todos los campos.');
+  const pw=document.getElementById('newPassword').value;
+  if (!u||!n||!pw) return alert('Completa todos los campos, incluyendo la contraseña.');
+  if (pw.length < 6) return alert('La contraseña debe tener mínimo 6 caracteres.');
+  
   USERS.push({id:USERS.length+1,username:u,displayName:n,role:r,status:'active',lastAccess:'—',created:new Date().toLocaleDateString('es-HN')});
+  saveUsersData();
+  
+  const hash = await hashBciePassword(pw);
+  let authStore = JSON.parse(localStorage.getItem('bcie_auth_store')) || {};
+  authStore[u.toLowerCase()] = { username: u, passwordHash: hash, role: r, displayName: n };
+  localStorage.setItem('bcie_auth_store', JSON.stringify(authStore));
+
   renderUsers(); closeModal(); document.getElementById('kpiUsers').textContent = USERS.filter(x=>x.status==='active').length;
 }
 function addAlert() {
@@ -753,10 +772,26 @@ function saveUser(id) {
   const newRole = document.getElementById('editRole').value;
   const newStatus = document.getElementById('editStatus').value;
   if (!newUsername || !newName) return showToast('Completa todos los campos', 'warn');
+  
+  const oldUserKey = u.username.toLowerCase();
+  
   u.username = newUsername;
   u.displayName = newName;
   u.role = newRole;
   u.status = newStatus;
+  saveUsersData();
+
+  let authStore = JSON.parse(localStorage.getItem('bcie_auth_store')) || {};
+  if (authStore[oldUserKey] || true) {
+    const data = authStore[oldUserKey] || { passwordHash: '' }; // fallback
+    delete authStore[oldUserKey];
+    data.username = newUsername;
+    data.displayName = newName;
+    data.role = newRole;
+    authStore[newUsername.toLowerCase()] = data;
+    localStorage.setItem('bcie_auth_store', JSON.stringify(authStore));
+  }
+
   AUDIT_LOG.unshift({ ts: new Date().toISOString(), level:'info', event:'Usuario editado', user: sessionStorage.getItem('bcie_auth') ? JSON.parse(sessionStorage.getItem('bcie_auth')).user?.username||'admin' : 'admin', details:`${newUsername} → ${newRole} (${newStatus})` });
   renderUsers(); renderAudit(); renderOverview(); closeModal();
   document.getElementById('kpiUsers').textContent = USERS.filter(x=>x.status==='active').length;
@@ -768,6 +803,12 @@ function deleteUser(id) {
   const idx = USERS.findIndex(x => x.id === id);
   if (idx > -1) {
     const deleted = USERS.splice(idx, 1)[0];
+    saveUsersData();
+    
+    let authStore = JSON.parse(localStorage.getItem('bcie_auth_store')) || {};
+    delete authStore[deleted.username.toLowerCase()];
+    localStorage.setItem('bcie_auth_store', JSON.stringify(authStore));
+
     AUDIT_LOG.unshift({ ts: new Date().toISOString(), level:'warn', event:'Usuario eliminado', user:'admin', details: deleted.username });
     renderUsers(); renderAudit(); renderOverview(); closeModal();
     document.getElementById('kpiUsers').textContent = USERS.filter(x=>x.status==='active').length;
@@ -830,12 +871,25 @@ function updatePwStrength() {
   label.textContent = lv.l; label.style.color = lv.c;
 }
 
-function executeResetPassword(id) {
+async function executeResetPassword(id) {
   const pw1 = document.getElementById('resetNewPw').value;
   const pw2 = document.getElementById('resetConfirmPw').value;
   if (pw1.length < 6) return showToast(t('pw.requirements'), 'warn');
   if (pw1 !== pw2) { document.getElementById('pwMatchMsg').textContent = '✗ No coinciden'; document.getElementById('pwMatchMsg').style.color = '#ef4444'; return; }
-  AUDIT_LOG.unshift({ ts: new Date().toISOString(), level:'info', event:'Password restablecido', user:'admin', details:`Usuario: ${USERS.find(x=>x.id===id)?.username}` });
+  
+  const u = USERS.find(x => x.id === id);
+  if (u) {
+    const hash = await hashBciePassword(pw1);
+    let authStore = JSON.parse(localStorage.getItem('bcie_auth_store')) || {};
+    if (authStore[u.username.toLowerCase()]) {
+      authStore[u.username.toLowerCase()].passwordHash = hash;
+    } else {
+      authStore[u.username.toLowerCase()] = { username: u.username, passwordHash: hash, role: u.role, displayName: u.displayName };
+    }
+    localStorage.setItem('bcie_auth_store', JSON.stringify(authStore));
+  }
+
+  AUDIT_LOG.unshift({ ts: new Date().toISOString(), level:'info', event:'Password restablecido', user:'admin', details:`Usuario: ${u?.username}` });
   renderAudit(); renderOverview(); closeModal();
   showToast(t('toast.pwreset'), 'success');
 }
@@ -844,6 +898,7 @@ function toggleUser(id) {
   const u = USERS.find(x => x.id === id);
   if (u) {
     u.status = u.status === 'active' ? 'inactive' : 'active';
+    saveUsersData();
     AUDIT_LOG.unshift({ ts: new Date().toISOString(), level: u.status==='active'?'success':'warn', event: u.status==='active'?'Usuario activado':'Usuario desactivado', user:'admin', details: u.username });
     renderUsers(); renderAudit(); renderOverview();
     document.getElementById('kpiUsers').textContent = USERS.filter(x => x.status === 'active').length;

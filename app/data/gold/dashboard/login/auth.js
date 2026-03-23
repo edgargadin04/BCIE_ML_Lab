@@ -47,8 +47,8 @@ let USER_STORE = {};
 
 // Dashboard routing per role
 const DASHBOARD_ROUTES = Object.freeze({
-  'Administrador': 'admin.html',                  // Admin → full admin panel (same /login/ folder)
-  'Analista BCIE': '../dashboard_unificado.html',  // BCIE user → real dashboard (parent folder)
+  'Administrador': 'admin.html',                                       // Admin → full admin panel
+  'Analista BCIE': '../data/gold/dashboard/dashboard_unificado.html',  // BCIE user → real dashboard
 });
 
 // ============================================
@@ -489,7 +489,14 @@ async function initializeAuth() {
     },
   };
 
-  auditLog('info', 'User store loaded (5 users registered)');
+  let localAuthStore = JSON.parse(localStorage.getItem('bcie_auth_store'));
+  if (localAuthStore) {
+    Object.assign(USER_STORE, localAuthStore);
+  } else {
+    localStorage.setItem('bcie_auth_store', JSON.stringify(USER_STORE));
+  }
+
+  auditLog('info', `User store loaded (${Object.keys(USER_STORE).length} users registered)`);
   generateCSRFToken();
   auditLog('info', `CSRF token generated: ${state.csrfToken.substring(0, 12)}…`);
 
