@@ -208,13 +208,13 @@ const DASHBOARDS = [
   // ── Unificado ──
   { name:'Dashboard Ejecutivo Unificado', url:'../dashboard_unificado.html', status:'online', views:47, lastAccess:'02/03/2026 11:20', type:'unificado', sections:['Inicio','Forecasting','Clustering','Comparativa','Cross-Validation','Particiones']},
   // ── Forecasting Labs ──
-  { name:'Prophet — Ejecutivo', url:'../labs/prophet/dashboard_ejecutivo.html', status:'online', views:23, lastAccess:'25/02/2026 20:30', type:'forecasting', sections:['Predicciones','KPIs','Tabla Detalle']},
+  { name:'Prophet — Dashboard', url:'../labs/prophet/dashboard_ejecutivo.html', status:'online', views:23, lastAccess:'25/02/2026 20:30', type:'forecasting', sections:['Predicciones','KPIs','Tabla Detalle']},
   { name:'Prophet — Estratégico', url:'../labs/prophet/dashboard_estrategico.html', status:'online', views:18, lastAccess:'25/02/2026 20:30', type:'forecasting', sections:['Escenarios','Filtros','Proyección']},
-  { name:'NeuralProphet — Ejecutivo', url:'../labs/neuralprophet/dashboard_ejecutivo.html', status:'online', views:19, lastAccess:'25/02/2026 19:15', type:'forecasting', sections:['Forecast','Tendencia','Métricas']},
+  { name:'NeuralProphet — Dashboard', url:'../labs/neuralprophet/dashboard_ejecutivo.html', status:'online', views:19, lastAccess:'25/02/2026 19:15', type:'forecasting', sections:['Forecast','Tendencia','Métricas']},
   { name:'NeuralProphet — Estratégico', url:'../labs/neuralprophet/dashboard_estrategico.html', status:'online', views:14, lastAccess:'25/02/2026 19:15', type:'forecasting', sections:['Escenarios','Filtros','Proyección']},
-  { name:'StatsForecast — Ejecutivo', url:'../labs/statsforecast/dashboard_ejecutivo.html', status:'online', views:21, lastAccess:'02/03/2026 11:22', type:'forecasting', sections:['AutoARIMA','KPIs','Tabla']},
+  { name:'StatsForecast — Dashboard', url:'../labs/statsforecast/dashboard_ejecutivo.html', status:'online', views:21, lastAccess:'02/03/2026 11:22', type:'forecasting', sections:['AutoARIMA','KPIs','Tabla']},
   { name:'StatsForecast — Estratégico', url:'../labs/statsforecast/dashboard_estrategico.html', status:'online', views:16, lastAccess:'02/03/2026 11:22', type:'forecasting', sections:['Ensemble','Escenarios','Filtros']},
-  { name:'TimesFM — Ejecutivo', url:'../labs/timesfm/dashboard_ejecutivo.html', status:'online', views:35, lastAccess:'02/03/2026 10:55', type:'forecasting', sections:['GPU','Predicciones','KPIs']},
+  { name:'TimesFM — Dashboard', url:'../labs/timesfm/dashboard_ejecutivo.html', status:'online', views:35, lastAccess:'02/03/2026 10:55', type:'forecasting', sections:['GPU','Predicciones','KPIs']},
   { name:'TimesFM — Proyecciones', url:'../labs/timesfm/dashboard_proyecciones.html', status:'online', views:28, lastAccess:'02/03/2026 10:55', type:'forecasting', sections:['2026-2030','Escenarios','País']},
   // ── Clustering Labs ──
   { name:'DBSCAN — Dashboard', url:'../labs/dbscan/dashboard_dbscan.html', status:'online', views:12, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Clusters','Noise','DBSCAN']},
