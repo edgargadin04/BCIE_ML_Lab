@@ -151,13 +151,28 @@ function toggleLanguage() {
 // ============================================
 // Data Store
 // ============================================
-const USERS = [
+let USERS = JSON.parse(localStorage.getItem('bcie_users')) || [
   { id:1, username:'admin', displayName:'Administrador BCIE', role:'Administrador', status:'active', lastAccess:'26/02/2026 18:10', created:'01/01/2026' },
   { id:2, username:'nsabillon', displayName:'Norman Sabillon', role:'Administrador', status:'active', lastAccess:'26/02/2026 19:49', created:'26/02/2026' },
   { id:3, username:'waguilar', displayName:'Willson Aguilar', role:'Administrador', status:'active', lastAccess:'26/02/2026 19:49', created:'26/02/2026' },
   { id:4, username:'egarcia', displayName:'Edgar Garcia', role:'Administrador', status:'active', lastAccess:'26/02/2026 19:49', created:'26/02/2026' },
   { id:5, username:'bcie', displayName:'Analista BCIE', role:'Analista BCIE', status:'active', lastAccess:'26/02/2026 18:05', created:'26/02/2026' },
 ];
+
+if (!localStorage.getItem('bcie_users')) {
+  localStorage.setItem('bcie_users', JSON.stringify(USERS));
+}
+
+function saveUsersData() {
+  localStorage.setItem('bcie_users', JSON.stringify(USERS));
+}
+
+async function hashBciePassword(password) {
+  const msgBuffer = new TextEncoder().encode('BCIE_ML_LAB_2026_SALT_v1' + password);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
 const MODELS = [
   { name:'Prophet', folder:'aprobaciones_prophet_2026', type:'forecasting', status:'Finalizado', metrics:{mape:'8.2%',rmse:'$245M',r2:'0.87'}, trained:'25/02/2026', dashUrl:'/data/gold/dashboard/dashboard_unificado.html#forecasting'},
   { name:'NeuralProphet', folder:'aprobaciones_neu_prophet_2026', type:'forecasting', status:'Finalizado', metrics:{mape:'7.1%',rmse:'$198M',r2:'0.91'}, trained:'25/02/2026', dashUrl:'/data/gold/dashboard/dashboard_unificado.html#forecasting'},
@@ -672,10 +687,20 @@ function openModal(type) {
   document.getElementById('modalOverlay').classList.add('visible');
 }
 function closeModal() { document.getElementById('modalOverlay').classList.remove('visible'); }
-function addUser() {
+async function addUser() {
   const u=document.getElementById('newUsername').value.trim(), n=document.getElementById('newDisplayName').value.trim(), r=document.getElementById('newRole').value;
-  if (!u||!n) return alert('Completa todos los campos.');
+  const pw=document.getElementById('newPassword').value;
+  if (!u||!n||!pw) return alert('Completa todos los campos, incluyendo la contraseña.');
+  if (pw.length < 6) return alert('La contraseña debe tener mínimo 6 caracteres.');
+  
   USERS.push({id:USERS.length+1,username:u,displayName:n,role:r,status:'active',lastAccess:'—',created:new Date().toLocaleDateString('es-HN')});
+  saveUsersData();
+  
+  const hash = await hashBciePassword(pw);
+  let authStore = JSON.parse(localStorage.getItem('bcie_auth_store')) || {};
+  authStore[u.toLowerCase()] = { username: u, passwordHash: hash, role: r, displayName: n };
+  localStorage.setItem('bcie_auth_store', JSON.stringify(authStore));
+
   renderUsers(); closeModal(); document.getElementById('kpiUsers').textContent = USERS.filter(x=>x.status==='active').length;
 }
 function addAlert() {
@@ -747,10 +772,26 @@ function saveUser(id) {
   const newRole = document.getElementById('editRole').value;
   const newStatus = document.getElementById('editStatus').value;
   if (!newUsername || !newName) return showToast('Completa todos los campos', 'warn');
+  
+  const oldUserKey = u.username.toLowerCase();
+  
   u.username = newUsername;
   u.displayName = newName;
   u.role = newRole;
   u.status = newStatus;
+  saveUsersData();
+
+  let authStore = JSON.parse(localStorage.getItem('bcie_auth_store')) || {};
+  if (authStore[oldUserKey] || true) {
+    const data = authStore[oldUserKey] || { passwordHash: '' }; // fallback
+    delete authStore[oldUserKey];
+    data.username = newUsername;
+    data.displayName = newName;
+    data.role = newRole;
+    authStore[newUsername.toLowerCase()] = data;
+    localStorage.setItem('bcie_auth_store', JSON.stringify(authStore));
+  }
+
   AUDIT_LOG.unshift({ ts: new Date().toISOString(), level:'info', event:'Usuario editado', user: sessionStorage.getItem('bcie_auth') ? JSON.parse(sessionStorage.getItem('bcie_auth')).user?.username||'admin' : 'admin', details:`${newUsername} → ${newRole} (${newStatus})` });
   renderUsers(); renderAudit(); renderOverview(); closeModal();
   document.getElementById('kpiUsers').textContent = USERS.filter(x=>x.status==='active').length;
@@ -762,6 +803,12 @@ function deleteUser(id) {
   const idx = USERS.findIndex(x => x.id === id);
   if (idx > -1) {
     const deleted = USERS.splice(idx, 1)[0];
+    saveUsersData();
+    
+    let authStore = JSON.parse(localStorage.getItem('bcie_auth_store')) || {};
+    delete authStore[deleted.username.toLowerCase()];
+    localStorage.setItem('bcie_auth_store', JSON.stringify(authStore));
+
     AUDIT_LOG.unshift({ ts: new Date().toISOString(), level:'warn', event:'Usuario eliminado', user:'admin', details: deleted.username });
     renderUsers(); renderAudit(); renderOverview(); closeModal();
     document.getElementById('kpiUsers').textContent = USERS.filter(x=>x.status==='active').length;
@@ -824,12 +871,25 @@ function updatePwStrength() {
   label.textContent = lv.l; label.style.color = lv.c;
 }
 
-function executeResetPassword(id) {
+async function executeResetPassword(id) {
   const pw1 = document.getElementById('resetNewPw').value;
   const pw2 = document.getElementById('resetConfirmPw').value;
   if (pw1.length < 6) return showToast(t('pw.requirements'), 'warn');
   if (pw1 !== pw2) { document.getElementById('pwMatchMsg').textContent = '✗ No coinciden'; document.getElementById('pwMatchMsg').style.color = '#ef4444'; return; }
-  AUDIT_LOG.unshift({ ts: new Date().toISOString(), level:'info', event:'Password restablecido', user:'admin', details:`Usuario: ${USERS.find(x=>x.id===id)?.username}` });
+  
+  const u = USERS.find(x => x.id === id);
+  if (u) {
+    const hash = await hashBciePassword(pw1);
+    let authStore = JSON.parse(localStorage.getItem('bcie_auth_store')) || {};
+    if (authStore[u.username.toLowerCase()]) {
+      authStore[u.username.toLowerCase()].passwordHash = hash;
+    } else {
+      authStore[u.username.toLowerCase()] = { username: u.username, passwordHash: hash, role: u.role, displayName: u.displayName };
+    }
+    localStorage.setItem('bcie_auth_store', JSON.stringify(authStore));
+  }
+
+  AUDIT_LOG.unshift({ ts: new Date().toISOString(), level:'info', event:'Password restablecido', user:'admin', details:`Usuario: ${u?.username}` });
   renderAudit(); renderOverview(); closeModal();
   showToast(t('toast.pwreset'), 'success');
 }
@@ -838,6 +898,7 @@ function toggleUser(id) {
   const u = USERS.find(x => x.id === id);
   if (u) {
     u.status = u.status === 'active' ? 'inactive' : 'active';
+    saveUsersData();
     AUDIT_LOG.unshift({ ts: new Date().toISOString(), level: u.status==='active'?'success':'warn', event: u.status==='active'?'Usuario activado':'Usuario desactivado', user:'admin', details: u.username });
     renderUsers(); renderAudit(); renderOverview();
     document.getElementById('kpiUsers').textContent = USERS.filter(x => x.status === 'active').length;
