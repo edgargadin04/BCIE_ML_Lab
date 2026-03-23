@@ -151,50 +151,65 @@ function toggleLanguage() {
 // ============================================
 // Data Store
 // ============================================
-const USERS = [
+let USERS = JSON.parse(localStorage.getItem('bcie_users')) || [
   { id:1, username:'admin', displayName:'Administrador BCIE', role:'Administrador', status:'active', lastAccess:'26/02/2026 18:10', created:'01/01/2026' },
   { id:2, username:'nsabillon', displayName:'Norman Sabillon', role:'Administrador', status:'active', lastAccess:'26/02/2026 19:49', created:'26/02/2026' },
   { id:3, username:'waguilar', displayName:'Willson Aguilar', role:'Administrador', status:'active', lastAccess:'26/02/2026 19:49', created:'26/02/2026' },
   { id:4, username:'egarcia', displayName:'Edgar Garcia', role:'Administrador', status:'active', lastAccess:'26/02/2026 19:49', created:'26/02/2026' },
   { id:5, username:'bcie', displayName:'Analista BCIE', role:'Analista BCIE', status:'active', lastAccess:'26/02/2026 18:05', created:'26/02/2026' },
 ];
+
+if (!localStorage.getItem('bcie_users')) {
+  localStorage.setItem('bcie_users', JSON.stringify(USERS));
+}
+
+function saveUsersData() {
+  localStorage.setItem('bcie_users', JSON.stringify(USERS));
+}
+
+async function hashBciePassword(password) {
+  const msgBuffer = new TextEncoder().encode('BCIE_ML_LAB_2026_SALT_v1' + password);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
 const MODELS = [
-  { name:'Prophet', folder:'aprobaciones_prophet_2026', type:'forecasting', status:'Finalizado', metrics:{mape:'8.2%',rmse:'$245M',r2:'0.87'}, trained:'25/02/2026', dashUrl:'/data/gold/dashboard/dashboard_unificado.html#forecasting'},
-  { name:'NeuralProphet', folder:'aprobaciones_neu_prophet_2026', type:'forecasting', status:'Finalizado', metrics:{mape:'7.1%',rmse:'$198M',r2:'0.91'}, trained:'25/02/2026', dashUrl:'/data/gold/dashboard/dashboard_unificado.html#forecasting'},
-  { name:'StatsForecast', folder:'aprobaciones_StatsForecast_2026', type:'forecasting', status:'Finalizado', metrics:{mape:'9.5%',rmse:'$310M',r2:'0.83'}, trained:'25/02/2026', dashUrl:'/data/gold/dashboard/dashboard_unificado.html#forecasting'},
-  { name:'TimesFM', folder:'aprobaciones_TimesFM_2026', type:'forecasting', status:'Finalizado', metrics:{mape:'6.8%',rmse:'$185M',r2:'0.93'}, trained:'25/02/2026', dashUrl:'/data/gold/dashboard/dashboard_unificado.html#forecasting'},
-  { name:'K-Means', folder:'aprobaciones_kmeans_2026', type:'clustering', status:'Finalizado', metrics:{silhouette:'0.42',clusters:'4',inertia:'2.3e6'}, trained:'24/02/2026', dashUrl:'/data/gold/dashboard/dashboard_unificado.html#clustering'},
-  { name:'K-Medoids', folder:'aprobaciones_kmedoids_2026', type:'clustering', status:'Finalizado', metrics:{silhouette:'0.39',clusters:'4',inertia:'2.5e6'}, trained:'24/02/2026', dashUrl:'/data/gold/dashboard/dashboard_unificado.html#clustering'},
-  { name:'DBSCAN', folder:'aprobaciones_dbscan_2026', type:'clustering', status:'Finalizado', metrics:{silhouette:'0.35',clusters:'3',noise:'12%'}, trained:'24/02/2026', dashUrl:'/data/gold/dashboard/dashboard_unificado.html#clustering'},
-  { name:'HDBSCAN', folder:'aprobaciones_hdbscan_2026', type:'clustering', status:'Finalizado', metrics:{silhouette:'0.41',clusters:'5',noise:'8%'}, trained:'24/02/2026', dashUrl:'/data/gold/dashboard/dashboard_unificado.html#clustering'},
-  { name:'GMM', folder:'aprobaciones_gmm_2026', type:'clustering', status:'Finalizado', metrics:{silhouette:'0.44',clusters:'4',bic:'1.2e4'}, trained:'24/02/2026', dashUrl:'/data/gold/dashboard/dashboard_unificado.html#clustering'},
-  { name:'Hierarchical', folder:'aprobaciones_hierarchical_2026', type:'clustering', status:'Finalizado', metrics:{silhouette:'0.38',clusters:'4',linkage:'ward'}, trained:'24/02/2026', dashUrl:'/data/gold/dashboard/dashboard_unificado.html#clustering'},
-  { name:'Mixed Clustering', folder:'aprobaciones_mixed_2026', type:'clustering', status:'Finalizado', metrics:{silhouette:'0.45',clusters:'4',method:'ensemble'}, trained:'24/02/2026', dashUrl:'/data/gold/dashboard/dashboard_unificado.html#clustering'},
-  { name:'EDA Exploratorio', folder:'aprobaciones_eda_2026', type:'eda', status:'Finalizado', metrics:{variables:'12',correlations:'66',outliers:'23'}, trained:'23/02/2026', dashUrl:'/data/gold/dashboard/dashboard_unificado.html'},
+  { name:'Prophet', folder:'aprobaciones_prophet_2026', type:'forecasting', status:'Finalizado', metrics:{mape:'8.2%',rmse:'$245M',r2:'0.87'}, trained:'25/02/2026', dashUrl:'../dashboard_unificado.html#forecasting'},
+  { name:'NeuralProphet', folder:'aprobaciones_neu_prophet_2026', type:'forecasting', status:'Finalizado', metrics:{mape:'7.1%',rmse:'$198M',r2:'0.91'}, trained:'25/02/2026', dashUrl:'../dashboard_unificado.html#forecasting'},
+  { name:'StatsForecast', folder:'aprobaciones_StatsForecast_2026', type:'forecasting', status:'Finalizado', metrics:{mape:'9.5%',rmse:'$310M',r2:'0.83'}, trained:'25/02/2026', dashUrl:'../dashboard_unificado.html#forecasting'},
+  { name:'TimesFM', folder:'aprobaciones_TimesFM_2026', type:'forecasting', status:'Finalizado', metrics:{mape:'6.8%',rmse:'$185M',r2:'0.93'}, trained:'25/02/2026', dashUrl:'../dashboard_unificado.html#forecasting'},
+  { name:'K-Means', folder:'aprobaciones_kmeans_2026', type:'clustering', status:'Finalizado', metrics:{silhouette:'0.42',clusters:'4',inertia:'2.3e6'}, trained:'24/02/2026', dashUrl:'../dashboard_unificado.html#clustering'},
+  { name:'K-Medoids', folder:'aprobaciones_kmedoids_2026', type:'clustering', status:'Finalizado', metrics:{silhouette:'0.39',clusters:'4',inertia:'2.5e6'}, trained:'24/02/2026', dashUrl:'../dashboard_unificado.html#clustering'},
+  { name:'DBSCAN', folder:'aprobaciones_dbscan_2026', type:'clustering', status:'Finalizado', metrics:{silhouette:'0.35',clusters:'3',noise:'12%'}, trained:'24/02/2026', dashUrl:'../dashboard_unificado.html#clustering'},
+  { name:'HDBSCAN', folder:'aprobaciones_hdbscan_2026', type:'clustering', status:'Finalizado', metrics:{silhouette:'0.41',clusters:'5',noise:'8%'}, trained:'24/02/2026', dashUrl:'../dashboard_unificado.html#clustering'},
+  { name:'GMM', folder:'aprobaciones_gmm_2026', type:'clustering', status:'Finalizado', metrics:{silhouette:'0.44',clusters:'4',bic:'1.2e4'}, trained:'24/02/2026', dashUrl:'../dashboard_unificado.html#clustering'},
+  { name:'Hierarchical', folder:'aprobaciones_hierarchical_2026', type:'clustering', status:'Finalizado', metrics:{silhouette:'0.38',clusters:'4',linkage:'ward'}, trained:'24/02/2026', dashUrl:'../dashboard_unificado.html#clustering'},
+  { name:'Mixed Clustering', folder:'aprobaciones_mixed_2026', type:'clustering', status:'Finalizado', metrics:{silhouette:'0.45',clusters:'4',method:'ensemble'}, trained:'24/02/2026', dashUrl:'../dashboard_unificado.html#clustering'},
+  { name:'EDA Exploratorio', folder:'aprobaciones_eda_2026', type:'eda', status:'Finalizado', metrics:{variables:'12',correlations:'66',outliers:'23'}, trained:'23/02/2026', dashUrl:'../dashboard_unificado.html'},
 ];
 const DASHBOARDS = [
   // ── Unificado ──
-  { name:'Dashboard Ejecutivo Unificado', url:'../data/gold/dashboard/dashboard_unificado.html', status:'online', views:47, lastAccess:'02/03/2026 11:20', type:'unificado', sections:['Inicio','Forecasting','Clustering','Comparativa','Cross-Validation','Particiones']},
+  { name:'Dashboard Ejecutivo Unificado', url:'../dashboard_unificado.html', status:'online', views:47, lastAccess:'02/03/2026 11:20', type:'unificado', sections:['Inicio','Forecasting','Clustering','Comparativa','Cross-Validation','Particiones']},
   // ── Forecasting Labs ──
-  { name:'Prophet — Ejecutivo', url:'../../models/aprobaciones_prophet_2026/src/dashboard/Ejecutivo/dashboard_ejecutivo.html', status:'online', views:23, lastAccess:'25/02/2026 20:30', type:'forecasting', sections:['Predicciones','KPIs','Tabla Detalle']},
-  { name:'Prophet — Estratégico', url:'../../models/aprobaciones_prophet_2026/src/dashboard/Estrategico/dashboard_estrategico.html', status:'online', views:18, lastAccess:'25/02/2026 20:30', type:'forecasting', sections:['Escenarios','Filtros','Proyección']},
-  { name:'NeuralProphet — Ejecutivo', url:'../../models/aprobaciones_neu_prophet_2026/src/dashboard/Ejecutivo/dashboard_ejecutivo.html', status:'online', views:19, lastAccess:'25/02/2026 19:15', type:'forecasting', sections:['Forecast','Tendencia','Métricas']},
-  { name:'NeuralProphet — Estratégico', url:'../../models/aprobaciones_neu_prophet_2026/src/dashboard/Estrategico/dashboard_estrategico.html', status:'online', views:14, lastAccess:'25/02/2026 19:15', type:'forecasting', sections:['Escenarios','Filtros','Proyección']},
-  { name:'StatsForecast — Ejecutivo', url:'../../models/aprobaciones_StatsForecast_2026/src/dashboard/dashboard_ejecutivo.html', status:'online', views:21, lastAccess:'02/03/2026 11:22', type:'forecasting', sections:['AutoARIMA','KPIs','Tabla']},
-  { name:'StatsForecast — Estratégico', url:'../../models/aprobaciones_StatsForecast_2026/src/dashboard/Estrategico/dashboard_estrategico.html', status:'online', views:16, lastAccess:'02/03/2026 11:22', type:'forecasting', sections:['Ensemble','Escenarios','Filtros']},
-  { name:'TimesFM — Ejecutivo', url:'../../models/aprobaciones_TimesFM_2026/data/05-reporting/dashboard_ejecutivo_bcie.html', status:'online', views:35, lastAccess:'02/03/2026 10:55', type:'forecasting', sections:['GPU','Predicciones','KPIs']},
-  { name:'TimesFM — Proyecciones', url:'../../models/aprobaciones_TimesFM_2026/data/05-reporting/dashboard_proyecciones_2026.html', status:'online', views:28, lastAccess:'02/03/2026 10:55', type:'forecasting', sections:['2026-2030','Escenarios','País']},
+  { name:'Prophet — Ejecutivo', url:'../labs/prophet/dashboard_ejecutivo.html', status:'online', views:23, lastAccess:'25/02/2026 20:30', type:'forecasting', sections:['Predicciones','KPIs','Tabla Detalle']},
+  { name:'Prophet — Estratégico', url:'../labs/prophet/dashboard_estrategico.html', status:'online', views:18, lastAccess:'25/02/2026 20:30', type:'forecasting', sections:['Escenarios','Filtros','Proyección']},
+  { name:'NeuralProphet — Ejecutivo', url:'../labs/neuralprophet/dashboard_ejecutivo.html', status:'online', views:19, lastAccess:'25/02/2026 19:15', type:'forecasting', sections:['Forecast','Tendencia','Métricas']},
+  { name:'NeuralProphet — Estratégico', url:'../labs/neuralprophet/dashboard_estrategico.html', status:'online', views:14, lastAccess:'25/02/2026 19:15', type:'forecasting', sections:['Escenarios','Filtros','Proyección']},
+  { name:'StatsForecast — Ejecutivo', url:'../labs/statsforecast/dashboard_ejecutivo.html', status:'online', views:21, lastAccess:'02/03/2026 11:22', type:'forecasting', sections:['AutoARIMA','KPIs','Tabla']},
+  { name:'StatsForecast — Estratégico', url:'../labs/statsforecast/dashboard_estrategico.html', status:'online', views:16, lastAccess:'02/03/2026 11:22', type:'forecasting', sections:['Ensemble','Escenarios','Filtros']},
+  { name:'TimesFM — Ejecutivo', url:'../labs/timesfm/dashboard_ejecutivo.html', status:'online', views:35, lastAccess:'02/03/2026 10:55', type:'forecasting', sections:['GPU','Predicciones','KPIs']},
+  { name:'TimesFM — Proyecciones', url:'../labs/timesfm/dashboard_proyecciones.html', status:'online', views:28, lastAccess:'02/03/2026 10:55', type:'forecasting', sections:['2026-2030','Escenarios','País']},
   // ── Clustering Labs ──
-  { name:'DBSCAN — Dashboard', url:'../../models/aprobaciones_dbscan_2026/src/dashboard/dashboard_template.html', status:'online', views:12, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Clusters','Noise','DBSCAN']},
-  { name:'HDBSCAN — Dashboard', url:'../../models/aprobaciones_hdbscan_2026/data/04-predictions/dashboard_clustering.html', status:'online', views:14, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Clusters','Jerárquico','Noise']},
-  { name:'GMM — Dashboard', url:'../../models/aprobaciones_gmm_2026/src/dashboard/dashboard_gmm.html', status:'online', views:11, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Gaussian','BIC','Clusters']},
-  { name:'K-Means — Dashboard', url:'../../models/aprobaciones_kmeans_2026/src/dashboard/dashboard_kmeans.html', status:'online', views:13, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Elbow','Silhouette','Clusters']},
-  { name:'K-Medoids — Dashboard', url:'../../models/aprobaciones_kmedoids_2026/src/dashboard/dashboard_kmedoids.html', status:'online', views:10, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['PAM','Medoids','Clusters']},
-  { name:'Hierarchical — Dashboard', url:'../../models/aprobaciones_hierarchical_2026/src/dashboard/dashboard_hierarchical.html', status:'online', views:9, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Dendrograma','Ward','Clusters']},
-  { name:'Mixed Clustering — Dashboard', url:'../../models/aprobaciones_mixed_2026/src/dashboard/dashboard_mixed.html', status:'online', views:8, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Ensemble','Comparativa','Clusters']},
+  { name:'DBSCAN — Dashboard', url:'../labs/dbscan/dashboard_dbscan.html', status:'online', views:12, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Clusters','Noise','DBSCAN']},
+  { name:'HDBSCAN — Dashboard', url:'../labs/hdbscan/dashboard_hdbscan.html', status:'online', views:14, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Clusters','Jerárquico','Noise']},
+  { name:'GMM — Dashboard', url:'../labs/gmm/dashboard_gmm.html', status:'online', views:11, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Gaussian','BIC','Clusters']},
+  { name:'K-Means — Dashboard', url:'../labs/kmeans/dashboard_kmeans.html', status:'online', views:13, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Elbow','Silhouette','Clusters']},
+  { name:'K-Medoids — Dashboard', url:'../labs/kmedoids/dashboard_kmedoids.html', status:'online', views:10, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['PAM','Medoids','Clusters']},
+  { name:'Hierarchical — Dashboard', url:'../labs/hierarchical/dashboard_hierarchical.html', status:'online', views:9, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Dendrograma','Ward','Clusters']},
+  { name:'Mixed Clustering — Dashboard', url:'../labs/mixed/dashboard_mixed.html', status:'online', views:8, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Ensemble','Comparativa','Clusters']},
   // ── EDA ──
-  { name:'EDA — Dashboard Exploratorio', url:'../../models/aprobaciones_eda_2026/src/dashboard/dashboard_eda.html', status:'online', views:31, lastAccess:'23/02/2026 14:20', type:'eda', sections:['Distribución','Correlaciones','Outliers']},
-  { name:'EDA — Reporte Completo', url:'../../models/aprobaciones_eda_2026/src/dashboard/dashboard_eda_report.html', status:'online', views:22, lastAccess:'23/02/2026 14:20', type:'eda', sections:['Variables','Estadísticos','Reporte']},
+  { name:'EDA — Dashboard Exploratorio', url:'../labs/eda/dashboard_eda.html', status:'online', views:31, lastAccess:'23/02/2026 14:20', type:'eda', sections:['Distribución','Correlaciones','Outliers']},
+  { name:'EDA — Reporte Completo', url:'../labs/eda/dashboard_eda_report.html', status:'online', views:22, lastAccess:'23/02/2026 14:20', type:'eda', sections:['Variables','Estadísticos','Reporte']},
 ];
 const AUDIT_LOG = [
   { ts:'2026-02-26T19:49:00', level:'success', event:'Login exitoso', user:'waguilar', details:'Rol: Administrador' },
@@ -672,10 +687,20 @@ function openModal(type) {
   document.getElementById('modalOverlay').classList.add('visible');
 }
 function closeModal() { document.getElementById('modalOverlay').classList.remove('visible'); }
-function addUser() {
+async function addUser() {
   const u=document.getElementById('newUsername').value.trim(), n=document.getElementById('newDisplayName').value.trim(), r=document.getElementById('newRole').value;
-  if (!u||!n) return alert('Completa todos los campos.');
+  const pw=document.getElementById('newPassword').value;
+  if (!u||!n||!pw) return alert('Completa todos los campos, incluyendo la contraseña.');
+  if (pw.length < 6) return alert('La contraseña debe tener mínimo 6 caracteres.');
+  
   USERS.push({id:USERS.length+1,username:u,displayName:n,role:r,status:'active',lastAccess:'—',created:new Date().toLocaleDateString('es-HN')});
+  saveUsersData();
+  
+  const hash = await hashBciePassword(pw);
+  let authStore = JSON.parse(localStorage.getItem('bcie_auth_store')) || {};
+  authStore[u.toLowerCase()] = { username: u, passwordHash: hash, role: r, displayName: n };
+  localStorage.setItem('bcie_auth_store', JSON.stringify(authStore));
+
   renderUsers(); closeModal(); document.getElementById('kpiUsers').textContent = USERS.filter(x=>x.status==='active').length;
 }
 function addAlert() {
@@ -747,10 +772,26 @@ function saveUser(id) {
   const newRole = document.getElementById('editRole').value;
   const newStatus = document.getElementById('editStatus').value;
   if (!newUsername || !newName) return showToast('Completa todos los campos', 'warn');
+  
+  const oldUserKey = u.username.toLowerCase();
+  
   u.username = newUsername;
   u.displayName = newName;
   u.role = newRole;
   u.status = newStatus;
+  saveUsersData();
+
+  let authStore = JSON.parse(localStorage.getItem('bcie_auth_store')) || {};
+  if (authStore[oldUserKey] || true) {
+    const data = authStore[oldUserKey] || { passwordHash: '' }; // fallback
+    delete authStore[oldUserKey];
+    data.username = newUsername;
+    data.displayName = newName;
+    data.role = newRole;
+    authStore[newUsername.toLowerCase()] = data;
+    localStorage.setItem('bcie_auth_store', JSON.stringify(authStore));
+  }
+
   AUDIT_LOG.unshift({ ts: new Date().toISOString(), level:'info', event:'Usuario editado', user: sessionStorage.getItem('bcie_auth') ? JSON.parse(sessionStorage.getItem('bcie_auth')).user?.username||'admin' : 'admin', details:`${newUsername} → ${newRole} (${newStatus})` });
   renderUsers(); renderAudit(); renderOverview(); closeModal();
   document.getElementById('kpiUsers').textContent = USERS.filter(x=>x.status==='active').length;
@@ -762,6 +803,12 @@ function deleteUser(id) {
   const idx = USERS.findIndex(x => x.id === id);
   if (idx > -1) {
     const deleted = USERS.splice(idx, 1)[0];
+    saveUsersData();
+    
+    let authStore = JSON.parse(localStorage.getItem('bcie_auth_store')) || {};
+    delete authStore[deleted.username.toLowerCase()];
+    localStorage.setItem('bcie_auth_store', JSON.stringify(authStore));
+
     AUDIT_LOG.unshift({ ts: new Date().toISOString(), level:'warn', event:'Usuario eliminado', user:'admin', details: deleted.username });
     renderUsers(); renderAudit(); renderOverview(); closeModal();
     document.getElementById('kpiUsers').textContent = USERS.filter(x=>x.status==='active').length;
@@ -824,12 +871,25 @@ function updatePwStrength() {
   label.textContent = lv.l; label.style.color = lv.c;
 }
 
-function executeResetPassword(id) {
+async function executeResetPassword(id) {
   const pw1 = document.getElementById('resetNewPw').value;
   const pw2 = document.getElementById('resetConfirmPw').value;
   if (pw1.length < 6) return showToast(t('pw.requirements'), 'warn');
   if (pw1 !== pw2) { document.getElementById('pwMatchMsg').textContent = '✗ No coinciden'; document.getElementById('pwMatchMsg').style.color = '#ef4444'; return; }
-  AUDIT_LOG.unshift({ ts: new Date().toISOString(), level:'info', event:'Password restablecido', user:'admin', details:`Usuario: ${USERS.find(x=>x.id===id)?.username}` });
+  
+  const u = USERS.find(x => x.id === id);
+  if (u) {
+    const hash = await hashBciePassword(pw1);
+    let authStore = JSON.parse(localStorage.getItem('bcie_auth_store')) || {};
+    if (authStore[u.username.toLowerCase()]) {
+      authStore[u.username.toLowerCase()].passwordHash = hash;
+    } else {
+      authStore[u.username.toLowerCase()] = { username: u.username, passwordHash: hash, role: u.role, displayName: u.displayName };
+    }
+    localStorage.setItem('bcie_auth_store', JSON.stringify(authStore));
+  }
+
+  AUDIT_LOG.unshift({ ts: new Date().toISOString(), level:'info', event:'Password restablecido', user:'admin', details:`Usuario: ${u?.username}` });
   renderAudit(); renderOverview(); closeModal();
   showToast(t('toast.pwreset'), 'success');
 }
@@ -838,6 +898,7 @@ function toggleUser(id) {
   const u = USERS.find(x => x.id === id);
   if (u) {
     u.status = u.status === 'active' ? 'inactive' : 'active';
+    saveUsersData();
     AUDIT_LOG.unshift({ ts: new Date().toISOString(), level: u.status==='active'?'success':'warn', event: u.status==='active'?'Usuario activado':'Usuario desactivado', user:'admin', details: u.username });
     renderUsers(); renderAudit(); renderOverview();
     document.getElementById('kpiUsers').textContent = USERS.filter(x => x.status === 'active').length;

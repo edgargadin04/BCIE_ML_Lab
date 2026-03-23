@@ -489,7 +489,14 @@ async function initializeAuth() {
     },
   };
 
-  auditLog('info', 'User store loaded (5 users registered)');
+  let localAuthStore = JSON.parse(localStorage.getItem('bcie_auth_store'));
+  if (localAuthStore) {
+    Object.assign(USER_STORE, localAuthStore);
+  } else {
+    localStorage.setItem('bcie_auth_store', JSON.stringify(USER_STORE));
+  }
+
+  auditLog('info', `User store loaded (${Object.keys(USER_STORE).length} users registered)`);
   generateCSRFToken();
   auditLog('info', `CSRF token generated: ${state.csrfToken.substring(0, 12)}…`);
 
