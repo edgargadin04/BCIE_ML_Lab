@@ -115,10 +115,26 @@ function auditLog(level, message, details = {}) {
 
   state.auditLog.push(entry);
 
-  // Mantener últimas 100 entradas
+  // Mantener últimas 100 entradas en memoria
   if (state.auditLog.length > 100) {
     state.auditLog.shift();
   }
+
+  // Persistir en localStorage para panel admin (últimas 50)
+  try {
+    const stored = JSON.parse(localStorage.getItem('bcie_audit_log')) || [];
+    const username = state.currentSession?.username || details.username || 'system';
+    stored.unshift({
+      ts: entry.timestamp,
+      level,
+      event: message,
+      user: username,
+      details: typeof details === 'object' ? JSON.stringify(details) : String(details),
+    });
+    // Recortar a 50 entradas
+    if (stored.length > 50) stored.length = 50;
+    localStorage.setItem('bcie_audit_log', JSON.stringify(stored));
+  } catch (e) { /* silenciar */ }
 
   // Renderizar en panel de auditoría
   renderAuditEntry(entry);

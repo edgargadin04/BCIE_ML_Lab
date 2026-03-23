@@ -228,21 +228,27 @@ const DASHBOARDS = [
   { name:'EDA — Dashboard Exploratorio', url:'../labs/eda/dashboard_eda.html', status:'online', views:31, lastAccess:'23/02/2026 14:20', type:'eda', sections:['Distribución','Correlaciones','Outliers']},
   { name:'EDA — Reporte Completo', url:'../labs/eda/dashboard_eda_report.html', status:'online', views:22, lastAccess:'23/02/2026 14:20', type:'eda', sections:['Variables','Estadísticos','Reporte']},
 ];
-const AUDIT_LOG = [
-  { ts:'2026-02-26T19:49:00', level:'success', event:'Login exitoso', user:'waguilar', details:'Rol: Administrador' },
-  { ts:'2026-02-26T18:10:12', level:'success', event:'Login exitoso', user:'admin', details:'Rol: Administrador' },
-  { ts:'2026-02-26T18:05:44', level:'success', event:'Login exitoso', user:'bcie', details:'Redirigido a Dashboard Unificado' },
-  { ts:'2026-02-26T17:58:01', level:'info', event:'Sistema inicializado', user:'system', details:'5 usuarios cargados' },
-  { ts:'2026-02-26T17:55:30', level:'info', event:'CSRF token generado', user:'system', details:'Token: a3f2b8c1d4e5...' },
-  { ts:'2026-02-26T14:26:00', level:'info', event:'Pipeline ETL completado', user:'system', details:'Bronze > Silver > Gold' },
-  { ts:'2026-02-26T14:25:00', level:'info', event:'Datos actualizados', user:'system', details:'3,139 registros procesados' },
-  { ts:'2026-02-25T20:30:00', level:'success', event:'Modelo entrenado', user:'admin', details:'NeuralProphet - MAPE: 7.1%' },
-  { ts:'2026-02-25T19:15:00', level:'success', event:'Modelo entrenado', user:'admin', details:'Prophet - MAPE: 8.2%' },
-  { ts:'2026-02-25T16:00:00', level:'warn', event:'Intento de login fallido', user:'unknown', details:'Usuario no encontrado' },
-  { ts:'2026-02-24T16:40:00', level:'success', event:'Dashboard generado', user:'admin', details:'Dashboard Unificado actualizado' },
-  { ts:'2026-02-24T15:00:00', level:'info', event:'Modelos clustering completados', user:'admin', details:'7 modelos entrenados' },
-  { ts:'2026-02-23T14:20:00', level:'info', event:'EDA completado', user:'admin', details:'12 variables, 23 outliers' },
-];
+// Audit log: dinámico desde localStorage (registrado por auth.js)
+const AUDIT_LOG = (() => {
+  const stored = JSON.parse(localStorage.getItem('bcie_audit_log'));
+  if (stored && stored.length > 0) return stored;
+  // Fallback: datos demo iniciales
+  return [
+    { ts:'2026-02-26T19:49:00', level:'success', event:'Login exitoso', user:'waguilar', details:'Rol: Administrador' },
+    { ts:'2026-02-26T18:10:12', level:'success', event:'Login exitoso', user:'admin', details:'Rol: Administrador' },
+    { ts:'2026-02-26T18:05:44', level:'success', event:'Login exitoso', user:'bcie', details:'Redirigido a Dashboard Unificado' },
+    { ts:'2026-02-26T17:58:01', level:'info', event:'Sistema inicializado', user:'system', details:'5 usuarios cargados' },
+    { ts:'2026-02-26T17:55:30', level:'info', event:'CSRF token generado', user:'system', details:'Token: a3f2b8c1d4e5...' },
+    { ts:'2026-02-26T14:26:00', level:'info', event:'Pipeline ETL completado', user:'system', details:'Bronze > Silver > Gold' },
+    { ts:'2026-02-26T14:25:00', level:'info', event:'Datos actualizados', user:'system', details:'3,139 registros procesados' },
+    { ts:'2026-02-25T20:30:00', level:'success', event:'Modelo entrenado', user:'admin', details:'NeuralProphet - MAPE: 7.1%' },
+    { ts:'2026-02-25T19:15:00', level:'success', event:'Modelo entrenado', user:'admin', details:'Prophet - MAPE: 8.2%' },
+    { ts:'2026-02-25T16:00:00', level:'warn', event:'Intento de login fallido', user:'unknown', details:'Usuario no encontrado' },
+    { ts:'2026-02-24T16:40:00', level:'success', event:'Dashboard generado', user:'admin', details:'Dashboard Unificado actualizado' },
+    { ts:'2026-02-24T15:00:00', level:'info', event:'Modelos clustering completados', user:'admin', details:'7 modelos entrenados' },
+    { ts:'2026-02-23T14:20:00', level:'info', event:'EDA completado', user:'admin', details:'12 variables, 23 outliers' },
+  ];
+})();
 const NOTIFICATIONS = [
   { id:1, type:'warn', text:'Intento de login fallido detectado', time:'Hace 2h', read:false },
   { id:2, type:'success', text:'Pipeline ETL completado exitosamente', time:'Hace 4h', read:false },
