@@ -225,8 +225,7 @@ const DASHBOARDS = [
   { name:'Hierarchical — Dashboard', url:'../labs/hierarchical/dashboard_hierarchical.html', status:'online', views:9, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Dendrograma','Ward','Clusters']},
   { name:'Mixed Clustering — Dashboard', url:'../labs/mixed/dashboard_mixed.html', status:'online', views:8, lastAccess:'24/02/2026 16:40', type:'clustering', sections:['Ensemble','Comparativa','Clusters']},
   // ── EDA ──
-  { name:'EDA — Dashboard Exploratorio', url:'../labs/eda/dashboard_eda.html', status:'online', views:31, lastAccess:'23/02/2026 14:20', type:'eda', sections:['Distribución','Correlaciones','Outliers']},
-  { name:'EDA — Reporte Completo', url:'../labs/eda/dashboard_eda_report.html', status:'online', views:22, lastAccess:'23/02/2026 14:20', type:'eda', sections:['Variables','Estadísticos','Reporte']},
+  { name:'EDA — Dashboard', url:'../labs/eda/dashboard_eda_report.html', status:'online', views:31, lastAccess:'23/02/2026 14:20', type:'eda', sections:['Variables','Distribución','Correlaciones','Outliers','Estadísticos']},
 ];
 // Audit log: dinámico desde localStorage (registrado por auth.js)
 const AUDIT_LOG = (() => {
