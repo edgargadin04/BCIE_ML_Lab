@@ -47,9 +47,9 @@ let USER_STORE = {};
 
 // Rutas de dashboard por rol
 const DASHBOARD_ROUTES = Object.freeze({
-  'Administrador': 'admin.html',                                       // Admin → panel completo
-  'Analista BCIE': '../data/gold/dashboard/dashboard_unificado.html',  // Analista → dashboard unificado (fix 404)
-  'Viewer':        '../data/gold/dashboard/dashboard_unificado.html',  // Viewer → dashboard unificado (solo lectura)
+  'Administrador': 'admin.html',                    // Admin → panel completo
+  'Analista BCIE': '../dashboard_unificado.html',   // Analista → dashboard unificado
+  'Viewer':        '../dashboard_unificado.html',   // Viewer → dashboard unificado (solo lectura)
 });
 
 // ============================================
