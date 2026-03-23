@@ -449,7 +449,26 @@ function renderCharts() {
   const textColor = isDark ? '#94a3b8' : '#64748b';
   const ctx1 = document.getElementById('loginsChart');
   if (loginsChartInst) loginsChartInst.destroy();
-  loginsChartInst = new Chart(ctx1, { type:'bar', data:{ labels:['20/02','21/02','22/02','23/02','24/02','25/02','26/02'], datasets:[{ label:'Logins', data:[2,1,3,2,4,5,6], backgroundColor:'rgba(6,182,212,0.5)', borderColor:'#06b6d4', borderWidth:1, borderRadius:4 }] }, options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ y:{grid:{color:gridColor},ticks:{color:textColor,font:{size:10}}}, x:{grid:{display:false},ticks:{color:textColor,font:{size:10}}} } } });
+  // Calcular logins por día desde AUDIT_LOG dinámico
+  const loginEvents = AUDIT_LOG.filter(e => e.event && (e.event.toLowerCase().includes('session created') || e.event.toLowerCase().includes('login exitoso')));
+  const loginsByDay = {};
+  loginEvents.forEach(e => {
+    const d = new Date(e.ts);
+    const key = d.toLocaleDateString('es-HN', { day:'2-digit', month:'2-digit' });
+    loginsByDay[key] = (loginsByDay[key] || 0) + 1;
+  });
+  // Si hay datos reales, usarlos; si no, fallback estático
+  let chartLabels, chartData;
+  const dayKeys = Object.keys(loginsByDay);
+  if (dayKeys.length > 0) {
+    // Ordenar por fecha y tomar últimos 7
+    chartLabels = dayKeys.slice(-7);
+    chartData = chartLabels.map(k => loginsByDay[k]);
+  } else {
+    chartLabels = ['20/02','21/02','22/02','23/02','24/02','25/02','26/02'];
+    chartData = [2,1,3,2,4,5,6];
+  }
+  loginsChartInst = new Chart(ctx1, { type:'bar', data:{ labels:chartLabels, datasets:[{ label:'Logins', data:chartData, backgroundColor:'rgba(6,182,212,0.5)', borderColor:'#06b6d4', borderWidth:1, borderRadius:4 }] }, options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ y:{grid:{color:gridColor},ticks:{color:textColor,font:{size:10}}}, x:{grid:{display:false},ticks:{color:textColor,font:{size:10}}} } } });
   const ctx2 = document.getElementById('modelsTypeChart');
   if (modelsChartInst) modelsChartInst.destroy();
   modelsChartInst = new Chart(ctx2, { type:'doughnut', data:{ labels:['Forecasting','Clustering','EDA'], datasets:[{ data:[4,7,1], backgroundColor:['#06b6d4','#a855f7','#f59e0b'], borderWidth:0 }] }, options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ color:textColor, font:{size:11}, padding:12 } } } } });
